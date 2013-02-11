@@ -1,4 +1,4 @@
-package fr.istic.ChickenProject.model;
+package fr.istic.project;
 
 import java.io.File;
 import java.io.IOException;
