@@ -2,7 +2,7 @@
 <resources>
 	
     <!-- Application -->
-    <string name="app_name">MITIC Project</string>
+    <string name="app_name">PhotosProject</string>
     <string name="hello_world">Hello world!</string>
     
     <!-- Content description -->
