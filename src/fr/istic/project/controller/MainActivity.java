@@ -52,7 +52,7 @@ public class MainActivity extends Activity {
     	    	console.setText(console.getText() + "\n" +pic.getPath());
     	    	
     	    	ImageView iv = new ImageView(this);
-    	    	iv.setBackgroundDrawable(getResources().getDrawable((R.drawable.polaroid_photo_frame)));
+    	    	iv.setBackground(getResources().getDrawable((R.drawable.polaroid_photo_frame)));
     	    	iv.setImageDrawable(Drawable.createFromPath(pic.getPath()));
     	    	iv.setLayoutParams(new LayoutParams(87, 100));
     	    	iv.setPadding(5, 5, 5, 10);
