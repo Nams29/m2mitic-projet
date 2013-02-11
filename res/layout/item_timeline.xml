@@ -1,79 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="230dp"
+    android:layout_height="wrap_content"
     android:background="@android:color/black" >
-	
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:background="@android:color/white"
-        android:layout_marginRight="20dp"
         android:layout_alignRight="@+id/timeline_photo"
+        android:layout_marginRight="20dp"
+        android:background="@android:color/white"
         android:paddingBottom="40dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="10dp"
         android:rotation="-20" >
-    
-	    <ImageView
-	        android:layout_width="120dp"
-	        android:layout_height="120dp"
-	        android:contentDescription="@string/timeline_item"
-	        android:src="@drawable/img_test1"
-	        android:scaleType="centerCrop" />
-	
+
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:contentDescription="@string/timeline_item"
+            android:scaleType="centerCrop"
+            android:src="@drawable/img_test1" />
     </RelativeLayout>
-    
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:background="@android:color/white"
-        android:layout_marginLeft="20dp"
         android:layout_alignLeft="@+id/timeline_photo"
+        android:layout_marginLeft="20dp"
+        android:background="@android:color/white"
         android:paddingBottom="40dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="10dp"
         android:rotation="20" >
-    
-	    <ImageView
-	        android:layout_width="120dp"
-	        android:layout_height="120dp"
-	        android:contentDescription="@string/timeline_item"
-	        android:src="@drawable/img_test1"
-	        android:scaleType="centerCrop" />
-	
+
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:contentDescription="@string/timeline_item"
+            android:scaleType="centerCrop"
+            android:src="@drawable/img_test1" />
     </RelativeLayout>
-    
+
     <RelativeLayout
         android:id="@+id/timeline_photo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
         android:background="@android:color/white"
         android:paddingBottom="40dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="10dp" >
-    
-	    <ImageView
-	        android:layout_width="120dp"
-	        android:layout_height="120dp"
-	        android:contentDescription="@string/timeline_item"
-	        android:src="@drawable/img_test2"
-	        android:scaleType="centerCrop" />
-	
+
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:contentDescription="@string/timeline_item"
+            android:scaleType="centerCrop"
+            android:src="@drawable/img_test2" />
     </RelativeLayout>
-        
+
     <View
         android:layout_width="3dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_below="@+id/timeline_photo"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
         android:background="#737373" />
-    
+
 </RelativeLayout>
