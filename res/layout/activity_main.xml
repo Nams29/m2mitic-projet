@@ -5,12 +5,12 @@
     tools:context=".MainActivity" >
 
     <TextView
-        android:id="@+id/console"
+        android:id="@+id/main_console"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
     <LinearLayout
-        android:id="@+id/timeline"
+        android:id="@+id/main_timeline"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="left"

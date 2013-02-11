@@ -32,9 +32,10 @@ public class MainActivity extends Activity {
     }
     
     
-    public void getPhotos() {
-    	TextView console = (TextView) findViewById(R.id.console);
-    	LinearLayout timeline = (LinearLayout) findViewById(R.id.timeline);
+    @SuppressWarnings("deprecation")
+	public void getPhotos() {
+    	TextView console = (TextView) findViewById(R.id.main_console);
+    	LinearLayout timeline = (LinearLayout) findViewById(R.id.main_timeline);
     	
     	
     	/* VERIFICATION DE LA DISPONIBILTE DE LA CARTE */
@@ -52,7 +53,7 @@ public class MainActivity extends Activity {
     	    	console.setText(console.getText() + "\n" +pic.getPath());
     	    	
     	    	ImageView iv = new ImageView(this);
-    	    	iv.setBackground(getResources().getDrawable((R.drawable.polaroid_photo_frame)));
+    	    	iv.setBackgroundDrawable(getResources().getDrawable((R.drawable.polaroid_photo_frame)));
     	    	iv.setImageDrawable(Drawable.createFromPath(pic.getPath()));
     	    	iv.setLayoutParams(new LayoutParams(87, 100));
     	    	iv.setPadding(5, 5, 5, 10);
