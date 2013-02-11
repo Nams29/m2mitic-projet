@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="app_name">ChickenProject</string>
+	
+    <!-- Application -->
+    <string name="app_name">MITIC Project</string>
     <string name="hello_world">Hello world!</string>
-    <string name="menu_settings">Settings</string>
+    
+    <!-- Content description -->
+    <string name="timeline_item">Photo</string>
 
 </resources>
