@@ -31,8 +31,6 @@ public class MainActivity extends Activity {
         getPhotos();
     }
     
-    
-    @SuppressWarnings("deprecation")
 	public void getPhotos() {
     	TextView console = (TextView) findViewById(R.id.main_console);
     	LinearLayout timeline = (LinearLayout) findViewById(R.id.main_timeline);
