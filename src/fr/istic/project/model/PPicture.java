@@ -1,14 +1,14 @@
-package fr.istic.project;
+package fr.istic.project.model;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 
-import fr.istic.ChickenProject.utils.FileUtils;
+import fr.istic.project.utils.FileUtils;
 
 import android.media.ExifInterface;
 
-public class PPicture { // Picture est d√©j√† utilis√© par Android...  
+public class PPicture { // Picture est dÈj‡ utilisÈ par Android...	
 	
 	private final SimpleDateFormat SDF = new SimpleDateFormat("yyyy:MM:dd hh:mm:ss");
 		
@@ -27,7 +27,7 @@ public class PPicture { // Picture est d√©j√† utilis√© par Android...
 	
 	
 	/**
-	 * Constructeur c√¥t√© objet
+	 * Constructeur cÙtÈ objet
 	 * @param file
 	 */
 	public PPicture(File file) {
@@ -56,7 +56,7 @@ public class PPicture { // Picture est d√©j√† utilis√© par Android...
 
 	
 	/**
-	 * Constructeur c√¥t√© SQLite
+	 * Constructeur cÙtÈ SQLite
 	 * @param _id
 	 */
 	public PPicture(Long _id) {
