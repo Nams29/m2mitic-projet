@@ -3,14 +3,14 @@ package fr.istic.project.model;
 import java.util.LinkedList;
 import java.util.List;
 
-public class PContext { // Context est déjà utilisé par Android...
+public class PContext { // Context est dÃ©jÃ  utilisÃ© par Android...
 
 	private Long _id;
 	private String name;
 	private List<PPicture> pictures;
 	
 	/**
-	 * Constructeur côté objet
+	 * Constructeur cÃ´tÃ© objet
 	 * @param name
 	 */
 	public PContext(String name) {
@@ -20,7 +20,7 @@ public class PContext { // Context est déjà utilisé par Android...
 	}
 	
 	/**
-	 * Constructeur côté SQLite
+	 * Constructeur cÃ´tÃ© SQLite
 	 * @param _id
 	 */
 	public PContext(Long _id) {

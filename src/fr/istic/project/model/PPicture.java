@@ -8,7 +8,7 @@ import fr.istic.project.utils.FileUtils;
 
 import android.media.ExifInterface;
 
-public class PPicture { // Picture est déjà utilisé par Android...	
+public class PPicture { // Picture est dÃ©jÃ  utilisÃ© par Android...	
 	
 	private final SimpleDateFormat SDF = new SimpleDateFormat("yyyy:MM:dd hh:mm:ss");
 		
@@ -27,7 +27,7 @@ public class PPicture { // Picture est déjà utilisé par Android...
 	
 	
 	/**
-	 * Constructeur côté objet
+	 * Constructeur cÃ´tÃ© objet
 	 * @param file
 	 */
 	public PPicture(File file) {
@@ -48,7 +48,7 @@ public class PPicture { // Picture est déjà utilisé par Android...
 			this.description = "";
 			
 			this.identifier = this.date + "--" + fileDateTime + "--" + this.name; // TODO confirmer datecreation + datemodif + nomfichier
-			System.out.println(identifier);
+			//System.out.println(identifier);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -56,7 +56,7 @@ public class PPicture { // Picture est déjà utilisé par Android...
 
 	
 	/**
-	 * Constructeur côté SQLite
+	 * Constructeur cÃ´tÃ© SQLite
 	 * @param _id
 	 */
 	public PPicture(Long _id) {
