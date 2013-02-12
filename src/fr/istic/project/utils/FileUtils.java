@@ -1,8 +1,19 @@
 package fr.istic.project.utils;
 
 import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
 
 public class FileUtils {
+	
+	public static final String[] allowedSDcardDirectories = { "DCIM" }; // TODO hors sdcard ?
+	public static final List<String> allowedPhotosExtensions;	
+	static { // Bloc d'initialisation statique !
+		allowedPhotosExtensions = new LinkedList<String>();
+		allowedPhotosExtensions.add("JPG");
+		allowedPhotosExtensions.add("PNG");
+	}
+	
 	
 	public static String getFileName(String filepath) {
 		int slash = filepath.lastIndexOf(File.separatorChar);
@@ -12,7 +23,7 @@ public class FileUtils {
 	
 	public static String getFileExtension(String filename) {
 		int dot = filename.lastIndexOf('.');
-		String extension = filename.substring(dot+1, filename.length()).toLowerCase();		
+		String extension = filename.substring(dot+1, filename.length()).toUpperCase();		
 		return extension;
 	}
 }
