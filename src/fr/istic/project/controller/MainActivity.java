@@ -15,14 +15,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import fr.istic.project.R;
-import fr.istic.project.model.PPicture;
+import fr.istic.project.model.OPhoto;
 import fr.istic.project.utils.FileUtils;
 
 public class MainActivity extends Activity {
 	
 	TextView console;
 	LinearLayout timeline;
-    List<PPicture> pictures = new LinkedList<PPicture>(); 
+    List<OPhoto> pictures = new LinkedList<OPhoto>(); 
     
 	
     /** Called when the activity is first created. */
@@ -108,7 +108,7 @@ public class MainActivity extends Activity {
     		if (f.isFile()) {
     			// Vérification de l'extension du fichier
     			if (picturesExtensions.contains(FileUtils.getFileExtension(f.getPath()))) {
-    				PPicture pic = new PPicture(f);
+    				OPhoto pic = new OPhoto(f);
     				pictures.add(pic);
     				ProgressTask pt = new ProgressTask(pic, console);
     				pt.execute();
@@ -123,10 +123,10 @@ public class MainActivity extends Activity {
     
     
     static class ProgressTask extends AsyncTask<Void, Integer, Boolean> {
-    	private final PPicture picture;
+    	private final OPhoto picture;
     	private final TextView console;
     	
-    	public ProgressTask(PPicture picture, TextView console) {
+    	public ProgressTask(OPhoto picture, TextView console) {
     		this.picture = picture;
     		this.console = console;
     	}

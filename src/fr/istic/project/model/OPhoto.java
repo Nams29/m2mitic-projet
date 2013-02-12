@@ -8,7 +8,7 @@ import fr.istic.project.utils.FileUtils;
 
 import android.media.ExifInterface;
 
-public class PPicture { // Picture est déjà utilisé par Android...	
+public class OPhoto { // Photo est déjà utilisé par Android...	
 	
 	private final SimpleDateFormat SDF = new SimpleDateFormat("yyyy:MM:dd hh:mm:ss");
 		
@@ -23,14 +23,14 @@ public class PPicture { // Picture est déjà utilisé par Android...
 	private String location;
 	private Float note;
 	private String description;
-	private PContext pcontext;
+	private OContext context;
 	
 	
 	/**
 	 * Constructeur côté objet
 	 * @param file
 	 */
-	public PPicture(File file) {
+	public OPhoto(File file) {
 		try {
 			this.file = file;
 			this.path = file.getPath();
@@ -59,7 +59,7 @@ public class PPicture { // Picture est déjà utilisé par Android...
 	 * Constructeur côté SQLite
 	 * @param _id
 	 */
-	public PPicture(Long _id) {
+	public OPhoto(Long _id) {
 		this._id = _id;
 	}
 	
@@ -101,8 +101,8 @@ public class PPicture { // Picture est déjà utilisé par Android...
 		return description;
 	}
 
-	public PContext getPContext() {
-		return pcontext;
+	public OContext getContext() {
+		return context;
 	}
 
 
@@ -155,8 +155,8 @@ public class PPicture { // Picture est déjà utilisé par Android...
 		this.identifier = identifier;
 	}
 
-	public void setPContext(PContext context) {
-		this.pcontext = context;
+	public void setContext(OContext context) {
+		this.context = context;
 	}
 	
 }

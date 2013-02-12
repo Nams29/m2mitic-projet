@@ -7,24 +7,24 @@ import android.util.Log;
 
 public class ApplicationSQLiteOpenHelper extends SQLiteOpenHelper
 {
-	private static final String DATABASE_NAME = "application.db";
-	private static final int DATABASE_VERSION = 1;
+	private static final String DATABASE_NAME 		= "application.db";
+	private static final int 	DATABASE_VERSION 	= 1;
 	
-	/* PCONTEXTS */
-	public static final String CONTEXTS_TABLE_NAME = "contexts";
-	public static final String CONTEXTS_ID = "_id";
-	public static final String CONTEXTS_NAME = "name";
+	/* CONTEXTS */
+	public static final String CONTEXTS_TABLE_NAME 	= "contexts";
+	public static final String CONTEXTS_ID 			= "_id";
+	public static final String CONTEXTS_NAME 		= "name";
 
-	/* PICTURES */
-	public static final String PICTURES_TABLE_NAME = "pictures";
-	public static final String PICTURES_ID = "_id";
-	public static final String PICTURES_IDENTIFIER = "identifier";
-	public static final String PICTURES_DATE = "date";
-	public static final String PICTURES_LOCATION = "location";
-	public static final String PICTURES_NOTE = "note";
-	public static final String PICTURES_DESCRIPTION = "description";
-	public static final String PICTURES_PATH = "path";
-	public static final String PICTURES_CONTEXT = "context";
+	/* PHOTOS */
+	public static final String PHOTOS_TABLE_NAME 	= "photos";
+	public static final String PHOTOS_ID 			= "_id";
+	public static final String PHOTOS_IDENTIFIER 	= "identifier";
+	public static final String PHOTOS_DATE 			= "date";
+	public static final String PHOTOS_LOCATION 		= "location";
+	public static final String PHOTOS_NOTE 			= "note";
+	public static final String PHOTOS_DESCRIPTION 	= "description";
+	public static final String PHOTOS_PATH 			= "path";
+	public static final String PHOTOS_CONTEXT 		= "context";
 	
 	
 	
@@ -40,15 +40,15 @@ public class ApplicationSQLiteOpenHelper extends SQLiteOpenHelper
 								+ CONTEXTS_ID 			+ " INTEGER PRIMARY KEY," // TODO AUTOINCREMENT ?
 								+ CONTEXTS_NAME 		+ " TEXT" + ");");
 		
-		database.execSQL("CREATE TABLE " + PICTURES_TABLE_NAME + " (" 
-								+ PICTURES_ID 			+ " INTEGER PRIMARY KEY," // TODO AUTOINCREMENT ?
-								+ PICTURES_IDENTIFIER 	+ " TEXT,"
-								+ PICTURES_DATE 		+ " TEXT,"
-								+ PICTURES_LOCATION 	+ " TEXT," 
-								+ PICTURES_NOTE 		+ " INTEGER,"
-								+ PICTURES_DESCRIPTION 	+ " TEXT,"
-								+ PICTURES_PATH 		+ " TEXT,"
-								+ PICTURES_CONTEXT 	+ " FOREIGN KEY " + CONTEXTS_TABLE_NAME + " REFERENCES (" + CONTEXTS_ID + ") ON DELETE CASCADE" + ");");
+		database.execSQL("CREATE TABLE " + PHOTOS_TABLE_NAME + " (" 
+								+ PHOTOS_ID 			+ " INTEGER PRIMARY KEY," // TODO AUTOINCREMENT ?
+								+ PHOTOS_IDENTIFIER 	+ " TEXT,"
+								+ PHOTOS_DATE 		+ " TEXT,"
+								+ PHOTOS_LOCATION 	+ " TEXT," 
+								+ PHOTOS_NOTE 		+ " INTEGER,"
+								+ PHOTOS_DESCRIPTION 	+ " TEXT,"
+								+ PHOTOS_PATH 		+ " TEXT,"
+								+ PHOTOS_CONTEXT 	+ " FOREIGN KEY " + CONTEXTS_TABLE_NAME + " REFERENCES (" + CONTEXTS_ID + ") ON DELETE CASCADE" + ");");
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class ApplicationSQLiteOpenHelper extends SQLiteOpenHelper
 		Log.i(getClass().getName(), "Upgrading database from version " + oldVersion + " to " + newVersion + ", which will destroy all old data !");
 		
 		database.execSQL("DROP TABLE IF EXISTS " + CONTEXTS_TABLE_NAME);
-		database.execSQL("DROP TABLE IF EXISTS " + PICTURES_TABLE_NAME);
+		database.execSQL("DROP TABLE IF EXISTS " + PHOTOS_TABLE_NAME);
 		onCreate(database);
 	}
 }

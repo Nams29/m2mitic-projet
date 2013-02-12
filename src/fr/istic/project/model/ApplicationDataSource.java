@@ -49,132 +49,132 @@ public final class ApplicationDataSource
 	}
 	
 	
-	/* PICTURE */
+	/* PHOTOS */
 	
-	public PPicture addPicture(final PPicture pic)
+	public OPhoto addPhoto(final OPhoto photo)
 	{
 		final ContentValues contentValues = new ContentValues();
-				contentValues.put(ApplicationSQLiteOpenHelper.PICTURES_IDENTIFIER, pic.getIdentifier());
-				contentValues.put(ApplicationSQLiteOpenHelper.PICTURES_DATE, pic.getDate());
-				contentValues.put(ApplicationSQLiteOpenHelper.PICTURES_LOCATION, pic.getLocation());
-				contentValues.put(ApplicationSQLiteOpenHelper.PICTURES_NOTE, pic.getNote());
-				contentValues.put(ApplicationSQLiteOpenHelper.PICTURES_DESCRIPTION, pic.getDescription());
-				contentValues.put(ApplicationSQLiteOpenHelper.PICTURES_PATH, pic.getPath());
-				contentValues.put(ApplicationSQLiteOpenHelper.PICTURES_CONTEXT, pic.getPContext().get_id());
-		final long pictureId = database.insert(ApplicationSQLiteOpenHelper.PICTURES_TABLE_NAME, null, contentValues);
+				contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_IDENTIFIER, 	photo.getIdentifier());
+				contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_DATE, 			photo.getDate());
+				contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_LOCATION, 		photo.getLocation());
+				contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_NOTE, 			photo.getNote());
+				contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_DESCRIPTION, 	photo.getDescription());
+				contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_PATH, 			photo.getPath());
+				contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_CONTEXT, 		photo.getContext().get_id());
+		final long photoId = database.insert(ApplicationSQLiteOpenHelper.PHOTOS_TABLE_NAME, null, contentValues);
 
-		return getPicture(pictureId);
+		return getPhoto(photoId);
 	}
 	
-	public PPicture getPicture(final long picId)
+	public OPhoto getPhoto(final long photoId)
 	{
-		final Cursor cursor = database.query(ApplicationSQLiteOpenHelper.PICTURES_TABLE_NAME, new String[]{
-				ApplicationSQLiteOpenHelper.PICTURES_ID,
-				ApplicationSQLiteOpenHelper.PICTURES_IDENTIFIER,
-				ApplicationSQLiteOpenHelper.PICTURES_DATE, 
-				ApplicationSQLiteOpenHelper.PICTURES_LOCATION, 
-				ApplicationSQLiteOpenHelper.PICTURES_NOTE, 
-				ApplicationSQLiteOpenHelper.PICTURES_DESCRIPTION,
-				ApplicationSQLiteOpenHelper.PICTURES_PATH,
-				ApplicationSQLiteOpenHelper.PICTURES_CONTEXT},				
-				ApplicationSQLiteOpenHelper.PICTURES_ID + " = " + picId, null, null, null, null);
+		final Cursor cursor = database.query(ApplicationSQLiteOpenHelper.PHOTOS_TABLE_NAME, new String[]{
+				ApplicationSQLiteOpenHelper.PHOTOS_ID,
+				ApplicationSQLiteOpenHelper.PHOTOS_IDENTIFIER,
+				ApplicationSQLiteOpenHelper.PHOTOS_DATE, 
+				ApplicationSQLiteOpenHelper.PHOTOS_LOCATION, 
+				ApplicationSQLiteOpenHelper.PHOTOS_NOTE, 
+				ApplicationSQLiteOpenHelper.PHOTOS_DESCRIPTION,
+				ApplicationSQLiteOpenHelper.PHOTOS_PATH,
+				ApplicationSQLiteOpenHelper.PHOTOS_CONTEXT},				
+				ApplicationSQLiteOpenHelper.PHOTOS_ID + " = " + photoId, null, null, null, null);
 		cursor.moveToFirst();
 
-		final PPicture pic = buildPictureFromCursor(cursor);
+		final OPhoto photo = buildPhotoFromCursor(cursor);
 		cursor.close();
 		
-		return pic;
+		return photo;
 	}
 	
-	public List<PPicture> getAllPictures()
+	public List<OPhoto> getAllPhotos()
 	{
-		final List<PPicture> pictures = new ArrayList<PPicture>();
+		final List<OPhoto> photos = new ArrayList<OPhoto>();
 		
-		final Cursor cursor = database.query(ApplicationSQLiteOpenHelper.PICTURES_TABLE_NAME, new String[]{
-				ApplicationSQLiteOpenHelper.PICTURES_ID,
-				ApplicationSQLiteOpenHelper.PICTURES_IDENTIFIER,
-				ApplicationSQLiteOpenHelper.PICTURES_DATE, 
-				ApplicationSQLiteOpenHelper.PICTURES_LOCATION, 
-				ApplicationSQLiteOpenHelper.PICTURES_NOTE, 
-				ApplicationSQLiteOpenHelper.PICTURES_DESCRIPTION,
-				ApplicationSQLiteOpenHelper.PICTURES_PATH,
-				ApplicationSQLiteOpenHelper.PICTURES_CONTEXT},				
+		final Cursor cursor = database.query(ApplicationSQLiteOpenHelper.PHOTOS_TABLE_NAME, new String[]{
+				ApplicationSQLiteOpenHelper.PHOTOS_ID,
+				ApplicationSQLiteOpenHelper.PHOTOS_IDENTIFIER,
+				ApplicationSQLiteOpenHelper.PHOTOS_DATE, 
+				ApplicationSQLiteOpenHelper.PHOTOS_LOCATION, 
+				ApplicationSQLiteOpenHelper.PHOTOS_NOTE, 
+				ApplicationSQLiteOpenHelper.PHOTOS_DESCRIPTION,
+				ApplicationSQLiteOpenHelper.PHOTOS_PATH,
+				ApplicationSQLiteOpenHelper.PHOTOS_CONTEXT},				
 				null, null, null, null, null);
 		cursor.moveToFirst();
 
 		while (!cursor.isAfterLast())
 		{
-			pictures.add(buildPictureFromCursor(cursor));
+			photos.add(buildPhotoFromCursor(cursor));
 			cursor.moveToNext();
 		}
 		
 		cursor.close();
 
-		return pictures;
+		return photos;
 	}
 	
-	public PPicture updatePicture(final PPicture pic)
+	public OPhoto updatePhoto(final OPhoto photo)
 	{
 		final ContentValues contentValues = new ContentValues();
-				contentValues.put(ApplicationSQLiteOpenHelper.PICTURES_IDENTIFIER, pic.getIdentifier());
-				contentValues.put(ApplicationSQLiteOpenHelper.PICTURES_DATE, pic.getDate());
-				contentValues.put(ApplicationSQLiteOpenHelper.PICTURES_LOCATION, pic.getLocation());
-				contentValues.put(ApplicationSQLiteOpenHelper.PICTURES_NOTE, pic.getNote());
-				contentValues.put(ApplicationSQLiteOpenHelper.PICTURES_DESCRIPTION, pic.getDescription());
-				contentValues.put(ApplicationSQLiteOpenHelper.PICTURES_PATH, pic.getPath());
-				contentValues.put(ApplicationSQLiteOpenHelper.PICTURES_CONTEXT, pic.getPContext().get_id());		
-		database.update(ApplicationSQLiteOpenHelper.PICTURES_TABLE_NAME, contentValues, ApplicationSQLiteOpenHelper.PICTURES_ID + "=" + pic.get_id(), null);
+				contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_IDENTIFIER, 	photo.getIdentifier());
+				contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_DATE, 			photo.getDate());
+				contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_LOCATION, 		photo.getLocation());
+				contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_NOTE, 			photo.getNote());
+				contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_DESCRIPTION, 	photo.getDescription());
+				contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_PATH, 			photo.getPath());
+				contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_CONTEXT, 		photo.getContext().get_id());		
+		database.update(ApplicationSQLiteOpenHelper.PHOTOS_TABLE_NAME, contentValues, ApplicationSQLiteOpenHelper.PHOTOS_ID + "=" + photo.get_id(), null);
 		
-		return getPicture(pic.get_id());
+		return getPhoto(photo.get_id());
 	}
 	
-	public void deletePicture(final PPicture pic)
+	public void deletePicture(final OPhoto photo)
 	{
-		Log.i(getClass().getName(), "delete picture with id '" + pic.get_id() + "'");
-		database.delete(ApplicationSQLiteOpenHelper.PICTURES_TABLE_NAME, ApplicationSQLiteOpenHelper.PICTURES_ID + " = " + pic.get_id(), null);
+		Log.i(getClass().getName(), "delete photo with id '" + photo.get_id() + "'");
+		database.delete(ApplicationSQLiteOpenHelper.PHOTOS_TABLE_NAME, ApplicationSQLiteOpenHelper.PHOTOS_ID + " = " + photo.get_id(), null);
 	}
 	
-	private PPicture buildPictureFromCursor(final Cursor cursor)
+	private OPhoto buildPhotoFromCursor(final Cursor cursor)
 	{
-		final PPicture pic = new PPicture(cursor.getLong(cursor.getColumnIndex(ApplicationSQLiteOpenHelper.PICTURES_ID)));
-			pic.setIdentifier(cursor.getString(cursor.getColumnIndex(ApplicationSQLiteOpenHelper.PICTURES_IDENTIFIER)));
-			pic.setDate(cursor.getString(cursor.getColumnIndex(ApplicationSQLiteOpenHelper.PICTURES_DATE)));
-			pic.setLocation(cursor.getString(cursor.getColumnIndex(ApplicationSQLiteOpenHelper.PICTURES_LOCATION)));
-			pic.setNote(cursor.getFloat(cursor.getColumnIndex(ApplicationSQLiteOpenHelper.PICTURES_NOTE)));
-			pic.setDescription(cursor.getString(cursor.getColumnIndex(ApplicationSQLiteOpenHelper.PICTURES_DESCRIPTION)));
-			pic.setPath(cursor.getString(cursor.getColumnIndex(ApplicationSQLiteOpenHelper.PICTURES_PATH)));
-			pic.setPContext(getContext(cursor.getLong(cursor.getColumnIndex(ApplicationSQLiteOpenHelper.PICTURES_CONTEXT))));
-		return pic;
+		final OPhoto photo = new OPhoto(cursor.getLong(cursor.getColumnIndex(ApplicationSQLiteOpenHelper.PHOTOS_ID)));
+			photo.setIdentifier(			cursor.getString(	cursor.getColumnIndex(ApplicationSQLiteOpenHelper.PHOTOS_IDENTIFIER)));
+			photo.setDate(					cursor.getString(	cursor.getColumnIndex(ApplicationSQLiteOpenHelper.PHOTOS_DATE)));
+			photo.setLocation(				cursor.getString(	cursor.getColumnIndex(ApplicationSQLiteOpenHelper.PHOTOS_LOCATION)));
+			photo.setNote(					cursor.getFloat(	cursor.getColumnIndex(ApplicationSQLiteOpenHelper.PHOTOS_NOTE)));
+			photo.setDescription(			cursor.getString(	cursor.getColumnIndex(ApplicationSQLiteOpenHelper.PHOTOS_DESCRIPTION)));
+			photo.setPath(					cursor.getString(	cursor.getColumnIndex(ApplicationSQLiteOpenHelper.PHOTOS_PATH)));
+			photo.setContext(getContext(	cursor.getLong(		cursor.getColumnIndex(ApplicationSQLiteOpenHelper.PHOTOS_CONTEXT))));
+		return photo;
 	}
 	
 	
-	/* CONTEXT */
+	/* CONTEXTS */
 	
-	public PContext addContext(final PContext ctx)
+	public OContext addContext(final OContext context)
 	{
 		final ContentValues contentValues = new ContentValues();
-				contentValues.put(ApplicationSQLiteOpenHelper.CONTEXTS_NAME, ctx.getName());
+				contentValues.put(ApplicationSQLiteOpenHelper.CONTEXTS_NAME, context.getName());
 		final long contextId = database.insert(ApplicationSQLiteOpenHelper.CONTEXTS_TABLE_NAME, null, contentValues);
 
 		return getContext(contextId);
 	}
 	
-	public PContext getContext(final long ctxId)
+	public OContext getContext(final long contextId)
 	{
 		final Cursor cursor = database.query(ApplicationSQLiteOpenHelper.CONTEXTS_TABLE_NAME, new String[]{
 				ApplicationSQLiteOpenHelper.CONTEXTS_NAME},
-				ApplicationSQLiteOpenHelper.CONTEXTS_ID + " = " + ctxId, null, null, null, null);
+				ApplicationSQLiteOpenHelper.CONTEXTS_ID + " = " + contextId, null, null, null, null);
 		cursor.moveToFirst();
 
-		final PContext ctx = buildContextFromCursor(cursor);
+		final OContext context = buildContextFromCursor(cursor);
 		cursor.close();
 		
-		return ctx;
+		return context;
 	}
 	
-	public List<PContext> getAllContexts()
+	public List<OContext> getAllContexts()
 	{
-		final List<PContext> contexts = new ArrayList<PContext>();
+		final List<OContext> contexts = new ArrayList<OContext>();
 		
 		final Cursor cursor = database.query(ApplicationSQLiteOpenHelper.CONTEXTS_TABLE_NAME, new String[]{
 				ApplicationSQLiteOpenHelper.CONTEXTS_NAME},	
@@ -192,27 +192,27 @@ public final class ApplicationDataSource
 		return contexts;
 	}
 	
-	public PContext updateContext(final PContext ctx)
+	public OContext updateContext(final OContext context)
 	{
 		final ContentValues contentValues = new ContentValues();
-				contentValues.put(ApplicationSQLiteOpenHelper.CONTEXTS_NAME, ctx.getName());	
-		database.update(ApplicationSQLiteOpenHelper.CONTEXTS_TABLE_NAME, contentValues, ApplicationSQLiteOpenHelper.CONTEXTS_ID + "=" + ctx.get_id(), null);
+				contentValues.put(ApplicationSQLiteOpenHelper.CONTEXTS_NAME, context.getName());	
+		database.update(ApplicationSQLiteOpenHelper.CONTEXTS_TABLE_NAME, contentValues, ApplicationSQLiteOpenHelper.CONTEXTS_ID + "=" + context.get_id(), null);
 		
-		return getContext(ctx.get_id());
+		return getContext(context.get_id());
 	}
 	
-	public void deleteContext(final PContext ctx)
+	public void deleteContext(final OContext context)
 	{
-		Log.i(getClass().getName(), "delete context with id '" + ctx.get_id() + "'");
-		database.delete(ApplicationSQLiteOpenHelper.CONTEXTS_TABLE_NAME, ApplicationSQLiteOpenHelper.CONTEXTS_ID + " = " + ctx.get_id(), null);
+		Log.i(getClass().getName(), "delete context with id '" + context.get_id() + "'");
+		database.delete(ApplicationSQLiteOpenHelper.CONTEXTS_TABLE_NAME, ApplicationSQLiteOpenHelper.CONTEXTS_ID + " = " + context.get_id(), null);
 	}
 	
-	private PContext buildContextFromCursor(final Cursor cursor)
+	private OContext buildContextFromCursor(final Cursor cursor)
 	{
-		final PContext ctx = new PContext(cursor.getLong(cursor.getColumnIndex(ApplicationSQLiteOpenHelper.CONTEXTS_ID)));
-			ctx.setName(cursor.getString(cursor.getColumnIndex(ApplicationSQLiteOpenHelper.CONTEXTS_NAME)));
+		final OContext context = new OContext(cursor.getLong(cursor.getColumnIndex(ApplicationSQLiteOpenHelper.CONTEXTS_ID)));
+			context.setName(cursor.getString(cursor.getColumnIndex(ApplicationSQLiteOpenHelper.CONTEXTS_NAME)));
 			
 			// TODO get Pictures of Context, puis ctx.addPicture(...)
-		return ctx;
+		return context;
 	}
 }
