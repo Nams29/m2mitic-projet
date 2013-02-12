@@ -7,6 +7,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.ViewGroup.LayoutParams;
@@ -19,6 +20,8 @@ import fr.istic.project.utils.FileUtils;
 
 public class MainActivity extends Activity {
 	
+	TextView console;
+	LinearLayout timeline;
     List<PPicture> pictures = new LinkedList<PPicture>(); 
     
 	
@@ -27,13 +30,15 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        console = (TextView) findViewById(R.id.main_console);
+    	timeline = (LinearLayout) findViewById(R.id.main_timeline);
      
         getPhotos();
     }
     
 	public void getPhotos() {
-    	TextView console = (TextView) findViewById(R.id.main_console);
-    	LinearLayout timeline = (LinearLayout) findViewById(R.id.main_timeline);
+    	
     	
     	
     	/* VERIFICATION DE LA DISPONIBILTE DE LA CARTE */
@@ -47,16 +52,16 @@ public class MainActivity extends Activity {
     	    browseSD(mFile);
     	    
     	    /* AFFICHAGE */
-    	    for(PPicture pic : pictures) {
-    	    	console.setText(console.getText() + "\n" +pic.getPath());
+//    	    for(PPicture pic : pictures) {
+    	    	//console.setText(console.getText() + "\n" +pic.getPath());
     	    	
-    	    	ImageView iv = new ImageView(this);
-    	    	iv.setBackgroundDrawable(getResources().getDrawable((R.drawable.polaroid_photo_frame)));
-    	    	iv.setImageDrawable(Drawable.createFromPath(pic.getPath()));
-    	    	iv.setLayoutParams(new LayoutParams(87, 100));
-    	    	iv.setPadding(5, 5, 5, 10);
-    	    	
-    	    	timeline.addView(iv);
+//    	    	ImageView iv = new ImageView(this);
+//    	    	iv.setBackgroundDrawable(getResources().getDrawable((R.drawable.polaroid_photo_frame)));
+//    	    	iv.setImageDrawable(Drawable.createFromPath(pic.getPath()));
+//    	    	iv.setLayoutParams(new LayoutParams(87, 100));
+//    	    	iv.setPadding(5, 5, 5, 10);
+//    	    	
+//    	    	timeline.addView(iv);
     	    	
     	    	
 //    	    	/* EDITION DES DONNEES EXIF */
@@ -72,7 +77,7 @@ public class MainActivity extends Activity {
 //    	    		// TODO Auto-generated catch block
 //    	    		e.printStackTrace();
 //    	    	}
-    	    }
+//   	    }
     	    	    
     	    
     	    
@@ -102,12 +107,51 @@ public class MainActivity extends Activity {
     		
     		if (f.isFile()) {
     			// Vérification de l'extension du fichier
-    			if (picturesExtensions.contains(FileUtils.getFileExtension(f.getPath())))
-    				pictures.add(new PPicture(f));
-    			
+    			if (picturesExtensions.contains(FileUtils.getFileExtension(f.getPath()))) {
+    				PPicture pic = new PPicture(f);
+    				pictures.add(pic);
+    				ProgressTask pt = new ProgressTask(pic, console);
+    				pt.execute();
+    				//console.setText(console.getText() + "\n" +pic.getPath());
+    			}
     		} else {
         		if (f.isDirectory() && !f.isHidden()) browseSD(f); // Récursivité !
     		}
     	}
     }
+    
+    
+    
+    static class ProgressTask extends AsyncTask<Void, Integer, Boolean> {
+    	private final PPicture picture;
+    	private final TextView console;
+    	
+    	public ProgressTask(PPicture picture, TextView console) {
+    		this.picture = picture;
+    		this.console = console;
+    	}
+    	
+        @Override
+        protected void onPreExecute () {
+        }
+     
+        @Override
+        protected void onPostExecute (Boolean result) {
+        }
+     
+        @Override
+        protected Boolean doInBackground (Void... arg0) {
+          console.setText(console.getText() + "\n" +picture.getPath());
+          return true;
+        }
+     
+        @Override
+        protected void onProgressUpdate (Integer... prog) {
+        }
+     
+        @Override
+        protected void onCancelled () {
+        }
+
+      }
 }
