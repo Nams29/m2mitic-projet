@@ -13,15 +13,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import fr.istic.project.R;
 import fr.istic.project.model.FindPhotosTask;
 import fr.istic.project.model.OPhoto;
+import fr.istic.project.utils.FileUtils;
 
 public class MainActivity extends Activity {
 	
 	TextView console;
 	LinearLayout timeline;
-    List<OPhoto> photos = new LinkedList<OPhoto>(); 
+	List<OPhoto> photos = new LinkedList<OPhoto>();
     
 	
     /** Called when the activity is first created. */
@@ -32,8 +34,8 @@ public class MainActivity extends Activity {
         
         console = (TextView) findViewById(R.id.main_console);
     	timeline = (LinearLayout) findViewById(R.id.main_timeline);
-     
-        getPhotos();
+    	
+    	findPhotos();
     }
     
 	@Override
@@ -56,97 +58,55 @@ public class MainActivity extends Activity {
 		}
 	}
     
-	public void getPhotos() {
+	public void findPhotos() {
+	
     	/* VERIFICATION DE LA DISPONIBILTE DE LA CARTE */
     	String state = Environment.getExternalStorageState();
     	if (Environment.MEDIA_MOUNTED.equals(state)) {
     	    // We can read and write the media
     	        
     	    
-    	    /* PARCOURS DE LA CARTE SD */
-    	    File mFile 	= Environment.getExternalStorageDirectory();
-    	    
-    	    FindPhotosTask task = new FindPhotosTask(this);
-    	    task.execute(mFile);
-
-    	    
-    	    /* AFFICHAGE */
-    	    for(OPhoto photo : photos) {
-    	    	console.setText(console.getText() + "\n" +photo.getPath());
-    	    	
-//    	    	ImageView iv = new ImageView(this);
-//    	    	iv.setBackgroundDrawable(getResources().getDrawable((R.drawable.polaroid_photo_frame)));
-//    	    	iv.setImageDrawable(Drawable.createFromPath(pic.getPath()));
-//    	    	iv.setLayoutParams(new LayoutParams(87, 100));
-//    	    	iv.setPadding(5, 5, 5, 10);
-//    	    	
-//    	    	timeline.addView(iv);
-    	    	
-    	    	
-//    	    	/* EDITION DES DONNEES EXIF */
-//    	    	try {
-//    	    		Log.d("tag", "file:"+f.getPath().substring(4));
-//    	    		
-//    	    		ExifInterface mExifTool = new ExifInterface(f.getPath().substring(4));
-//    	    		Log.d("tag", "model:"+mExifTool.getAttribute(ExifInterface.TAG_MODEL));
-////    	    		mExifTool.setAttribute(ExifInterface.TAG_MODEL, "sdf2");
-////    	    		mExifTool.saveAttributes();
-////    	    		Log.d("tag", "model:"+mExifTool.getAttribute(ExifInterface.TAG_MODEL));
-//    	    	} catch (IOException e) {
-//    	    		// TODO Auto-generated catch block
-//    	    		e.printStackTrace();
-//    	    	}
+    	    /* PARCOURS DE LA CARTE SD - PREPARATION */
+    	    File fSDcard = Environment.getExternalStorageDirectory();
+    	    File[] directories = new File[FileUtils.allowedSDcardDirectories.length];	    
+    	    for (int i=0; i<FileUtils.allowedSDcardDirectories.length; i++) {
+    	    	directories[i] = new File(fSDcard.getPath() + File.separatorChar + FileUtils.allowedSDcardDirectories[i]); // Ajout des répertoires à parcourir
     	    }
-    	    	    
     	    
-    	    
-    	    
+    	    /* PARCOURS DE LA CARTE SD - EXECUTION */
+    	    FindPhotosTask findPhotosTask = new FindPhotosTask(this);
+	    	findPhotosTask.execute(directories);
+	    	
+	    	
+    	    /* AFFICHAGE */
+    	    // voir méthode processPhotos() déclenchée par FindPhotosTask.onPostExecute()
     	    
     	} else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
     	    // We can only read the media
-    	    
+    	    Toast.makeText(getApplicationContext(), "Erreur : Carte SD en lecture seule.", Toast.LENGTH_SHORT).show();
     	} else {
     	    // Something else is wrong. We can neither read nor write
-
+    		Toast.makeText(getApplicationContext(), "Erreur : Carte SD manquante.", Toast.LENGTH_SHORT).show();
     	}       	
     	
     }
-    
-    
-    
-    
-    
-    
-//    static class ProgressTask extends AsyncTask<Void, Integer, Boolean> {
-//    	private final OPhoto picture;
-//    	private final TextView console;
-//    	
-//    	public ProgressTask(OPhoto picture, TextView console) {
-//    		this.picture = picture;
-//    		this.console = console;
-//    	}
-//    	
-//        @Override
-//        protected void onPreExecute () {
-//        }
-//     
-//        @Override
-//        protected void onPostExecute (Boolean result) {
-//        }
-//     
-//        @Override
-//        protected Boolean doInBackground (Void... arg0) {
-//          console.setText(console.getText() + "\n" +picture.getPath());
-//          return true;
-//        }
-//     
-//        @Override
-//        protected void onProgressUpdate (Integer... prog) {
-//        }
-//     
-//        @Override
-//        protected void onCancelled () {
-//        }
-//
-//      }
+	
+	
+	public void processPhotos(List<OPhoto> newPhotos) {
+
+		for(OPhoto newPhoto : newPhotos) {
+			this.photos.add(newPhoto);
+			console.append("\n" +newPhoto.getPath());
+			
+//	    	ImageView iv = new ImageView(this);
+//	    	iv.setBackgroundDrawable(getResources().getDrawable((R.drawable.polaroid_photo_frame)));
+//	    	iv.setImageDrawable(Drawable.createFromPath(pic.getPath()));
+//	    	iv.setLayoutParams(new LayoutParams(87, 100));
+//	    	iv.setPadding(5, 5, 5, 10);
+//	    	
+//	    	timeline.addView(iv);
+    	}
+		
+	}   
+ 
 }

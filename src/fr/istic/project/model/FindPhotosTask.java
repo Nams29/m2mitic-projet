@@ -1,29 +1,27 @@
 package fr.istic.project.model;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.widget.Toast;
+import fr.istic.project.controller.MainActivity;
 import fr.istic.project.utils.FileUtils;
 
-public class FindPhotosTask extends AsyncTask<File, Integer, Long> {
+public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 	
-	private Activity activity;
+	private MainActivity activity;
 	private ProgressDialog progressDialog;
-	private List<OPhoto> photos = new LinkedList<OPhoto>();
+	private List<OPhoto> photos;
 
 	
-	public FindPhotosTask(Activity activity) {
+	public FindPhotosTask(MainActivity activity) {
 		super();
 		
 		this.activity = activity;
-		this.progressDialog = new ProgressDialog(activity);
-		progressDialog.setTitle("Recherche des photos");		
+		this.progressDialog = new ProgressDialog(activity); progressDialog.setTitle("Recherche des photos");
+		this.photos = new LinkedList<OPhoto>();
 	}
 	
 	@Override
@@ -34,43 +32,40 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Long> {
 	
 	
 	@Override
-	protected Long doInBackground(File... params) {
-		File dir = params[0];		
+	protected Void doInBackground(File... params) {
 		
-		final List<String> picturesExtensions = new ArrayList<String>();
-    	picturesExtensions.add("jpg");
-    	picturesExtensions.add("png");    	
-    	
-    	File[] files = dir.listFiles();
+		for(File dir : params) { // Pour chaque répertoire à parcourir
+			File[] files = dir.listFiles();
 
+	    	
+	    	for(File file : files) {
+	    		//System.out.println(""+ file.toString());
+	    		
+	    		if (file.isFile()) {
+	    			// Vérification de l'extension du fichier
+	    			if (FileUtils.allowedPhotosExtensions.contains(FileUtils.getFileExtension(file.getPath()))) {
+	    				photos.add(new OPhoto(file)); // Création de la photo	    				
+	    				publishProgress(photos.size());
+	    			}
+	    		} else { // C'est un répertoire
+	        		if (file.isDirectory() && !file.isHidden()) doInBackground(file); // Récursivité !
+	    		}
+	    	}
+		}
     	
-    	for(File f : files) {
-    		//System.out.println(""+ f.toString());
-    		
-    		if (f.isFile()) {
-    			// Vérification de l'extension du fichier
-    			if (picturesExtensions.contains(FileUtils.getFileExtension(f.getPath()))) {
-    				OPhoto photo = new OPhoto(f);
-    				photos.add(photo);
-    				publishProgress(photos.size());
-    			}
-    		} else {
-        		if (f.isDirectory() && !f.isHidden()) doInBackground(f); // Récursivité !
-    		}
-    	}
-    	
-		return Long.valueOf(photos.size());
+		return null;
 	}
 	
 	
 	@Override
     protected void onProgressUpdate(Integer... progress) {
-		progressDialog.setMessage("Photos trouvées : "+progress[0].toString());
+		progressDialog.setMessage("Photos trouvées : "+progress[0].toString());		
     }
 
+	
 	@Override
-    protected void onPostExecute(Long result) {
-        progressDialog.dismiss();
-        Toast.makeText(activity.getApplicationContext(), ("Nombre total de photos trouvées : "+result.toString()), Toast.LENGTH_SHORT).show();
+    protected void onPostExecute(Void result) {
+		progressDialog.dismiss();
+        activity.processPhotos(photos); // Retourne dans l'activity        
     }
 }

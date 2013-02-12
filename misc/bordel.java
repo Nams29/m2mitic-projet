@@ -22,3 +22,19 @@ public boolean accept(File dir, String name) {
 	return name.endsWith("jpg");
 }
 });
+
+
+
+/* EDITION DES DONNEES EXIF */
+try {
+	Log.d("tag", "file:"+f.getPath().substring(4));
+	
+	ExifInterface mExifTool = new ExifInterface(f.getPath().substring(4));
+	Log.d("tag", "model:"+mExifTool.getAttribute(ExifInterface.TAG_MODEL));
+//	mExifTool.setAttribute(ExifInterface.TAG_MODEL, "sdf2");
+//	mExifTool.saveAttributes();
+//	Log.d("tag", "model:"+mExifTool.getAttribute(ExifInterface.TAG_MODEL));
+} catch (IOException e) {
+	// TODO Auto-generated catch block
+	e.printStackTrace();
+}

@@ -130,7 +130,7 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 			this.path = path;
 			this.path = path;
 			this.name = FileUtils.getFileName(this.path);
-			this.file = new File("/mnt" + this.path); // TODO hors sdcard ?
+			this.file = new File(this.path);
 			this.exif = new ExifInterface(path);
 		} catch (IOException e) {
 			e.printStackTrace();
