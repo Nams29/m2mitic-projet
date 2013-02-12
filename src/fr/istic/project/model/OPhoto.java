@@ -3,10 +3,12 @@ package fr.istic.project.model;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
-import fr.istic.project.utils.FileUtils;
-
+import android.location.Address;
+import android.location.Geocoder;
 import android.media.ExifInterface;
+import fr.istic.project.utils.FileUtils;
 
 public class OPhoto { // Photo est déjà utilisé par Android...	
 	
@@ -26,6 +28,8 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 	private OContext context;
 	
 	
+	
+	
 	/**
 	 * Constructeur côté objet
 	 * @param file
@@ -43,8 +47,8 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 			if (exifDateTime == null) exifDateTime = fileDateTime;
 			this.date = exifDateTime;
 			
-			this.location = "";
-			this.note = 0.0f;
+			this.location = ""; // Voir aussi processLocation()
+			this.note = -1f;
 			this.description = "";
 			
 			this.identifier = this.date + "--" + fileDateTime + "--" + this.name; // TODO confirmer datecreation + datemodif + nomfichier
@@ -61,6 +65,29 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 	 */
 	public OPhoto(Long _id) {
 		this._id = _id;
+	}
+	
+	
+	/**
+	 * Récupération de la localité avec Geocoder
+	 * @param geocoder
+	 * @return
+	 */
+	public boolean processLocation(Geocoder geocoder) {
+		try {
+			List<Address> addresses;
+			
+			float[] latlon = new float[2]; exif.getLatLong(latlon);
+			if (latlon[0] != 0.0f) {
+				addresses = geocoder.getFromLocation(latlon[0], latlon[1], 1);
+				this.location = addresses.get(0).getLocality() + ", " + addresses.get(0).getCountryName();
+				System.out.println("this.location:"+this.location);
+			}			
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 	

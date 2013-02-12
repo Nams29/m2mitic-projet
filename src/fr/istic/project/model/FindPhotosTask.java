@@ -5,7 +5,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import android.app.ProgressDialog;
+import android.location.Geocoder;
 import android.os.AsyncTask;
+import android.widget.Toast;
 import fr.istic.project.controller.MainActivity;
 import fr.istic.project.utils.FileUtils;
 
@@ -15,6 +17,9 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 	private ProgressDialog progressDialog;
 	private List<OPhoto> photos;
 
+	private Geocoder geocoder;
+	private static boolean geocoderError = false;
+
 	
 	public FindPhotosTask(MainActivity activity) {
 		super();
@@ -22,6 +27,8 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 		this.activity = activity;
 		this.progressDialog = new ProgressDialog(activity); progressDialog.setTitle("Recherche des photos");
 		this.photos = new LinkedList<OPhoto>();
+		
+		this.geocoder = new Geocoder(activity, FileUtils.locale);
 	}
 	
 	@Override
@@ -44,7 +51,9 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 	    		if (file.isFile()) {
 	    			// Vérification de l'extension du fichier
 	    			if (FileUtils.allowedPhotosExtensions.contains(FileUtils.getFileExtension(file.getPath()))) {
-	    				photos.add(new OPhoto(file)); // Création de la photo	    				
+	    				OPhoto photo = new OPhoto(file); // Création de la photo
+	    				if (photo.processLocation(geocoder) == false) geocoderError = true; // Récupération de la localité avec Geocoder
+	    				photos.add(photo);
 	    				publishProgress(photos.size());
 	    			}
 	    		} else { // C'est un répertoire
@@ -66,6 +75,9 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 	@Override
     protected void onPostExecute(Void result) {
 		progressDialog.dismiss();
+		if (geocoderError) {
+			Toast.makeText(activity, "Erreur : connexion Internet indisponible, les localisations des photos n'ont pas pu être calculées avec les coordonnées GPS.", Toast.LENGTH_LONG).show();
+		}
         activity.processPhotos(photos); // Retourne dans l'activity        
     }
 }

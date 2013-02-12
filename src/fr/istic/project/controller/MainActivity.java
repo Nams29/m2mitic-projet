@@ -21,9 +21,10 @@ import fr.istic.project.utils.FileUtils;
 
 public class MainActivity extends Activity {
 	
-	TextView console;
-	LinearLayout timeline;
-	List<OPhoto> photos = new LinkedList<OPhoto>();
+	private TextView console;
+	private LinearLayout timeline;
+	
+	private List<OPhoto> photos = new LinkedList<OPhoto>();
     
 	
     /** Called when the activity is first created. */
@@ -32,8 +33,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        console = (TextView) findViewById(R.id.main_console);
-    	timeline = (LinearLayout) findViewById(R.id.main_timeline);
+        this.console = (TextView) findViewById(R.id.main_console);
+    	this.timeline = (LinearLayout) findViewById(R.id.main_timeline);
     	
     	findPhotos();
     }
@@ -107,6 +108,6 @@ public class MainActivity extends Activity {
 //	    	timeline.addView(iv);
     	}
 		
-	}   
+	}
  
 }
