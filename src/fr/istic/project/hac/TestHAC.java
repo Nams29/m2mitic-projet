@@ -21,7 +21,7 @@ public class TestHAC {
 
 	for i in *.JPG;
 	do 
-	echo -n dat.add\(new Valuefist\(\"$i\""," ;echo \"`ex`\" \)\)";";
+	echo -n dat.add\(new CrabeMou\(\"$i\""," ;echo \"`ex`\" \)\)";";
 	done
 
 	 * le script affiche les distances entre chaque couple de photo
