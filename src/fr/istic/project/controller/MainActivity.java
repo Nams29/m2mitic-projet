@@ -1,20 +1,21 @@
 package fr.istic.project.controller;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import android.app.Activity;
-import android.os.AsyncTask;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import fr.istic.project.R;
 import fr.istic.project.model.FindPhotosTask;
 import fr.istic.project.model.OPhoto;
-import fr.istic.project.utils.FileUtils;
 
 public class MainActivity extends Activity {
 	
@@ -35,10 +36,27 @@ public class MainActivity extends Activity {
         getPhotos();
     }
     
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.activity_main, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		int id = item.getItemId();
+		if  (id == R.id.menu_timeline) {
+			Intent i = new Intent(this, TimeLineActivity.class);
+			this.startActivity(i);
+			return true;
+		}
+		else {
+			return super.onOptionsItemSelected(item);
+		}
+	}
+    
 	public void getPhotos() {
-    	
-    	
-    	
     	/* VERIFICATION DE LA DISPONIBILTE DE LA CARTE */
     	String state = Environment.getExternalStorageState();
     	if (Environment.MEDIA_MOUNTED.equals(state)) {
