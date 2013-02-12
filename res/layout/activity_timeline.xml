@@ -23,17 +23,7 @@
         android:layout_centerVertical="true"
         android:orientation="horizontal" >
 
-        <!-- Partie gauche -->
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:background="@drawable/left_arrow"
-            android:contentDescription="@string/timeline_arrowLeftPart" />
-
         <!-- Partie droite -->
-
         <ImageView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
