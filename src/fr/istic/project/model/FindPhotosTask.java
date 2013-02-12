@@ -76,7 +76,7 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
     protected void onPostExecute(Void result) {
 		progressDialog.dismiss();
 		if (geocoderError) {
-			Toast.makeText(activity, "Erreur : connexion Internet indisponible, les localisations des photos n'ont pas pu être calculées avec les coordonnées GPS.", Toast.LENGTH_LONG).show();
+			Toast.makeText(activity, "Erreur : connexion Internet indisponible, les localisations des photos n'ont pas pu être calculées avec Geocoder.", Toast.LENGTH_LONG).show();
 		}
         activity.processPhotos(photos); // Retourne dans l'activity        
     }
