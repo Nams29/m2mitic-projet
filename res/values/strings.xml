@@ -4,9 +4,11 @@
     <!-- Application -->
     <string name="app_name">PhotosProject</string>
     
+    <!-- Menus -->
+    <string name="menu_timeline">Timeline</string>
+    
     <!-- Content description -->
     <string name="timeline_item">Photo</string>
-    <string name="timeline_arrowRightPart">Partie droite de la flèche</string>
-    <string name="timeline_arrowLeftPart">Partie gauche de la flèche</string>
+    <string name="timeline_arrow">Timeline</string>
 
 </resources>
