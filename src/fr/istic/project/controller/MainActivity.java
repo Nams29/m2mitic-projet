@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -18,6 +17,7 @@ import android.widget.Toast;
 import fr.istic.project.R;
 import fr.istic.project.model.FindPhotosTask;
 import fr.istic.project.model.OPhoto;
+import fr.istic.project.utils.FileUtils;
 
 public class MainActivity extends Activity {
 	
@@ -97,45 +97,16 @@ public class MainActivity extends Activity {
 		for(OPhoto newPhoto : newPhotos) {
 			this.photos.add(newPhoto);
 			console.append("\n" +newPhoto.getPath());
+			
+//	    	ImageView iv = new ImageView(this);
+//	    	iv.setBackgroundDrawable(getResources().getDrawable((R.drawable.polaroid_photo_frame)));
+//	    	iv.setImageDrawable(Drawable.createFromPath(pic.getPath()));
+//	    	iv.setLayoutParams(new LayoutParams(87, 100));
+//	    	iv.setPadding(5, 5, 5, 10);
+//	    	
+//	    	timeline.addView(iv);
     	}
 		
-		
-//	    for(OPhoto photo : photos) {
-//    	console.setText(console.getText() + "\n" +photo.getPath());
-    	
-//    	ImageView iv = new ImageView(this);
-//    	iv.setBackgroundDrawable(getResources().getDrawable((R.drawable.polaroid_photo_frame)));
-//    	iv.setImageDrawable(Drawable.createFromPath(pic.getPath()));
-//    	iv.setLayoutParams(new LayoutParams(87, 100));
-//    	iv.setPadding(5, 5, 5, 10);
-//    	
-//    	timeline.addView(iv);
-    	
-    	
-//    	/* EDITION DES DONNEES EXIF */
-//    	try {
-//    		Log.d("tag", "file:"+f.getPath().substring(4));
-//    		
-//    		ExifInterface mExifTool = new ExifInterface(f.getPath().substring(4));
-//    		Log.d("tag", "model:"+mExifTool.getAttribute(ExifInterface.TAG_MODEL));
-////    		mExifTool.setAttribute(ExifInterface.TAG_MODEL, "sdf2");
-////    		mExifTool.saveAttributes();
-////    		Log.d("tag", "model:"+mExifTool.getAttribute(ExifInterface.TAG_MODEL));
-//    	} catch (IOException e) {
-//    		// TODO Auto-generated catch block
-//    		e.printStackTrace();
-//    	}
-//    }
-	}
-    
-    
-//    /* GETTERS */
-//	
-//	public List<OPhoto> getPhotos() {
-//		Log.d("tag", "getPhotos() : "+photos.size());
-//		return photos;
-//	}
-    
-    
+	}   
  
 }
