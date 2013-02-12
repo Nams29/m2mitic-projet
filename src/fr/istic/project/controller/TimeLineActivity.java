@@ -7,11 +7,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 import fr.istic.project.R;
 import fr.istic.project.utils.UIUtils;
 
 public class TimeLineActivity extends Activity {
+	
+	private static final int TIMELINE_ITEM_SIZE = 230;
 	
 	private LinearLayout rlItem1;
 	
@@ -56,8 +59,12 @@ public class TimeLineActivity extends Activity {
 	 * Load data on the fields
 	 */
 	private void loadData() {
+		final float scale = this.getResources().getDisplayMetrics().density;
+		int pixels = (int) (TIMELINE_ITEM_SIZE * scale + 0.5f);
+		
 		LayoutInflater factory = LayoutInflater.from(this);
 		View child = factory.inflate(R.layout.item_timeline, null);
+		child.setLayoutParams(new LayoutParams(pixels, LayoutParams.WRAP_CONTENT));
 		
 		this.rlItem1.addView(child);
 	}
