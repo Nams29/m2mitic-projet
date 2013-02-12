@@ -53,14 +53,7 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Long> {
     			if (picturesExtensions.contains(FileUtils.getFileExtension(f.getPath()))) {
     				OPhoto photo = new OPhoto(f);
     				photos.add(photo);
-    				
-    				try {
-    					publishProgress(photos.size());
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+    				publishProgress(photos.size());
     				
     				//console.setText(console.getText() + "\n" +pic.getPath());
     			}
