@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="UTF-8"?><RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/timeline"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -25,7 +24,6 @@
         android:layout_above="@+id/timeline_middle"
         android:layout_alignLeft="@+id/timeline_arrow"
         android:layout_alignParentTop="true"
-        android:background="@android:color/white"
         android:gravity="center_horizontal" >
     </LinearLayout>
 
