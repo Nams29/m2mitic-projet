@@ -69,7 +69,7 @@ done
 		dat.add(new Valuefist("CIMG0795.JPG"," 2010:03:06 00:17" ));
 		dat.add(new Valuefist("CIMG0796.JPG"," 2010:03:06 01:16" ));
 		dat.add(new Valuefist("CIMG0797.JPG"," 2010:03:06 01:38" ));
-		dat.add(new Valuefist("CIMG0798.JPG"," 2010:03:06 01:39" ));
+		dat.add(new Valuefist("CIMG0798.JPG"," 2010:03:06 01:39" ));//oui
 		dat.add(new Valuefist("CIMG0799.JPG"," 2010:03:06 01:44" ));
 		dat.add(new Valuefist("CIMG0800.JPG"," 2010:03:06 01:44" ));
 		dat.add(new Valuefist("CIMG0801.JPG"," 2010:03:06 01:44" ));
@@ -77,39 +77,37 @@ done
 		dat.add(new Valuefist("CIMG0803.JPG"," 2010:03:06 01:44" ));
 		dat.add(new Valuefist("CIMG0804.JPG"," 2010:03:06 01:45" ));
 		dat.add(new Valuefist("CIMG0805.JPG"," 2010:03:06 01:45" ));
-		dat.add(new Valuefist("CIMG0806.JPG"," 2010:03:06 01:46" ));
-		dat.add(new Valuefist("CIMG0807.JPG"," 2010:03:06 01:46" ));
-		dat.add(new Valuefist("CIMG0808.JPG"," 2010:03:06 01:49" ));
-		dat.add(new Valuefist("CIMG0809.JPG"," 2010:03:06 01:53" ));
-		dat.add(new Valuefist("CIMG0810.JPG"," 2010:03:06 01:53" ));
-		dat.add(new Valuefist("CIMG0811.JPG"," 2010:03:06 01:53" ));
-		dat.add(new Valuefist("CIMG0812.JPG"," 2010:03:06 01:57" ));
-		dat.add(new Valuefist("CIMG0813.JPG"," 2010:03:06 01:57" ));
-		dat.add(new Valuefist("CIMG0814.JPG"," 2010:03:06 01:58" ));
-		dat.add(new Valuefist("CIMG0815.JPG"," 2010:03:06 02:00" ));
-		dat.add(new Valuefist("CIMG0816.JPG"," 2010:03:06 02:00" ));
-		dat.add(new Valuefist("CIMG0818.JPG"," 2010:03:06 02:06" ));
-		dat.add(new Valuefist("CIMG0819.JPG"," 2010:03:06 02:06" ));
-		dat.add(new Valuefist("CIMG0820.JPG"," 2010:03:06 02:06" ));
-		dat.add(new Valuefist("CIMG0821.JPG"," 2010:03:06 02:09" ));
-		dat.add(new Valuefist("CIMG0822.JPG"," 2010:03:06 02:09" ));
-		dat.add(new Valuefist("CIMG0823.JPG"," 2010:03:06 02:09" ));
-		dat.add(new Valuefist("CIMG0824.JPG"," 2010:03:06 02:10" ));
-		dat.add(new Valuefist("CIMG0825.JPG"," 2010:03:06 02:12" ));
-		dat.add(new Valuefist("CIMG0826.JPG"," 2010:03:06 02:13" ));
-		dat.add(new Valuefist("CIMG0827.JPG"," 2010:03:06 02:13" ));
-		dat.add(new Valuefist("CIMG0828.JPG"," 2010:03:06 02:15" ));
-		dat.add(new Valuefist("CIMG0829.JPG"," 2010:03:06 02:15" ));
-		dat.add(new Valuefist("CIMG0830.JPG"," 2010:03:06 02:21" ));
-		dat.add(new Valuefist("CIMG0831.JPG"," 2010:03:06 02:21" ));
-		dat.add(new Valuefist("CIMG0832.JPG"," 2010:03:06 02:21" ));
-		dat.add(new Valuefist("CIMG0835.JPG"," 2010:03:06 02:23" ));
-		dat.add(new Valuefist("CIMG0836.JPG"," 2010:03:06 02:25" ));
-		dat.add(new Valuefist("CIMG0837.JPG"," 2010:03:06 02:25" ));
-		dat.add(new Valuefist("CIMG0838.JPG"," 2010:03:06 02:26" ));
-		dat.add(new Valuefist("CIMG0840.JPG"," 2010:03:06 02:35" ));
-
-
+//		dat.add(new Valuefist("CIMG0806.JPG"," 2010:03:06 01:46" ));
+//		dat.add(new Valuefist("CIMG0807.JPG"," 2010:03:06 01:46" ));
+//		dat.add(new Valuefist("CIMG0808.JPG"," 2010:03:06 01:49" ));
+//		dat.add(new Valuefist("CIMG0809.JPG"," 2010:03:06 01:53" ));
+//		dat.add(new Valuefist("CIMG0810.JPG"," 2010:03:06 01:53" ));
+//		dat.add(new Valuefist("CIMG0811.JPG"," 2010:03:06 01:53" ));
+//		dat.add(new Valuefist("CIMG0812.JPG"," 2010:03:06 01:57" ));
+//		dat.add(new Valuefist("CIMG0813.JPG"," 2010:03:06 01:57" ));
+//		dat.add(new Valuefist("CIMG0814.JPG"," 2010:03:06 01:58" ));
+//		dat.add(new Valuefist("CIMG0815.JPG"," 2010:03:06 02:00" ));
+//		dat.add(new Valuefist("CIMG0816.JPG"," 2010:03:06 02:00" ));
+//		dat.add(new Valuefist("CIMG0818.JPG"," 2010:03:06 02:06" ));
+//		dat.add(new Valuefist("CIMG0819.JPG"," 2010:03:06 02:06" ));
+//		dat.add(new Valuefist("CIMG0820.JPG"," 2010:03:06 02:06" ));
+//		dat.add(new Valuefist("CIMG0821.JPG"," 2010:03:06 02:09" ));
+//		dat.add(new Valuefist("CIMG0822.JPG"," 2010:03:06 02:09" ));
+//		dat.add(new Valuefist("CIMG0823.JPG"," 2010:03:06 02:09" ));
+//		dat.add(new Valuefist("CIMG0824.JPG"," 2010:03:06 02:10" ));
+//		dat.add(new Valuefist("CIMG0825.JPG"," 2010:03:06 02:12" ));
+//		dat.add(new Valuefist("CIMG0826.JPG"," 2010:03:06 02:13" ));
+//		dat.add(new Valuefist("CIMG0827.JPG"," 2010:03:06 02:13" ));
+//		dat.add(new Valuefist("CIMG0828.JPG"," 2010:03:06 02:15" ));
+//		dat.add(new Valuefist("CIMG0829.JPG"," 2010:03:06 02:15" ));
+//		dat.add(new Valuefist("CIMG0830.JPG"," 2010:03:06 02:21" ));
+//		dat.add(new Valuefist("CIMG0831.JPG"," 2010:03:06 02:21" ));
+//		dat.add(new Valuefist("CIMG0832.JPG"," 2010:03:06 02:21" ));
+//		dat.add(new Valuefist("CIMG0835.JPG"," 2010:03:06 02:23" ));
+//		dat.add(new Valuefist("CIMG0836.JPG"," 2010:03:06 02:25" ));
+//		dat.add(new Valuefist("CIMG0837.JPG"," 2010:03:06 02:25" ));
+//		dat.add(new Valuefist("CIMG0838.JPG"," 2010:03:06 02:26" ));
+//		dat.add(new Valuefist("CIMG0840.JPG"," 2010:03:06 02:35" ));
 
 		//la
 
@@ -120,14 +118,14 @@ done
 	private void fucktepate(){
 		for(Valuefist one: dat){
 			for(Valuefist two: dat){
-//				System.out.println(one.getName()+" "+two.getName()+" "+String.valueOf((one.getTime()-two.getTime())));
+				System.out.println(one.getName()+" "+two.getName()+" "+String.valueOf(Math.abs((one.getTime()-two.getTime()))));
 			}
 		}
 
 	}
 	private class Valuefist{
 		String name;
-		int time;
+		long time;//no see
 		private List<Valuefist> distances;
 		public Valuefist(String name,String strDate){
 
@@ -140,20 +138,17 @@ done
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			System.out.println("popo"+dateStr);
-//			String formattedDate = formatter.format(dateStr);
-//			System.out.println("yyyy-MM-dd date is ==>"+formattedDate);
-//			Date date1 = formatter.parse(formattedDate);
+			
 
 			this.name=name;
-			this.time=time;
+			this.time=dateStr.getTime()/1000;
 		}
 
 		public String toString(){
 			return "name "+name+" timestamp "+time;
 		}
 		public String getName(){return name;}
-		public int getTime(){return time;}
+		public long getTime(){return time;}
 
 	}
 }
