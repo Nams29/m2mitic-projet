@@ -6,5 +6,7 @@
     
     <!-- Content description -->
     <string name="timeline_item">Photo</string>
+    <string name="timeline_arrowRightPart">Partie droite de la flèche</string>
+    <string name="timeline_arrowLeftPart">Partie gauche de la flèche</string>
 
 </resources>

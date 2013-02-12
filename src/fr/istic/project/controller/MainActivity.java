@@ -6,12 +6,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import android.app.Activity;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import fr.istic.project.R;
