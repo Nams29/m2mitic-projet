@@ -44,24 +44,7 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 	    		if (file.isFile()) {
 	    			// Vérification de l'extension du fichier
 	    			if (FileUtils.allowedPhotosExtensions.contains(FileUtils.getFileExtension(file.getPath()))) {
-	    				OPhoto photo = new OPhoto(file);
-	    				photos.add(photo);
-	    				
-//	    		    	/* TODO EDITION DES DONNEES EXIF */
-//	    		    	try {
-//	    		    		Log.d("tag", "file:"+f.getPath().substring(4));
-//	    		    		
-//	    		    		ExifInterface mExifTool = new ExifInterface(f.getPath().substring(4));
-//	    		    		Log.d("tag", "model:"+mExifTool.getAttribute(ExifInterface.TAG_MODEL));
-////	    		    		mExifTool.setAttribute(ExifInterface.TAG_MODEL, "sdf2");
-////	    		    		mExifTool.saveAttributes();
-////	    		    		Log.d("tag", "model:"+mExifTool.getAttribute(ExifInterface.TAG_MODEL));
-//	    		    	} catch (IOException e) {
-//	    		    		// TODO Auto-generated catch block
-//	    		    		e.printStackTrace();
-//	    		    	}
-//	    		    }	    				
-	    				
+	    				photos.add(new OPhoto(file)); // Création de la photo	    				
 	    				publishProgress(photos.size());
 	    			}
 	    		} else { // C'est un répertoire
