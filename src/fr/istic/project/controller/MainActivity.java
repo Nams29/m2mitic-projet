@@ -12,6 +12,7 @@ import android.os.Environment;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import fr.istic.project.R;
+import fr.istic.project.model.FindPhotosTask;
 import fr.istic.project.model.OPhoto;
 import fr.istic.project.utils.FileUtils;
 
@@ -19,7 +20,7 @@ public class MainActivity extends Activity {
 	
 	TextView console;
 	LinearLayout timeline;
-    List<OPhoto> pictures = new LinkedList<OPhoto>(); 
+    List<OPhoto> photos = new LinkedList<OPhoto>(); 
     
 	
     /** Called when the activity is first created. */
@@ -46,11 +47,14 @@ public class MainActivity extends Activity {
     	    
     	    /* PARCOURS DE LA CARTE SD */
     	    File mFile 	= Environment.getExternalStorageDirectory();
-    	    browseSD(mFile);
+    	    
+    	    FindPhotosTask task = new FindPhotosTask(this);
+    	    task.execute(mFile);
+
     	    
     	    /* AFFICHAGE */
-//    	    for(PPicture pic : pictures) {
-    	    	//console.setText(console.getText() + "\n" +pic.getPath());
+    	    for(OPhoto photo : photos) {
+    	    	console.setText(console.getText() + "\n" +photo.getPath());
     	    	
 //    	    	ImageView iv = new ImageView(this);
 //    	    	iv.setBackgroundDrawable(getResources().getDrawable((R.drawable.polaroid_photo_frame)));
@@ -74,7 +78,7 @@ public class MainActivity extends Activity {
 //    	    		// TODO Auto-generated catch block
 //    	    		e.printStackTrace();
 //    	    	}
-//   	    }
+    	    }
     	    	    
     	    
     	    
@@ -91,64 +95,40 @@ public class MainActivity extends Activity {
     }
     
     
-    public void browseSD(File dir) {
-    	final List<String> picturesExtensions = new ArrayList<String>();
-    	picturesExtensions.add("jpg");
-    	picturesExtensions.add("png");    	
-    	
-    	File[] files = dir.listFiles();
-
-    	
-    	for(File f : files) {
-    		//System.out.println(""+ f.toString());
-    		
-    		if (f.isFile()) {
-    			// Vérification de l'extension du fichier
-    			if (picturesExtensions.contains(FileUtils.getFileExtension(f.getPath()))) {
-    				OPhoto pic = new OPhoto(f);
-    				pictures.add(pic);
-    				ProgressTask pt = new ProgressTask(pic, console);
-    				pt.execute();
-    				//console.setText(console.getText() + "\n" +pic.getPath());
-    			}
-    		} else {
-        		if (f.isDirectory() && !f.isHidden()) browseSD(f); // Récursivité !
-    		}
-    	}
-    }
     
     
     
-    static class ProgressTask extends AsyncTask<Void, Integer, Boolean> {
-    	private final OPhoto picture;
-    	private final TextView console;
-    	
-    	public ProgressTask(OPhoto picture, TextView console) {
-    		this.picture = picture;
-    		this.console = console;
-    	}
-    	
-        @Override
-        protected void onPreExecute () {
-        }
-     
-        @Override
-        protected void onPostExecute (Boolean result) {
-        }
-     
-        @Override
-        protected Boolean doInBackground (Void... arg0) {
-          console.setText(console.getText() + "\n" +picture.getPath());
-          return true;
-        }
-     
-        @Override
-        protected void onProgressUpdate (Integer... prog) {
-        }
-     
-        @Override
-        protected void onCancelled () {
-        }
-
-      }
+    
+//    static class ProgressTask extends AsyncTask<Void, Integer, Boolean> {
+//    	private final OPhoto picture;
+//    	private final TextView console;
+//    	
+//    	public ProgressTask(OPhoto picture, TextView console) {
+//    		this.picture = picture;
+//    		this.console = console;
+//    	}
+//    	
+//        @Override
+//        protected void onPreExecute () {
+//        }
+//     
+//        @Override
+//        protected void onPostExecute (Boolean result) {
+//        }
+//     
+//        @Override
+//        protected Boolean doInBackground (Void... arg0) {
+//          console.setText(console.getText() + "\n" +picture.getPath());
+//          return true;
+//        }
+//     
+//        @Override
+//        protected void onProgressUpdate (Integer... prog) {
+//        }
+//     
+//        @Override
+//        protected void onCancelled () {
+//        }
+//
+//      }
 }
