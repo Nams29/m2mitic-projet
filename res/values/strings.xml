@@ -3,7 +3,6 @@
 	
     <!-- Application -->
     <string name="app_name">PhotosProject</string>
-    <string name="hello_world">Hello world!</string>
     
     <!-- Content description -->
     <string name="timeline_item">Photo</string>
