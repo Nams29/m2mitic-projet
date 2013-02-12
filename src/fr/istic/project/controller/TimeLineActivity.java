@@ -10,7 +10,7 @@ public class TimeLineActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.timeline);
+		setContentView(R.layout.activity_timeline);
 
 	}
 }
