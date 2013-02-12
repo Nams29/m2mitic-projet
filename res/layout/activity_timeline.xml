@@ -3,34 +3,40 @@
     android:id="@+id/timeline"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_frise" >
+    android:background="@drawable/bg_frise"
+    android:padding="20dp" >
 
     <!-- Permet de positionner les groupes de photos par rapport à la flèche. -->
 
     <View
+        android:id="@+id/timeline_middle"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_centerVertical="true"
-        android:background="#FFF"
+        android:background="@android:color/transparent"
         android:orientation="horizontal" />
-    
-    <!-- Création de la flèche -->
+
+    <!-- Branche 1 -->
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:id="@+id/timeline_item1"
+        android:layout_width="230dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/timeline_middle"
+        android:layout_alignLeft="@+id/timeline_arrow"
+        android:layout_alignParentTop="true"
+        android:background="@android:color/white"
+        android:gravity="center_horizontal" >
+    </LinearLayout>
+
+    <!-- Flèche -->
+
+    <ImageView
+        android:id="@+id/timeline_arrow"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:orientation="horizontal" >
-
-        <!-- Partie droite -->
-        <ImageView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/right_arrow"
-            android:contentDescription="@string/timeline_arrow" />
-        
-    </LinearLayout>
+        android:background="@drawable/right_arrow"
+        android:contentDescription="@string/timeline_arrow" />
 
 </RelativeLayout>
