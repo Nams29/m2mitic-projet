@@ -8,7 +8,6 @@ import java.util.List;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Toast;
 import fr.istic.project.utils.FileUtils;
 
@@ -54,8 +53,6 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Long> {
     				OPhoto photo = new OPhoto(f);
     				photos.add(photo);
     				publishProgress(photos.size());
-    				
-    				//console.setText(console.getText() + "\n" +pic.getPath());
     			}
     		} else {
         		if (f.isDirectory() && !f.isHidden()) doInBackground(f); // Récursivité !
@@ -74,6 +71,6 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Long> {
 	@Override
     protected void onPostExecute(Long result) {
         progressDialog.dismiss();
-        Toast.makeText(activity.getApplicationContext(), ("Photos trouvées : "+result.toString()), Toast.LENGTH_SHORT).show();
+        Toast.makeText(activity.getApplicationContext(), ("Nombre total de photos trouvées : "+result.toString()), Toast.LENGTH_SHORT).show();
     }
 }
