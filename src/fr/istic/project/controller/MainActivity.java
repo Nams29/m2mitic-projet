@@ -116,7 +116,7 @@ public class MainActivity extends Activity {
 		
 		for(OPhoto newPhoto : newPhotos) {
 			this.photos.add(newPhoto);
-			console.append("\n" +newPhoto.getPath());
+			console.append("\n\n" + newPhoto.getName() + "\n" + newPhoto.getIdentifier());
 			
 //	    	ImageView iv = new ImageView(this);
 //	    	iv.setBackgroundDrawable(getResources().getDrawable((R.drawable.polaroid_photo_frame)));
