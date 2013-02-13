@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import fr.istic.project.R;
 import fr.istic.project.model.ApplicationDB;
+import fr.istic.project.model.ApplicationSQLiteOpenHelper;
 import fr.istic.project.model.FindPhotosTask;
 import fr.istic.project.model.OPhoto;
 import fr.istic.project.utils.FileUtils;
@@ -40,10 +41,12 @@ public class MainActivity extends Activity {
     	
     	this.photos = new LinkedList<OPhoto>();
     	
+    	deleteDatabase(ApplicationSQLiteOpenHelper.DATABASE_NAME); // TODO à virer plus tard
+    	console.append("DB vidée à chaque lancement ! (debug...)\n");
     	this.applicationDB = ApplicationDB.getInstance();
     	applicationDB.initialize(this);
-    	applicationDB.openDb();
-    	
+    	applicationDB.openDb();    	
+		
     	findPhotos();
     }
     
@@ -57,9 +60,13 @@ public class MainActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
-		if  (id == R.id.menu_timeline) {
+		if  (id == R.id.menu_timeline) { // TODO faire un switch !!
 			Intent i = new Intent(this, TimeLineActivity.class);
 			this.startActivity(i);
+			return true;
+		}
+		if  (id == R.id.menu_db_reset) {
+			deleteDatabase(ApplicationSQLiteOpenHelper.DATABASE_NAME);
 			return true;
 		}
 		else {

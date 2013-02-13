@@ -5,5 +5,10 @@
         android:id="@+id/menu_timeline"
         android:title="@string/menu_timeline"
         android:showAsAction="always|withText" />
+    
+    <item 
+        android:id="@+id/menu_db_reset"
+        android:title="@string/menu_db_reset"
+        android:showAsAction="never|withText" />
 
 </menu>

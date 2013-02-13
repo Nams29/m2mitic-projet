@@ -6,6 +6,7 @@
     
     <!-- Menus -->
     <string name="menu_timeline">Timeline</string>
+    <string name="menu_db_reset">Vider la base de données</string>
     
     <!-- Content description -->
     <string name="timeline_item">Photo</string>

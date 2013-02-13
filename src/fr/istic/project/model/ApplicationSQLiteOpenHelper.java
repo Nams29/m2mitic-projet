@@ -7,7 +7,7 @@ import android.util.Log;
 
 public class ApplicationSQLiteOpenHelper extends SQLiteOpenHelper
 {
-	private static final String DATABASE_NAME 		= "application.db";
+	public static final String 	DATABASE_NAME 		= "application.db";
 	private static final int 	DATABASE_VERSION 	= 1;
 	
 	/* CONTEXTS */
