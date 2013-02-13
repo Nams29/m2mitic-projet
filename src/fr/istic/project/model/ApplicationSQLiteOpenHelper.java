@@ -37,18 +37,19 @@ public class ApplicationSQLiteOpenHelper extends SQLiteOpenHelper
 	public void onCreate(final SQLiteDatabase database)
 	{
 		database.execSQL("CREATE TABLE " + CONTEXTS_TABLE_NAME + " (" 
-								+ CONTEXTS_ID 			+ " INTEGER PRIMARY KEY," // TODO AUTOINCREMENT ?
+								+ CONTEXTS_ID 			+ " INTEGER PRIMARY KEY AUTOINCREMENT,"
 								+ CONTEXTS_NAME 		+ " TEXT" + ");");
 		
 		database.execSQL("CREATE TABLE " + PHOTOS_TABLE_NAME + " (" 
-								+ PHOTOS_ID 			+ " INTEGER PRIMARY KEY," // TODO AUTOINCREMENT ?
+								+ PHOTOS_ID 			+ " INTEGER PRIMARY KEY AUTOINCREMENT,"
 								+ PHOTOS_IDENTIFIER 	+ " TEXT,"
-								+ PHOTOS_DATE 		+ " TEXT,"
-								+ PHOTOS_LOCATION 	+ " TEXT," 
-								+ PHOTOS_NOTE 		+ " INTEGER,"
+								+ PHOTOS_DATE 			+ " TEXT,"
+								+ PHOTOS_LOCATION 		+ " TEXT," 
+								+ PHOTOS_NOTE 			+ " INTEGER,"
 								+ PHOTOS_DESCRIPTION 	+ " TEXT,"
-								+ PHOTOS_PATH 		+ " TEXT,"
-								+ PHOTOS_CONTEXT 	+ " FOREIGN KEY " + CONTEXTS_TABLE_NAME + " REFERENCES (" + CONTEXTS_ID + ") ON DELETE CASCADE" + ");");
+								+ PHOTOS_PATH 			+ " TEXT,"
+								+ PHOTOS_CONTEXT 		+ " INTEGER,"
+								+ " FOREIGN KEY (" + PHOTOS_CONTEXT + ") REFERENCES " + CONTEXTS_TABLE_NAME + " (" + CONTEXTS_ID + ") ON DELETE CASCADE" + ");");
 	}
 
 	@Override

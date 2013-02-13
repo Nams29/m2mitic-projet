@@ -5,18 +5,19 @@ import java.util.List;
 
 public class OContext { // Context est déjà utilisé par Android...
 
-	private Long _id;
+	public static OContext defaultContext = new OContext("default"); // Pour les photos sans contexte
+	
+	private Long _id = null;
 	private String name;
-	private List<OPhoto> photos;
+	private List<OPhoto> photos = new LinkedList<OPhoto>();
+	
 	
 	/**
 	 * Constructeur côté objet
 	 * @param name
 	 */
 	public OContext(String name) {
-		this._id = null;
 		this.name = name;
-		this.photos = new LinkedList<OPhoto>();
 	}
 	
 	/**
@@ -42,6 +43,10 @@ public class OContext { // Context est déjà utilisé par Android...
 	}
 	
 	/* SETTERS */
+	
+//	public void set_id(Long _id) {
+//		this._id = _id;
+//	}
 	
 	public void setName(String name) {
 		this.name = name;

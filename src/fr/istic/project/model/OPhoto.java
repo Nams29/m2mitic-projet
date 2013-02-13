@@ -51,6 +51,8 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 			this.note = -1f;
 			this.description = "";
 			
+			this.context = null;
+			
 			this.identifier = this.date + "--" + fileDateTime + "--" + this.name; // TODO confirmer datecreation + datemodif + nomfichier
 			//System.out.println(identifier);
 		} catch (IOException e) {
@@ -184,6 +186,7 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 
 	public void setContext(OContext context) {
 		this.context = context;
+		this.context.addPicture(this);
 	}
 	
 }

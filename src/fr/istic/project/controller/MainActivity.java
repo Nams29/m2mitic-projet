@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import fr.istic.project.R;
+import fr.istic.project.model.ApplicationDataSource;
 import fr.istic.project.model.FindPhotosTask;
 import fr.istic.project.model.OPhoto;
 import fr.istic.project.utils.FileUtils;
@@ -24,7 +25,8 @@ public class MainActivity extends Activity {
 	private TextView console;
 	private LinearLayout timeline;
 	
-	private List<OPhoto> photos = new LinkedList<OPhoto>();
+	private List<OPhoto> photos;
+	private transient ApplicationDataSource appDataSource; // TODO refactor aussi
     
 	
     /** Called when the activity is first created. */
@@ -35,6 +37,12 @@ public class MainActivity extends Activity {
         
         this.console = (TextView) findViewById(R.id.main_console);
     	this.timeline = (LinearLayout) findViewById(R.id.main_timeline);
+    	
+    	this.photos = new LinkedList<OPhoto>();
+    	
+    	this.appDataSource = ApplicationDataSource.getInstance();
+    	appDataSource.initialize(this);
+    	appDataSource.openDb();
     	
     	findPhotos();
     }
@@ -95,6 +103,10 @@ public class MainActivity extends Activity {
 	
 	public void processPhotos(List<OPhoto> newPhotos) {
 
+		console.append("Contenu base de données :\n"
+						+ appDataSource.getAllContexts().size() + " contextes.\n"
+						+ appDataSource.getAllPhotos().size() + " photos.");
+		
 		for(OPhoto newPhoto : newPhotos) {
 			this.photos.add(newPhoto);
 			console.append("\n" +newPhoto.getPath());
@@ -108,6 +120,11 @@ public class MainActivity extends Activity {
 //	    	timeline.addView(iv);
     	}
 		
+	}
+	
+	
+	public ApplicationDataSource getAppDataSource() { // TODO refactor aussi
+		return appDataSource;
 	}
  
 }
