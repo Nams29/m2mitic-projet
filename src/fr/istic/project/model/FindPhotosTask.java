@@ -20,7 +20,7 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 	private Geocoder geocoder;
 	private boolean geocoderError;
 	
-	private ApplicationDataSource appDataSource;
+	private ApplicationDB applicationDB;
 
 	
 	public FindPhotosTask(MainActivity activity) {
@@ -33,9 +33,9 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 		this.geocoder = new Geocoder(activity, FileUtils.locale);
 		this.geocoderError = false;
 		
-		this.appDataSource = activity.getAppDataSource();
-		if (appDataSource.getContext(0) == null)
-			OContext.defaultContext = appDataSource.addContext(OContext.defaultContext); // Ajout du contexte par défaut
+		this.applicationDB = activity.getApplicationDB();
+		if (applicationDB.getContext(0) == null)
+			OContext.defaultContext = applicationDB.addContext(OContext.defaultContext); // Ajout du contexte par défaut
 	}
 	
 	@Override
@@ -62,7 +62,7 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 	    				photo.setContext(OContext.defaultContext);
 	    				if (photo.processLocation(geocoder) == false) geocoderError = true; // Récupération de la localité avec Geocoder
 	    				photos.add(photo);
-	    				appDataSource.addPhoto(photo);
+	    				applicationDB.addPhoto(photo);
 	    				publishProgress(photos.size());
 	    			}
 	    		} else { // C'est un répertoire

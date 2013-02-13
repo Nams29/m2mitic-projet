@@ -1,4 +1,9 @@
- 
+ /*
+  * BDD : 				http://stackoverflow.com/questions/9109438/how-to-use-an-existing-database-with-an-android-application/9109728#9109728
+  * Image similarity : 	http://stackoverflow.com/questions/843972/image-comparison-fast-algorithm
+  */
+	 
+	 
 /* MEDIASTORE */
 String[] projection = { MediaStore.Images.Media._ID, MediaStore.Images.ImageColumns.DATA };
 String selection = "";

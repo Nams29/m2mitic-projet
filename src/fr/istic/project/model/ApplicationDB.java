@@ -11,20 +11,20 @@ import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
 
-public final class ApplicationDataSource // TODO refactor en ApplicationDB
+public final class ApplicationDB
 {
-	private static ApplicationDataSource instance = new ApplicationDataSource(); // DP Singleton
+	private static ApplicationDB instance = new ApplicationDB(); // DP Singleton
 	
 	private transient ApplicationSQLiteOpenHelper dbHelper;
 	private transient SQLiteDatabase database;
 
 	
-	private ApplicationDataSource()
+	private ApplicationDB()
 	{
 		super();
 	}
 
-	public static ApplicationDataSource getInstance()
+	public static ApplicationDB getInstance()
 	{
 		return instance;
 	}

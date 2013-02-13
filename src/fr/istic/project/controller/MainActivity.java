@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import fr.istic.project.R;
-import fr.istic.project.model.ApplicationDataSource;
+import fr.istic.project.model.ApplicationDB;
 import fr.istic.project.model.FindPhotosTask;
 import fr.istic.project.model.OPhoto;
 import fr.istic.project.utils.FileUtils;
@@ -26,7 +26,7 @@ public class MainActivity extends Activity {
 	private LinearLayout timeline;
 	
 	private List<OPhoto> photos;
-	private transient ApplicationDataSource appDataSource; // TODO refactor aussi
+	private transient ApplicationDB applicationDB;
     
 	
     /** Called when the activity is first created. */
@@ -40,9 +40,9 @@ public class MainActivity extends Activity {
     	
     	this.photos = new LinkedList<OPhoto>();
     	
-    	this.appDataSource = ApplicationDataSource.getInstance();
-    	appDataSource.initialize(this);
-    	appDataSource.openDb();
+    	this.applicationDB = ApplicationDB.getInstance();
+    	applicationDB.initialize(this);
+    	applicationDB.openDb();
     	
     	findPhotos();
     }
@@ -104,8 +104,8 @@ public class MainActivity extends Activity {
 	public void processPhotos(List<OPhoto> newPhotos) {
 
 		console.append("Contenu base de données :\n"
-						+ appDataSource.getAllContexts().size() + " contextes.\n"
-						+ appDataSource.getAllPhotos().size() + " photos.");
+						+ applicationDB.getAllContexts().size() + " contextes.\n"
+						+ applicationDB.getAllPhotos().size() + " photos.");
 		
 		for(OPhoto newPhoto : newPhotos) {
 			this.photos.add(newPhoto);
@@ -123,8 +123,8 @@ public class MainActivity extends Activity {
 	}
 	
 	
-	public ApplicationDataSource getAppDataSource() { // TODO refactor aussi
-		return appDataSource;
+	public ApplicationDB getApplicationDB() {
+		return applicationDB;
 	}
  
 }
