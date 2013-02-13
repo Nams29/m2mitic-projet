@@ -10,25 +10,21 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
-/* http://developpeur.orange.tn/developper-ensemble/tutoriels/tutoriels/android-premier-tutoriel-avec-sqlite
- * http://www.vogella.com/articles/AndroidSQLite/article.html
- * http://panierter-pinguin.de/blog/?p=138
- * http://stackoverflow.com/questions/9109438/how-to-use-an-existing-database-with-an-android-application/9109728#9109728
- * http://stackoverflow.com/questions/843972/image-comparison-fast-algorithm */
-public final class ApplicationDataSource
+
+public final class ApplicationDB
 {
-	private static ApplicationDataSource instance = new ApplicationDataSource(); // DP Singleton
+	private static ApplicationDB instance = new ApplicationDB(); // DP Singleton
 	
 	private transient ApplicationSQLiteOpenHelper dbHelper;
 	private transient SQLiteDatabase database;
 
 	
-	private ApplicationDataSource()
+	private ApplicationDB()
 	{
 		super();
 	}
 
-	public static ApplicationDataSource getInstance()
+	public static ApplicationDB getInstance()
 	{
 		return instance;
 	}
@@ -60,7 +56,8 @@ public final class ApplicationDataSource
 				contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_NOTE, 			photo.getNote());
 				contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_DESCRIPTION, 	photo.getDescription());
 				contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_PATH, 			photo.getPath());
-				contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_CONTEXT, 		photo.getContext().get_id());
+				if (photo.getContext() != null)
+					contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_CONTEXT, 	photo.getContext().get_id());
 		final long photoId = database.insert(ApplicationSQLiteOpenHelper.PHOTOS_TABLE_NAME, null, contentValues);
 
 		return getPhoto(photoId);
@@ -80,9 +77,11 @@ public final class ApplicationDataSource
 				ApplicationSQLiteOpenHelper.PHOTOS_ID + " = " + photoId, null, null, null, null);
 		cursor.moveToFirst();
 
-		final OPhoto photo = buildPhotoFromCursor(cursor);
-		cursor.close();
+		OPhoto photo = null;
+		if (cursor.getCount() != 0)
+			photo = buildPhotoFromCursor(cursor);
 		
+		cursor.close();
 		return photo;
 	}
 	
@@ -109,7 +108,6 @@ public final class ApplicationDataSource
 		}
 		
 		cursor.close();
-
 		return photos;
 	}
 	
@@ -143,7 +141,8 @@ public final class ApplicationDataSource
 			photo.setNote(					cursor.getFloat(	cursor.getColumnIndex(ApplicationSQLiteOpenHelper.PHOTOS_NOTE)));
 			photo.setDescription(			cursor.getString(	cursor.getColumnIndex(ApplicationSQLiteOpenHelper.PHOTOS_DESCRIPTION)));
 			photo.setPath(					cursor.getString(	cursor.getColumnIndex(ApplicationSQLiteOpenHelper.PHOTOS_PATH)));
-			photo.setContext(getContext(	cursor.getLong(		cursor.getColumnIndex(ApplicationSQLiteOpenHelper.PHOTOS_CONTEXT))));
+			if (cursor.getLong(cursor.getColumnIndex(ApplicationSQLiteOpenHelper.PHOTOS_CONTEXT)) != 0)
+				photo.setContext(getContext(cursor.getLong(		cursor.getColumnIndex(ApplicationSQLiteOpenHelper.PHOTOS_CONTEXT))));
 		return photo;
 	}
 	
@@ -162,14 +161,17 @@ public final class ApplicationDataSource
 	public OContext getContext(final long contextId)
 	{
 		final Cursor cursor = database.query(ApplicationSQLiteOpenHelper.CONTEXTS_TABLE_NAME, new String[]{
+				ApplicationSQLiteOpenHelper.CONTEXTS_ID,
 				ApplicationSQLiteOpenHelper.CONTEXTS_NAME},
 				ApplicationSQLiteOpenHelper.CONTEXTS_ID + " = " + contextId, null, null, null, null);
 		cursor.moveToFirst();
-
-		final OContext context = buildContextFromCursor(cursor);
-		cursor.close();
 		
-		return context;
+		OContext context = null;
+		if (cursor.getCount() != 0)
+			context = buildContextFromCursor(cursor);
+		
+		cursor.close();
+		return context;		
 	}
 	
 	public List<OContext> getAllContexts()
@@ -177,6 +179,7 @@ public final class ApplicationDataSource
 		final List<OContext> contexts = new ArrayList<OContext>();
 		
 		final Cursor cursor = database.query(ApplicationSQLiteOpenHelper.CONTEXTS_TABLE_NAME, new String[]{
+				ApplicationSQLiteOpenHelper.CONTEXTS_ID,
 				ApplicationSQLiteOpenHelper.CONTEXTS_NAME},	
 				null, null, null, null, null);
 		cursor.moveToFirst();
@@ -188,7 +191,6 @@ public final class ApplicationDataSource
 		}
 		
 		cursor.close();
-
 		return contexts;
 	}
 	

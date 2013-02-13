@@ -18,7 +18,9 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 	private List<OPhoto> photos;
 
 	private Geocoder geocoder;
-	private static boolean geocoderError = false;
+	private boolean geocoderError;
+	
+	private ApplicationDB applicationDB;
 
 	
 	public FindPhotosTask(MainActivity activity) {
@@ -29,6 +31,11 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 		this.photos = new LinkedList<OPhoto>();
 		
 		this.geocoder = new Geocoder(activity, FileUtils.locale);
+		this.geocoderError = false;
+		
+		this.applicationDB = activity.getApplicationDB();
+		if (applicationDB.getContext(0) == null)
+			OContext.defaultContext = applicationDB.addContext(OContext.defaultContext); // Ajout du contexte par défaut
 	}
 	
 	@Override
@@ -52,8 +59,10 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 	    			// Vérification de l'extension du fichier
 	    			if (FileUtils.allowedPhotosExtensions.contains(FileUtils.getFileExtension(file.getPath()))) {
 	    				OPhoto photo = new OPhoto(file); // Création de la photo
+	    				photo.setContext(OContext.defaultContext);
 	    				if (photo.processLocation(geocoder) == false) geocoderError = true; // Récupération de la localité avec Geocoder
 	    				photos.add(photo);
+	    				applicationDB.addPhoto(photo);
 	    				publishProgress(photos.size());
 	    			}
 	    		} else { // C'est un répertoire
@@ -68,12 +77,15 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 	
 	@Override
     protected void onProgressUpdate(Integer... progress) {
+		super.onProgressUpdate(progress);
 		progressDialog.setMessage("Photos trouvées : "+progress[0].toString());		
     }
 
 	
 	@Override
     protected void onPostExecute(Void result) {
+		super.onPostExecute(result);
+		
 		progressDialog.dismiss();
 		if (geocoderError) {
 			Toast.makeText(activity, "Erreur : connexion Internet indisponible, les localisations des photos n'ont pu être calculées avec Geocoder.", Toast.LENGTH_LONG).show();
