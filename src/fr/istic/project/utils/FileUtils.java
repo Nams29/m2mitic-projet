@@ -9,8 +9,8 @@ public class FileUtils {
 	
 	public static final SimpleDateFormat DATE_FORMAT_EXIF = new SimpleDateFormat("yyyy:MM:dd hh:mm:ss");
 	
-	public static final String[] ALLOWED_DIRECTORIES_DEVICE = { "DCIM" };
-	public static final String[] ALLOWED_DIRECTORIES_CARD = { "!aaProjet" };
+	public static final String[] ALLOWED_EXTERNAL_DIRECTORIES_DEVICE = { "DCIM" };
+	public static final String[] ALLOWED_EXTERNAL_DIRECTORIES_REMOVABLE = { "!aaProjet" };
 	
 	public static final List<String> ALLOWED_FILE_EXTENSIONS;	
 	static { // Bloc d'initialisation statique !
@@ -30,5 +30,18 @@ public class FileUtils {
 		int dot = filename.lastIndexOf('.');
 		String extension = filename.substring(dot+1, filename.length()).toUpperCase(LocaleUtils.LOCALE_FR);		
 		return extension;
+	}
+	
+	
+	public static String getApplicationDirectory() {
+		return "";
+	}
+	
+	public static String getExternalDirectoryDevice() {
+		return "";
+	}
+	
+	public static String getExternalDirectoryRemovable() {
+		return "";
 	}
 }

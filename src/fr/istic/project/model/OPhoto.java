@@ -105,12 +105,11 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 	public void processIdentifier() {
 		// TODO check que ça change pas avec la density
 		// http://stackoverflow.com/questions/7929280/android-bitmap-getpixel-depends-on-density
-		Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(this.path, 512, 512);
-//		Bitmap bitmap = BitmapFactory.decodeFile(this.path); // Pleine taille, plante avec les grosses photos
+		Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(this.path, 256, 256);
 		
 		// UTILISATION DE TOUS LES PIXELS DE L'IMAGE
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		bitmap.compress(CompressFormat.JPEG, 0, stream); // TODO tester en lossless (PNG, 0)
+		bitmap.compress(CompressFormat.JPEG, 0, stream);
 		byte[] bitmapByteArray = stream.toByteArray();
 
 

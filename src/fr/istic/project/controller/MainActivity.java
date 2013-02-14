@@ -76,13 +76,13 @@ public class MainActivity extends Activity {
     
 	public void findPhotos() {
 	
-    	/* VERIFICATION DE LA DISPONIBILTE DE LA CARTE */
+    	/* VERIFICATION DE LA DISPONIBILTE DES MEDIAS */
     	String state = Environment.getExternalStorageState();
     	if (Environment.MEDIA_MOUNTED.equals(state)) {
     	    // We can read and write the media
     	        
     	    
-    	    /* PARCOURS DE LA CARTE SD - PREPARATION */
+    	    /* PARCOURS DES MEDIAS - PREPARATION */
     	    // TODO proposer selection reps / a revoir avec
     		// http://stackoverflow.com/questions/10282457/how-to-access-removable-storage-on-android-devices
     		// http://renzhi.ca/2012/02/03/how-to-list-all-sd-cards-on-android/
@@ -96,14 +96,14 @@ public class MainActivity extends Activity {
     	    }
     	    
     	    
-    	    File[] directories = new File[FileUtils.ALLOWED_DIRECTORIES_CARD.length];	    
-    	    for (int i=0; i<FileUtils.ALLOWED_DIRECTORIES_CARD.length; i++) {
-    	    	directories[i] = new File(fSDcard.getPath() + File.separatorChar + FileUtils.ALLOWED_DIRECTORIES_CARD[i]); // Ajout des répertoires à parcourir
+    	    File[] directories = new File[FileUtils.ALLOWED_EXTERNAL_DIRECTORIES_REMOVABLE.length];	    
+    	    for (int i=0; i<FileUtils.ALLOWED_EXTERNAL_DIRECTORIES_REMOVABLE.length; i++) {
+    	    	directories[i] = new File(fSDcard.getPath() + File.separatorChar + FileUtils.ALLOWED_EXTERNAL_DIRECTORIES_REMOVABLE[i]); // Ajout des répertoires à parcourir
     	    	
     	    	console.append("\n a"+directories[i]);
     	    }
     	    
-    	    /* PARCOURS DE LA CARTE SD - EXECUTION */
+    	    /* PARCOURS DES MEDIAS - EXECUTION */
     	    FindPhotosTask findPhotosTask = new FindPhotosTask(this);
 	    	findPhotosTask.execute(directories);
 	    	
