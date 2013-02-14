@@ -13,7 +13,7 @@ import java.util.List;
  *
  */
 public class HAC {
-	private int NBCLASSES=3;
+	private int NBCLASSES=4;
 	private ArrayList<ArrayList<PictInfo>> dat;
 	/**
 	 * ajoute des PictInfo a analyser
@@ -44,6 +44,8 @@ public class HAC {
 			Fin Pour
 		 */
 		float[][] dissim=null;
+
+
 		while(dat.size()>NBCLASSES){
 			dissim =new float[dat.size()][dat.size()];
 			for (int i=0;i<dat.size();i++){
@@ -51,6 +53,7 @@ public class HAC {
 					dissim[i][j]=dissim(dat.get(i),dat.get(j));
 				}
 			}
+
 			int i=0,j=0;
 			float min=dissim[0][dat.size()-1];
 
@@ -58,7 +61,7 @@ public class HAC {
 				for (int l=k+1;l<dat.size();l++){
 					if( (dissim[k][l]<min)&&(dissim[k][l]>0)){
 						min=dissim[k][l];i=k;j=l;//TODO pas sur que ca sorte vraiment le minimum
-						//						System.out.println("found min="+min+"@ k:"+k+" l:"+l+" ");
+//						System.out.println("found min="+min+"@ k:"+k+" l:"+l+" ");
 					}
 				}
 			}
@@ -69,18 +72,18 @@ public class HAC {
 			}           
 			dat.get(i).addAll(toAdd);
 			dat.remove(j);//ne suffit pas pour virer une colonne
-			//			graph(dissim);
+			graph(dissim);
 
 		}
 		//		displayGroups();
 	}
 	public void graph(float[][] dist){
 		for(int i=0;i<dist[0].length;i++){
-			System.out.print("|");
+//			System.out.print("|");
 			for(int j=0;j<dist[i].length;j++){
-				System.out.print(dist[i][j]+" ");
+//				System.out.print(dist[i][j]+" ");
 			}
-			System.out.println("|");
+//			System.out.println("|");
 		}
 	}
 	/**
@@ -92,9 +95,9 @@ public class HAC {
 	}
 	public void displayGroups(){
 		for (ArrayList<PictInfo> al:dat){
-			System.out.println("----class----");
+//			System.out.println("----class----");
 			for(PictInfo pi:al){
-				System.out.println(pi);
+//				System.out.println(pi);
 			}
 		}
 	}
@@ -128,7 +131,7 @@ public class HAC {
 	private void graph(List<PictInfo> l){
 		long sum=0;
 		for(PictInfo o:l){
-			System.out.print("["+o.getName()+"]");
+//			System.out.print("["+o.getName()+"]");
 		}
 	}
 
