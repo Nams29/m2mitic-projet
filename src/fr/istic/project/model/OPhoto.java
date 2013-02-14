@@ -103,17 +103,15 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 	 * Calcul de l'identifiant avec MD5
 	 */
 	public void processIdentifier() {
-		// TODO check que ça change pas avec la density
-		// http://stackoverflow.com/questions/7929280/android-bitmap-getpixel-depends-on-density
-		Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(this.path, 256, 256);
 		
-		// UTILISATION DE TOUS LES PIXELS DE L'IMAGE
+		// Récupération de tous les pixels de l'image
+		Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(this.path, 256, 256);
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
 		bitmap.compress(CompressFormat.JPEG, 0, stream);
 		byte[] bitmapByteArray = stream.toByteArray();
 
 
-		// MD5
+		// Calcul du MD5 à partir des pixels
 		MessageDigest md5;
 		try {
 			md5 = java.security.MessageDigest.getInstance("MD5");
