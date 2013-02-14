@@ -3,9 +3,9 @@ package fr.istic.project.model;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.widget.Toast;
@@ -25,6 +25,7 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 	private ApplicationDB applicationDB;
 	
 	private long start;
+	private boolean cancelTask;
 
 	
 	public FindPhotosTask(MainActivity activity) {
@@ -34,6 +35,14 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 		this.progressDialog = new ProgressDialog(activity); 
 				progressDialog.setTitle("Recherche des photos");
 				progressDialog.setCancelable(true);
+				progressDialog.setCanceledOnTouchOutside(true);
+			    progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+				    @Override
+				    public void onCancel(DialogInterface dialog) {
+				    	cancelTask = true;
+				    }
+				});
+		this.cancelTask = false;
 		this.photos = new LinkedList<OPhoto>();
 		
 		this.geocoder = new Geocoder(activity, LocaleUtils.LOCALE_FR);
@@ -55,16 +64,17 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 	@Override
 	protected Void doInBackground(File... params) {
 		
-		for(File dir : params) { // Pour chaque répertoire à parcourir
+		for(File dir : params) { // Pour chaque dossier à parcourir
 			//activity.getConsole().append("\n b"+dir.toString());
 			File[] files = dir.listFiles();
 
 			if (files != null) {
 				//activity.getConsole().append("\n c"+dir.toString());
-		    	for(File file : files) {
+		    	for(File file : files) { // Pour chaque fichier du dossier
 		    		//System.out.println(""+ file.toString());
 		    		
 		    		if (photos.size() >= 500) break;
+		    		if (cancelTask) break;
 		    		
 		    		if (file.isFile()) {
 		    			// Vérification de l'extension du fichier
