@@ -119,17 +119,7 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 			md5 = java.security.MessageDigest.getInstance("MD5");
 			md5.update(bitmapByteArray);
 			byte messageDigest[] = md5.digest();
-			
-//			// TODO a tester pour performances
-//			// Create Hex String
-//	        StringBuffer hexString = new StringBuffer();
-//	        for (int i = 0; i < messageDigest.length; i++) {
-//	            String h = Integer.toHexString(0xFF & messageDigest[i]);
-//	            while (h.length() < 2)
-//	                h = "0" + h;
-//	            hexString.append(h);
-//	        }
-//	        this.identifier = hexString.toString();
+
 			this.identifier = new BigInteger(1, messageDigest).toString(16);
 	        
 		} catch (NoSuchAlgorithmException e) {
@@ -137,7 +127,7 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 		}
 		
 		// Pour aider le Garbage Collector...
-		bitmap.recycle();
+		//bitmap.recycle();
 	}
 	
 	/* GETTERS */

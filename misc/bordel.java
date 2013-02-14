@@ -69,5 +69,16 @@ ImageView iv = new ImageView(this);
 iv.setBackgroundDrawable(getResources().getDrawable((R.drawable.polaroid_photo_frame)));
 iv.setImageDrawable(Drawable.createFromPath(pic.getPath()));
 iv.setLayoutParams(new LayoutParams(87, 100));
-iv.setPadding(5, 5, 5, 10);//	    	
+iv.setPadding(5, 5, 5, 10);
 timeline.addView(iv);
+
+
+// Create Hex String
+StringBuffer hexString = new StringBuffer();
+for (int i = 0; i < messageDigest.length; i++) {
+    String h = Integer.toHexString(0xFF & messageDigest[i]);
+    while (h.length() < 2)
+        h = "0" + h;
+    hexString.append(h);
+}
+this.identifier = hexString.toString();

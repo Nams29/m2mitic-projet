@@ -57,7 +57,12 @@ public class FileUtils {
 		if (Environment.isExternalStorageRemovable()) {
 	    	return Environment.getExternalStorageDirectory(); // Autre appareil avec mémoire amovible
 	    } else {
-	    	return new File("/Removable/MicroSD"); // ASUS Transformer
+	    	File f = new File("/Removable/MicroSD"); // ASUS Transformer
+	    	if (f.exists()) {
+	    		return f;
+	    	} else {
+	    		return null;
+	    	}
 	    }
 	}
 	
