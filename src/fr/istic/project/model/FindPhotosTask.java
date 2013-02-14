@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 import fr.istic.project.controller.MainActivity;
 import fr.istic.project.utils.FileUtils;
+import fr.istic.project.utils.LocaleUtils;
 
 public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 	
@@ -30,7 +31,7 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 		this.progressDialog = new ProgressDialog(activity); progressDialog.setTitle("Recherche des photos");
 		this.photos = new LinkedList<OPhoto>();
 		
-		this.geocoder = new Geocoder(activity, FileUtils.locale);
+		this.geocoder = new Geocoder(activity, LocaleUtils.LOCALE_FR);
 		this.geocoderError = false;
 		
 		this.applicationDB = activity.getApplicationDB();
@@ -49,26 +50,35 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 	protected Void doInBackground(File... params) {
 		
 		for(File dir : params) { // Pour chaque répertoire à parcourir
+			//activity.getConsole().append("\n b"+dir.toString());
 			File[] files = dir.listFiles();
 
-	    	
-	    	for(File file : files) {
-	    		//System.out.println(""+ file.toString());
-	    		
-	    		if (file.isFile()) {
-	    			// Vérification de l'extension du fichier
-	    			if (FileUtils.allowedPhotosExtensions.contains(FileUtils.getFileExtension(file.getPath()))) {
-	    				OPhoto photo = new OPhoto(file); // Création de la photo
-	    				photo.setContext(OContext.defaultContext);
-	    				if (photo.processLocation(geocoder) == false) geocoderError = true; // Récupération de la localité avec Geocoder
-	    				photos.add(photo);
-	    				applicationDB.addPhoto(photo);
-	    				publishProgress(photos.size());
-	    			}
-	    		} else { // C'est un répertoire
-	        		if (file.isDirectory() && !file.isHidden()) doInBackground(file); // Récursivité !
-	    		}
-	    	}
+			if (files != null) {
+				//activity.getConsole().append("\n c"+dir.toString());
+		    	for(File file : files) {
+		    		//System.out.println(""+ file.toString());
+		    		
+		    		//if (photos.size() >= 50) break;
+		    		
+		    		if (file.isFile()) {
+		    			// Vérification de l'extension du fichier
+		    			if (FileUtils.ALLOWED_FILE_EXTENSIONS.contains(FileUtils.getFileExtension(file.getPath()))) {
+		    				OPhoto photo = new OPhoto(file); // Création de la photo
+		    				photo.setContext(OContext.defaultContext);
+		    				if (photo.processLocation(geocoder) == false) geocoderError = true; // Récupération de la localité avec Geocoder
+		    				applicationDB.addPhoto(photo);
+		    				//if (applicationDB.addPhoto(photo) != -1) { // TODO prendre en compte différement
+		    					photo.setIdentifier(photo.getIdentifier());
+		    				//}
+		    				photos.add(photo);
+		    				System.out.println(photos.size());
+		    				publishProgress(photos.size());
+		    			}
+		    		} else { // C'est un répertoire
+		        		if (file.isDirectory() && !file.isHidden()) doInBackground(file); // Récursivité !
+		    		}
+		    	}
+			}
 		}
     	
 		return null;

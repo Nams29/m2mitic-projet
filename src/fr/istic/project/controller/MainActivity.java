@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import fr.istic.project.R;
 import fr.istic.project.model.ApplicationDB;
+import fr.istic.project.model.ApplicationSQLiteOpenHelper;
 import fr.istic.project.model.FindPhotosTask;
 import fr.istic.project.model.OPhoto;
 import fr.istic.project.utils.FileUtils;
@@ -40,10 +41,12 @@ public class MainActivity extends Activity {
     	
     	this.photos = new LinkedList<OPhoto>();
     	
+    	deleteDatabase(ApplicationSQLiteOpenHelper.DATABASE_NAME); // TODO à virer plus tard
+    	console.append("Mode debug : BDD vidée à chaque lancement !\n");
     	this.applicationDB = ApplicationDB.getInstance();
     	applicationDB.initialize(this);
-    	applicationDB.openDb();
-    	
+    	applicationDB.openDb();    	
+		
     	findPhotos();
     }
     
@@ -57,9 +60,13 @@ public class MainActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
-		if  (id == R.id.menu_timeline) {
+		if  (id == R.id.menu_timeline) { // TODO faire un switch !!
 			Intent i = new Intent(this, TimeLineActivity.class);
 			this.startActivity(i);
+			return true;
+		}
+		if  (id == R.id.menu_db_reset) {
+			deleteDatabase(ApplicationSQLiteOpenHelper.DATABASE_NAME);
 			return true;
 		}
 		else {
@@ -69,20 +76,30 @@ public class MainActivity extends Activity {
     
 	public void findPhotos() {
 	
-    	/* VERIFICATION DE LA DISPONIBILTE DE LA CARTE */
+    	/* VERIFICATION DE LA DISPONIBILTE DES MEDIAS */
     	String state = Environment.getExternalStorageState();
     	if (Environment.MEDIA_MOUNTED.equals(state)) {
     	    // We can read and write the media
     	        
     	    
-    	    /* PARCOURS DE LA CARTE SD - PREPARATION */
-    	    File fSDcard = Environment.getExternalStorageDirectory();
-    	    File[] directories = new File[FileUtils.allowedSDcardDirectories.length];	    
-    	    for (int i=0; i<FileUtils.allowedSDcardDirectories.length; i++) {
-    	    	directories[i] = new File(fSDcard.getPath() + File.separatorChar + FileUtils.allowedSDcardDirectories[i]); // Ajout des répertoires à parcourir
-    	    }
+    	    /* PARCOURS DES MEDIAS - PREPARATION */
+    	    // TODO proposer selection reps
+
+    		
+//    		File fSDcard;
+//    	    if (Environment.isExternalStorageRemovable()) {
+//    	    	fSDcard = Environment.getExternalStorageDirectory();
+//    	    } else {
+//    	    	fSDcard = new File("/Removable/MicroSD"); // ASUS Transformer
+//    	    }
+
+    		
+    		File[] directories = FileUtils.getAllowedDirectories(false, false, true); // Ajout des dossiers à parcourir
+    		for (File dir : directories) {
+    			console.append("\n "+ dir.toString());
+    		}
     	    
-    	    /* PARCOURS DE LA CARTE SD - EXECUTION */
+    	    /* PARCOURS DES MEDIAS - EXECUTION */
     	    FindPhotosTask findPhotosTask = new FindPhotosTask(this);
 	    	findPhotosTask.execute(directories);
 	    	
@@ -92,24 +109,29 @@ public class MainActivity extends Activity {
     	    
     	} else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
     	    // We can only read the media
-    	    Toast.makeText(getApplicationContext(), "Erreur : Carte SD en lecture seule.", Toast.LENGTH_SHORT).show();
+    	    Toast.makeText(getApplicationContext(), "Erreur : Mémoire interne et/ou carte microSD en lecture seule.", Toast.LENGTH_LONG).show();
     	} else {
     	    // Something else is wrong. We can neither read nor write
-    		Toast.makeText(getApplicationContext(), "Erreur : Carte SD manquante.", Toast.LENGTH_SHORT).show();
+    		Toast.makeText(getApplicationContext(), "Erreur : Mémoire interne et/ou carte microSD manquante.", Toast.LENGTH_LONG).show();
     	}       	
     	
     }
 	
 	
 	public void processPhotos(List<OPhoto> newPhotos) {
+		
+		console.append("\nContenu présent dans la carte :\n"
+						+ newPhotos.size() + " photo(s).\n");
 
-		console.append("Contenu base de données :\n"
-						+ applicationDB.getAllContexts().size() + " contextes.\n"
-						+ applicationDB.getAllPhotos().size() + " photos.");
+		console.append("\nContenu sauvegardé dans la base de données :\n"
+						+ applicationDB.getAllPhotos().size() + " photo(s).\n"
+						+ applicationDB.getAllContexts().size() + " contexte(s).\n");
+		
+		console.append("\nDétail des photos présentes dans la carte :");
 		
 		for(OPhoto newPhoto : newPhotos) {
 			this.photos.add(newPhoto);
-			console.append("\n" +newPhoto.getPath());
+			console.append("\n - " + newPhoto.getName() + "\n   " + newPhoto.getIdentifier());
 			
 //	    	ImageView iv = new ImageView(this);
 //	    	iv.setBackgroundDrawable(getResources().getDrawable((R.drawable.polaroid_photo_frame)));
@@ -125,6 +147,10 @@ public class MainActivity extends Activity {
 	
 	public ApplicationDB getApplicationDB() {
 		return applicationDB;
+	}
+	
+	public TextView getConsole() {
+		return this.console;
 	}
  
 }

@@ -1,34 +1,35 @@
 package fr.istic.project.model;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.location.Address;
 import android.location.Geocoder;
 import android.media.ExifInterface;
+import fr.istic.project.utils.BitmapUtils;
 import fr.istic.project.utils.FileUtils;
 
 public class OPhoto { // Photo est déjà utilisé par Android...	
 	
-	private final SimpleDateFormat SDF = new SimpleDateFormat("yyyy:MM:dd hh:mm:ss");
-		
 	private File file;
 	private String path;
 	private String name;
 	private ExifInterface exif;
 	
-	private Long _id;
 	private String identifier;
 	private String date;
 	private String location;
 	private Float note;
 	private String description;
 	private OContext context;
-	
-	
-	
+		
 	
 	/**
 	 * Constructeur côté objet
@@ -39,10 +40,11 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 			this.file = file;
 			this.path = file.getPath();
 			this.name = FileUtils.getFileName(this.path);	
+			System.out.println(name);
 			this.exif = new ExifInterface(path);
 			
 			String exifDateTime = exif.getAttribute(ExifInterface.TAG_DATETIME);
-			String fileDateTime = SDF.format(file.lastModified());
+			String fileDateTime = FileUtils.DATE_FORMAT_EXIF.format(file.lastModified());
 			//System.out.println((exifDateTime != null ? "exif" : "file"));
 			if (exifDateTime == null) exifDateTime = fileDateTime;
 			this.date = exifDateTime;
@@ -53,7 +55,8 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 			
 			this.context = null;
 			
-			this.identifier = this.date + "--" + fileDateTime + "--" + this.name; // TODO confirmer datecreation + datemodif + nomfichier
+			this.identifier = this.name;
+			processIdentifier();
 			//System.out.println(identifier);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -63,10 +66,10 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 	
 	/**
 	 * Constructeur côté SQLite
-	 * @param _id
+	 * @param identifier
 	 */
-	public OPhoto(Long _id) {
-		this._id = _id;
+	public OPhoto(String identifier) {
+		this.identifier = identifier;
 	}
 	
 	
@@ -82,10 +85,13 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 			float[] latlon = new float[2]; exif.getLatLong(latlon);
 			if (latlon[0] != 0.0f) {
 				addresses = geocoder.getFromLocation(latlon[0], latlon[1], 1);
-				this.location = addresses.get(0).getLocality() + ", " + addresses.get(0).getCountryName();
-				System.out.println("this.location:"+this.location);
+				if (!addresses.isEmpty()) {
+					this.location = addresses.get(0).getLocality() + ", " + addresses.get(0).getCountryName();
+					System.out.println(this.path + " location:"+this.location);
+					return true;
+				}
 			}			
-			return true;
+			return false;
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
@@ -93,16 +99,60 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 	}
 	
 	
+	/**
+	 * Calcul de l'identifiant avec MD5
+	 */
+	public void processIdentifier() {
+		// TODO check que ça change pas avec la density
+		// http://stackoverflow.com/questions/7929280/android-bitmap-getpixel-depends-on-density
+		Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(this.path, 256, 256);
+		
+		// UTILISATION DE TOUS LES PIXELS DE L'IMAGE
+		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		bitmap.compress(CompressFormat.JPEG, 0, stream);
+		byte[] bitmapByteArray = stream.toByteArray();
+
+
+		// MD5
+		MessageDigest md5;
+		try {
+			md5 = java.security.MessageDigest.getInstance("MD5");
+			md5.update(bitmapByteArray);
+			byte messageDigest[] = md5.digest();
+			
+//			// TODO a tester pour performances
+//			// Create Hex String
+//	        StringBuffer hexString = new StringBuffer();
+//	        for (int i = 0; i < messageDigest.length; i++) {
+//	            String h = Integer.toHexString(0xFF & messageDigest[i]);
+//	            while (h.length() < 2)
+//	                h = "0" + h;
+//	            hexString.append(h);
+//	        }
+//	        this.identifier = hexString.toString();
+			this.identifier = new BigInteger(1, messageDigest).toString(16);
+	        
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		
+		// Pour aider le Garbage Collector...
+		bitmap.recycle();
+	}
+	
 	/* GETTERS */
 	
 	public File getFile() {
 		return file;
 	}
-
+	
 	public String getPath() {
 		return path;
 	}
 
+	public String getName() {
+		return name;
+	}
 	
 	public String getDate() {
 		return date;
@@ -116,10 +166,6 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 
 	public Float getNote() {
 		return note;
-	}
-
-	public long get_id() {
-		return _id;
 	}
 	
 	public String getIdentifier() {
@@ -173,11 +219,6 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 
 	public void setExif(ExifInterface exif) {
 		this.exif = exif;
-	}
-
-
-	public void set_id(long _id) {
-		this._id = _id;
 	}
 
 	public void setIdentifier(String identifier) {
