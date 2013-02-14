@@ -3,6 +3,7 @@ package fr.istic.project.model;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 import android.app.ProgressDialog;
 import android.location.Geocoder;
@@ -10,6 +11,7 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 import fr.istic.project.controller.MainActivity;
 import fr.istic.project.utils.FileUtils;
+import fr.istic.project.utils.LocaleUtils;
 
 public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 	
@@ -30,7 +32,7 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 		this.progressDialog = new ProgressDialog(activity); progressDialog.setTitle("Recherche des photos");
 		this.photos = new LinkedList<OPhoto>();
 		
-		this.geocoder = new Geocoder(activity, FileUtils.locale);
+		this.geocoder = new Geocoder(activity, LocaleUtils.getLocaleFR());
 		this.geocoderError = false;
 		
 		this.applicationDB = activity.getApplicationDB();
