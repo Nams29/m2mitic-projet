@@ -1,6 +1,9 @@
  /*
   * BDD : 				http://stackoverflow.com/questions/9109438/how-to-use-an-existing-database-with-an-android-application/9109728#9109728
   * Image similarity : 	http://stackoverflow.com/questions/843972/image-comparison-fast-algorithm
+  * External :     	    http://stackoverflow.com/questions/10282457/how-to-access-removable-storage-on-android-devices
+    					http://renzhi.ca/2012/02/03/how-to-list-all-sd-cards-on-android/
+    					http://stackoverflow.com/questions/7450650/how-to-list-additional-external-storage-folders-mount-points
   */
 
 
