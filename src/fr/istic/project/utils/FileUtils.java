@@ -70,7 +70,7 @@ public class FileUtils {
 	 * @return
 	 */
 	public static File[] getAllowedDirectories(boolean useApplicationDirectory, boolean useExternalDirectoriesDevice, boolean useExternalDirectoriesRemovable) {
-		List<File> allowedDirectories = new LinkedList<File>();		
+		List<File> allowedDirectories = new LinkedList<File>();
 				
 		// Dossier de l'application
 		if (useApplicationDirectory) {
