@@ -83,25 +83,21 @@ public class MainActivity extends Activity {
     	        
     	    
     	    /* PARCOURS DES MEDIAS - PREPARATION */
-    	    // TODO proposer selection reps / a revoir avec
-    		// http://stackoverflow.com/questions/10282457/how-to-access-removable-storage-on-android-devices
-    		// http://renzhi.ca/2012/02/03/how-to-list-all-sd-cards-on-android/
-    		// http://stackoverflow.com/questions/7450650/how-to-list-additional-external-storage-folders-mount-points
+    	    // TODO proposer selection reps
+
     		
-    		File fSDcard;
-    	    if (Environment.isExternalStorageRemovable()) {
-    	    	fSDcard = Environment.getExternalStorageDirectory();
-    	    } else {
-    	    	fSDcard = new File("/Removable/MicroSD"); // ASUS Transformer
-    	    }
-    	    
-    	    
-    	    File[] directories = new File[FileUtils.ALLOWED_EXTERNAL_DIRECTORIES_REMOVABLE.length];	    
-    	    for (int i=0; i<FileUtils.ALLOWED_EXTERNAL_DIRECTORIES_REMOVABLE.length; i++) {
-    	    	directories[i] = new File(fSDcard.getPath() + File.separatorChar + FileUtils.ALLOWED_EXTERNAL_DIRECTORIES_REMOVABLE[i]); // Ajout des répertoires à parcourir
-    	    	
-    	    	console.append("\n a"+directories[i]);
-    	    }
+//    		File fSDcard;
+//    	    if (Environment.isExternalStorageRemovable()) {
+//    	    	fSDcard = Environment.getExternalStorageDirectory();
+//    	    } else {
+//    	    	fSDcard = new File("/Removable/MicroSD"); // ASUS Transformer
+//    	    }
+
+    		
+    		File[] directories = FileUtils.getAllowedDirectories(false, false, true); // Ajout des dossiers à parcourir
+    		for (File dir : directories) {
+    			console.append("\n "+ dir.toString());
+    		}
     	    
     	    /* PARCOURS DES MEDIAS - EXECUTION */
     	    FindPhotosTask findPhotosTask = new FindPhotosTask(this);
@@ -113,10 +109,10 @@ public class MainActivity extends Activity {
     	    
     	} else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
     	    // We can only read the media
-    	    Toast.makeText(getApplicationContext(), "Erreur : Carte SD en lecture seule.", Toast.LENGTH_SHORT).show();
+    	    Toast.makeText(getApplicationContext(), "Erreur : Mémoire interne et/ou carte microSD en lecture seule.", Toast.LENGTH_LONG).show();
     	} else {
     	    // Something else is wrong. We can neither read nor write
-    		Toast.makeText(getApplicationContext(), "Erreur : Carte SD manquante.", Toast.LENGTH_SHORT).show();
+    		Toast.makeText(getApplicationContext(), "Erreur : Mémoire interne et/ou carte microSD manquante.", Toast.LENGTH_LONG).show();
     	}       	
     	
     }
