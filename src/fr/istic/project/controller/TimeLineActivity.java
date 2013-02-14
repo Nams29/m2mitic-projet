@@ -17,6 +17,10 @@ public class TimeLineActivity extends Activity {
 	private static final int TIMELINE_ITEM_SIZE = 230;
 	
 	private LinearLayout rlItem1;
+	private LinearLayout rlItem2;
+	private LinearLayout rlItem3;
+	private LinearLayout rlItem4;
+	private LinearLayout rlItem5;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -53,6 +57,10 @@ public class TimeLineActivity extends Activity {
 	 */
 	private void initLayout() {
 		this.rlItem1 = (LinearLayout) this.findViewById(R.id.timeline_item1);
+		this.rlItem2 = (LinearLayout) this.findViewById(R.id.timeline_item2);
+		this.rlItem3 = (LinearLayout) this.findViewById(R.id.timeline_item3);
+		this.rlItem4 = (LinearLayout) this.findViewById(R.id.timeline_item4);
+		this.rlItem5 = (LinearLayout) this.findViewById(R.id.timeline_item5);
 	}
 	
 	/**
@@ -63,10 +71,26 @@ public class TimeLineActivity extends Activity {
 		int pixels = (int) (TIMELINE_ITEM_SIZE * scale + 0.5f);
 		
 		LayoutInflater factory = LayoutInflater.from(this);
-		View child = factory.inflate(R.layout.item_timeline, null);
-		child.setLayoutParams(new LayoutParams(pixels, LayoutParams.WRAP_CONTENT));
 		
-		this.rlItem1.addView(child);
+		View childUp = factory.inflate(R.layout.item_timeline_up, null);
+		childUp.setLayoutParams(new LayoutParams(pixels, LayoutParams.MATCH_PARENT));
+		this.rlItem1.addView(childUp);
+
+		View childDown = factory.inflate(R.layout.item_timeline_down, null);
+		childDown.setLayoutParams(new LayoutParams(pixels, LayoutParams.MATCH_PARENT));
+		this.rlItem2.addView(childDown);
+		
+		childUp = factory.inflate(R.layout.item_timeline_up, null);
+		childUp.setLayoutParams(new LayoutParams(pixels, LayoutParams.MATCH_PARENT));
+		this.rlItem3.addView(childUp);
+		
+		childDown = factory.inflate(R.layout.item_timeline_down, null);
+		childDown.setLayoutParams(new LayoutParams(pixels, LayoutParams.MATCH_PARENT));
+		this.rlItem4.addView(childDown);
+		
+		childUp = factory.inflate(R.layout.item_timeline_up, null);
+		childUp.setLayoutParams(new LayoutParams(pixels, LayoutParams.MATCH_PARENT));
+		this.rlItem5.addView(childUp);
 	}
 
 }
