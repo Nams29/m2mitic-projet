@@ -18,9 +18,9 @@ public class HACTest {
 		hac.addPict("CIMG0763.JPG","2010:03:05 23:52" );
 		hac.addPict("CIMG0766.JPG","2010:03:05 23:52" );
 		hac.addPict("CIMG0767.JPG","2010:03:05 23:55" );
-
 		
 		hac.findMiddle();
-//		hac.printResults();
+		hac.displayGroups();
+
 	}
 }

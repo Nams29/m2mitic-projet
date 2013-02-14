@@ -13,7 +13,7 @@ import java.util.List;
  *
  */
 public class HAC {
-	private final static int NBCLASSES=4;
+	private int NBCLASSES=3;
 	private ArrayList<ArrayList<PictInfo>> dat;
 	/**
 	 * ajoute des PictInfo a analyser
@@ -26,7 +26,13 @@ public class HAC {
 		t.add(pi);
 		dat.add(t);
 	}
-
+	/**
+	 * indique le nombre de clusters à produire
+	 * @param n
+	 */
+	public void setNbClusters(int n){
+		this.NBCLASSES=n;
+	}
 	public HAC(){
 		dat=new ArrayList<ArrayList<PictInfo>>();
 	}
@@ -52,7 +58,7 @@ public class HAC {
 				for (int l=k+1;l<dat.size();l++){
 					if( (dissim[k][l]<min)&&(dissim[k][l]>0)){
 						min=dissim[k][l];i=k;j=l;//TODO pas sur que ca sorte vraiment le minimum
-						System.out.println("found min="+min+"@ k:"+k+" l:"+l+" ");
+						//						System.out.println("found min="+min+"@ k:"+k+" l:"+l+" ");
 					}
 				}
 			}
@@ -63,8 +69,10 @@ public class HAC {
 			}           
 			dat.get(i).addAll(toAdd);
 			dat.remove(j);//ne suffit pas pour virer une colonne
-			graph(dissim);
+			//			graph(dissim);
+
 		}
+		//		displayGroups();
 	}
 	public void graph(float[][] dist){
 		for(int i=0;i<dist[0].length;i++){
@@ -75,6 +83,23 @@ public class HAC {
 			System.out.println("|");
 		}
 	}
+	/**
+	 * 
+	 * @return une liste de liste, chaque liste est un regroupement
+	 */
+	public ArrayList<ArrayList<PictInfo>> getResults(){
+		return dat;
+	}
+	public void displayGroups(){
+		for (ArrayList<PictInfo> al:dat){
+			System.out.println("----class----");
+			for(PictInfo pi:al){
+				System.out.println(pi);
+			}
+		}
+	}
+
+
 	public float dissim(ArrayList<PictInfo> ap1,ArrayList<PictInfo> ap2){
 		float sum_ap1=0;float sum_ap2=0;
 		float mean_ap1=0;float mean_ap2=0;
