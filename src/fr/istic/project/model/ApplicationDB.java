@@ -47,9 +47,10 @@ public final class ApplicationDB
 	
 	/* PHOTOS */
 	
-	public OPhoto addPhoto(final OPhoto photo)
+	public long addPhoto(final OPhoto photo)
 	{
 		final ContentValues contentValues = new ContentValues();
+				contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_ID, 			photo.getIdentifier());
 				contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_IDENTIFIER, 	photo.getIdentifier());
 				contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_DATE, 			photo.getDate());
 				contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_LOCATION, 		photo.getLocation());
@@ -58,12 +59,13 @@ public final class ApplicationDB
 				contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_PATH, 			photo.getPath());
 				if (photo.getContext() != null)
 					contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_CONTEXT, 	photo.getContext().get_id());
+				photo.set_id(photo.getIdentifier());
 		final long photoId = database.insert(ApplicationSQLiteOpenHelper.PHOTOS_TABLE_NAME, null, contentValues);
-
-		return getPhoto(photoId);
+		
+		return photoId;
 	}
 	
-	public OPhoto getPhoto(final long photoId)
+	public OPhoto getPhoto(final String photoId)
 	{
 		final Cursor cursor = database.query(ApplicationSQLiteOpenHelper.PHOTOS_TABLE_NAME, new String[]{
 				ApplicationSQLiteOpenHelper.PHOTOS_ID,
@@ -123,18 +125,20 @@ public final class ApplicationDB
 				contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_CONTEXT, 		photo.getContext().get_id());		
 		database.update(ApplicationSQLiteOpenHelper.PHOTOS_TABLE_NAME, contentValues, ApplicationSQLiteOpenHelper.PHOTOS_ID + "=" + photo.get_id(), null);
 		
-		return getPhoto(photo.get_id());
+		return getPhoto(photo.get_id()); // TODO changer retour
 	}
 	
 	public void deletePicture(final OPhoto photo)
 	{
 		Log.i(getClass().getName(), "delete photo with id '" + photo.get_id() + "'");
 		database.delete(ApplicationSQLiteOpenHelper.PHOTOS_TABLE_NAME, ApplicationSQLiteOpenHelper.PHOTOS_ID + " = " + photo.get_id(), null);
+		
+		 // TODO changer retour
 	}
 	
 	private OPhoto buildPhotoFromCursor(final Cursor cursor)
 	{
-		final OPhoto photo = new OPhoto(cursor.getLong(cursor.getColumnIndex(ApplicationSQLiteOpenHelper.PHOTOS_ID)));
+		final OPhoto photo = new OPhoto(cursor.getString(cursor.getColumnIndex(ApplicationSQLiteOpenHelper.PHOTOS_ID)));
 			photo.setIdentifier(			cursor.getString(	cursor.getColumnIndex(ApplicationSQLiteOpenHelper.PHOTOS_IDENTIFIER)));
 			photo.setDate(					cursor.getString(	cursor.getColumnIndex(ApplicationSQLiteOpenHelper.PHOTOS_DATE)));
 			photo.setLocation(				cursor.getString(	cursor.getColumnIndex(ApplicationSQLiteOpenHelper.PHOTOS_LOCATION)));
@@ -155,7 +159,7 @@ public final class ApplicationDB
 				contentValues.put(ApplicationSQLiteOpenHelper.CONTEXTS_NAME, context.getName());
 		final long contextId = database.insert(ApplicationSQLiteOpenHelper.CONTEXTS_TABLE_NAME, null, contentValues);
 
-		return getContext(contextId);
+		return getContext(contextId);  // TODO changer retour
 	}
 	
 	public OContext getContext(final long contextId)
@@ -200,13 +204,14 @@ public final class ApplicationDB
 				contentValues.put(ApplicationSQLiteOpenHelper.CONTEXTS_NAME, context.getName());	
 		database.update(ApplicationSQLiteOpenHelper.CONTEXTS_TABLE_NAME, contentValues, ApplicationSQLiteOpenHelper.CONTEXTS_ID + "=" + context.get_id(), null);
 		
-		return getContext(context.get_id());
+		return getContext(context.get_id()); // TODO changer retour
 	}
 	
 	public void deleteContext(final OContext context)
 	{
 		Log.i(getClass().getName(), "delete context with id '" + context.get_id() + "'");
 		database.delete(ApplicationSQLiteOpenHelper.CONTEXTS_TABLE_NAME, ApplicationSQLiteOpenHelper.CONTEXTS_ID + " = " + context.get_id(), null);
+		 // TODO changer retour
 	}
 	
 	private OContext buildContextFromCursor(final Cursor cursor)

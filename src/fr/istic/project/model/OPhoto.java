@@ -22,6 +22,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.media.ExifInterface;
 import android.provider.MediaStore.Files;
+import fr.istic.project.utils.BitmapUtils;
 import fr.istic.project.utils.FileUtils;
 
 public class OPhoto { // Photo est déjà utilisé par Android...	
@@ -33,7 +34,7 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 	private String name;
 	private ExifInterface exif;
 	
-	private Long _id;
+	private String _id;
 	private String identifier;
 	private String date;
 	private String location;
@@ -53,6 +54,7 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 			this.file = file;
 			this.path = file.getPath();
 			this.name = FileUtils.getFileName(this.path);	
+			System.out.println(name);
 			this.exif = new ExifInterface(path);
 			
 			String exifDateTime = exif.getAttribute(ExifInterface.TAG_DATETIME);
@@ -67,54 +69,8 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 			
 			this.context = null;
 			
-
-			Bitmap bitmap = BitmapFactory.decodeFile(this.path);
-			// TODO check que ça change pas avec la density
-			// http://stackoverflow.com/questions/7929280/android-bitmap-getpixel-depends-on-density
-						
-			// UTILISATION DE TOUS LES PIXELS DE L'IMAGE
-			//ByteArrayOutputStream stream = new ByteArrayOutputStream();
-			//bitmap.compress(CompressFormat.JPEG, 0, stream);
-			//byte[] bitmapByteArray = stream.toByteArray();
-
-			// UTILISATION D'UNE LIGNE HORIZONTALE ET D'UNE LIGNE VERTICALE EN PLEIN MILIEU (FORME UN +)  
-			int height = bitmap.getHeight();
-			int width = bitmap.getWidth();
-			byte[] bitmapByteArray = new byte[height+width];
-			for (int x=0; x<width; x++) { // Ligne -
-				int pixel = bitmap.getPixel(x, height/2);
-				bitmapByteArray[x] = (byte) pixel;
-			}
-			for (int y=0; y<height; y++) { // Ligne |
-				int pixel = bitmap.getPixel(width/2, y);
-				bitmapByteArray[y+width] = (byte) pixel;
-			}	
-
-			
-			MessageDigest md5;
-			try {
-				// MD5
-				md5 = java.security.MessageDigest.getInstance("MD5");
-				md5.update(bitmapByteArray);
-				byte messageDigest[] = md5.digest();
-				
-//				// Create Hex String
-//		        StringBuffer hexString = new StringBuffer();
-//		        for (int i = 0; i < messageDigest.length; i++) {
-//		            String h = Integer.toHexString(0xFF & messageDigest[i]);
-//		            while (h.length() < 2)
-//		                h = "0" + h;
-//		            hexString.append(h);
-//		        }
-//		        this.identifier = hexString.toString();		        
-		        
-				this.identifier = new BigInteger(1, messageDigest).toString(16);
-		        
-			} catch (NoSuchAlgorithmException e) {
-				e.printStackTrace();
-			}
-			
-			//this.identifier = this.date + "--" + fileDateTime + "--" + this.name; // TODO confirmer datecreation + datemodif + nomfichier
+			this.identifier = this.name;
+			process_id();
 			//System.out.println(identifier);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -126,7 +82,7 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 	 * Constructeur côté SQLite
 	 * @param _id
 	 */
-	public OPhoto(Long _id) {
+	public OPhoto(String _id) {
 		this._id = _id;
 	}
 	
@@ -153,6 +109,45 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 		}
 	}
 	
+	
+	public void process_id() {
+		// TODO check que ça change pas avec la density
+		// http://stackoverflow.com/questions/7929280/android-bitmap-getpixel-depends-on-density
+		Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(this.path, 512, 512);
+//		Bitmap bitmap = BitmapFactory.decodeFile(this.path); // Pleine taille, plante avec les grosses photos
+		
+		// UTILISATION DE TOUS LES PIXELS DE L'IMAGE
+		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		bitmap.compress(CompressFormat.JPEG, 0, stream); // TODO tester en lossless (PNG, 0)
+		byte[] bitmapByteArray = stream.toByteArray();
+
+
+		// MD5
+		MessageDigest md5;
+		try {
+			md5 = java.security.MessageDigest.getInstance("MD5");
+			md5.update(bitmapByteArray);
+			byte messageDigest[] = md5.digest();
+			
+//			// TODO a tester pour performances
+//			// Create Hex String
+//	        StringBuffer hexString = new StringBuffer();
+//	        for (int i = 0; i < messageDigest.length; i++) {
+//	            String h = Integer.toHexString(0xFF & messageDigest[i]);
+//	            while (h.length() < 2)
+//	                h = "0" + h;
+//	            hexString.append(h);
+//	        }
+//	        this.identifier = hexString.toString();
+			this.identifier = new BigInteger(1, messageDigest).toString(16);
+	        
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		
+		// Pour aider le Garbage Collector...
+		bitmap.recycle();
+	}
 	
 	/* GETTERS */
 	
@@ -182,7 +177,7 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 		return note;
 	}
 
-	public long get_id() {
+	public String get_id() {
 		return _id;
 	}
 	
@@ -240,7 +235,7 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 	}
 
 
-	public void set_id(long _id) {
+	public void set_id(String _id) {
 		this._id = _id;
 	}
 

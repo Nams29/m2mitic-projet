@@ -55,7 +55,7 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 	    	for(File file : files) {
 	    		//System.out.println(""+ file.toString());
 	    		
-	    		if (photos.size() > 50) break;
+	    		//if (photos.size() > 50) break;
 	    		
 	    		if (file.isFile()) {
 	    			// Vérification de l'extension du fichier
@@ -63,8 +63,12 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 	    				OPhoto photo = new OPhoto(file); // Création de la photo
 	    				photo.setContext(OContext.defaultContext);
 	    				if (photo.processLocation(geocoder) == false) geocoderError = true; // Récupération de la localité avec Geocoder
-	    				photos.add(photo);
 	    				applicationDB.addPhoto(photo);
+	    				//if (applicationDB.addPhoto(photo) != -1) { // TODO prendre en compte différement
+	    					photo.set_id(photo.getIdentifier());
+	    				//}
+	    				photos.add(photo);
+	    				System.out.println(photos.size());
 	    				publishProgress(photos.size());
 	    			}
 	    		} else { // C'est un répertoire
