@@ -26,7 +26,55 @@
         android:layout_alignParentTop="true"
         android:gravity="center_horizontal" >
     </LinearLayout>
+    
+     <!-- Branche 2 -->
 
+    <LinearLayout
+        android:id="@+id/timeline_item2"
+        android:layout_width="230dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/timeline_middle"
+        android:layout_toRightOf="@+id/timeline_item1"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal" >
+    </LinearLayout>
+    
+    <!-- Branche 3 -->
+
+    <LinearLayout
+        android:id="@+id/timeline_item3"
+        android:layout_width="230dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/timeline_middle"
+        android:layout_toRightOf="@+id/timeline_item2"
+        android:layout_alignParentTop="true"
+        android:gravity="center_horizontal" >
+    </LinearLayout>
+	
+     <!-- Branche 4 -->
+
+    <LinearLayout
+        android:id="@+id/timeline_item4"
+        android:layout_width="230dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/timeline_middle"
+        android:layout_toRightOf="@+id/timeline_item3"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal" >
+    </LinearLayout>
+    
+     <!-- Branche 5 -->
+
+    <LinearLayout
+        android:id="@+id/timeline_item5"
+        android:layout_width="230dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/timeline_middle"
+        android:layout_toRightOf="@+id/timeline_item4"
+        android:layout_alignParentTop="true"
+        android:gravity="center_horizontal" >
+    </LinearLayout>
+    
     <!-- Flèche -->
 
     <ImageView
