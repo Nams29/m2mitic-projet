@@ -41,8 +41,8 @@ public class ApplicationSQLiteOpenHelper extends SQLiteOpenHelper
 								+ CONTEXTS_NAME 		+ " TEXT" + ");");
 		
 		database.execSQL("CREATE TABLE " + PHOTOS_TABLE_NAME + " (" 
-								+ PHOTOS_ID 			+ " INTEGER PRIMARY KEY AUTOINCREMENT,"
-								+ PHOTOS_IDENTIFIER 	+ " TEXT,"
+								+ PHOTOS_ID 			+ " TEXT UNIQUE PRIMARY KEY,"
+								+ PHOTOS_IDENTIFIER 	+ " TEXT," // TODO virer identifier partout
 								+ PHOTOS_DATE 			+ " TEXT,"
 								+ PHOTOS_LOCATION 		+ " TEXT," 
 								+ PHOTOS_NOTE 			+ " INTEGER,"
