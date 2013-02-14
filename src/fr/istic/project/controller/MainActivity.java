@@ -110,16 +110,18 @@ public class MainActivity extends Activity {
 	
 	public void processPhotos(List<OPhoto> newPhotos) {
 		
-		console.append("\nContenu carte :\n"
+		console.append("\nContenu présent dans la carte :\n"
 						+ newPhotos.size() + " photo(s).\n");
 
-		console.append("\nContenu base de données :\n"
+		console.append("\nContenu sauvegardé dans la base de données :\n"
 						+ applicationDB.getAllPhotos().size() + " photo(s).\n"
 						+ applicationDB.getAllContexts().size() + " contexte(s).\n");
 		
+		console.append("\nDétail des photos présentes dans la carte :");
+		
 		for(OPhoto newPhoto : newPhotos) {
 			this.photos.add(newPhoto);
-			console.append("\n\n" + newPhoto.getName() + "\n" + newPhoto.get_id());
+			console.append("\n - " + newPhoto.getName() + "\n   " + newPhoto.get_id());
 			
 //	    	ImageView iv = new ImageView(this);
 //	    	iv.setBackgroundDrawable(getResources().getDrawable((R.drawable.polaroid_photo_frame)));
