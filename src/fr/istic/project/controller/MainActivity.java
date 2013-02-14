@@ -42,7 +42,7 @@ public class MainActivity extends Activity {
     	this.photos = new LinkedList<OPhoto>();
     	
     	deleteDatabase(ApplicationSQLiteOpenHelper.DATABASE_NAME); // TODO à virer plus tard
-    	console.append("DB vidée à chaque lancement ! (debug...)\n");
+    	console.append("Mode debug : BDD vidée à chaque lancement !\n");
     	this.applicationDB = ApplicationDB.getInstance();
     	applicationDB.initialize(this);
     	applicationDB.openDb();    	
@@ -109,14 +109,17 @@ public class MainActivity extends Activity {
 	
 	
 	public void processPhotos(List<OPhoto> newPhotos) {
+		
+		console.append("\nContenu carte :\n"
+						+ newPhotos.size() + " photo(s).\n");
 
-		console.append("Contenu base de données :\n"
-						+ applicationDB.getAllContexts().size() + " contextes.\n"
-						+ applicationDB.getAllPhotos().size() + " photos.");
+		console.append("\nContenu base de données :\n"
+						+ applicationDB.getAllPhotos().size() + " photo(s).\n"
+						+ applicationDB.getAllContexts().size() + " contexte(s).\n");
 		
 		for(OPhoto newPhoto : newPhotos) {
 			this.photos.add(newPhoto);
-			console.append("\n\n" + newPhoto.getName() + "\n" + newPhoto.getIdentifier());
+			console.append("\n\n" + newPhoto.getName() + "\n" + newPhoto.get_id());
 			
 //	    	ImageView iv = new ImageView(this);
 //	    	iv.setBackgroundDrawable(getResources().getDrawable((R.drawable.polaroid_photo_frame)));
