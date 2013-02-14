@@ -34,7 +34,6 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 	private String name;
 	private ExifInterface exif;
 	
-	private String _id;
 	private String identifier;
 	private String date;
 	private String location;
@@ -70,7 +69,7 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 			this.context = null;
 			
 			this.identifier = this.name;
-			process_id();
+			processIdentifier();
 			//System.out.println(identifier);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -80,10 +79,10 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 	
 	/**
 	 * Constructeur côté SQLite
-	 * @param _id
+	 * @param identifier
 	 */
-	public OPhoto(String _id) {
-		this._id = _id;
+	public OPhoto(String identifier) {
+		this.identifier = identifier;
 	}
 	
 	
@@ -99,10 +98,13 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 			float[] latlon = new float[2]; exif.getLatLong(latlon);
 			if (latlon[0] != 0.0f) {
 				addresses = geocoder.getFromLocation(latlon[0], latlon[1], 1);
-				this.location = addresses.get(0).getLocality() + ", " + addresses.get(0).getCountryName();
-				System.out.println(this.path + " location:"+this.location);
+				if (!addresses.isEmpty()) {
+					this.location = addresses.get(0).getLocality() + ", " + addresses.get(0).getCountryName();
+					System.out.println(this.path + " location:"+this.location);
+					return true;
+				}
 			}			
-			return true;
+			return false;
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
@@ -110,7 +112,10 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 	}
 	
 	
-	public void process_id() {
+	/**
+	 * Calcul de l'identifiant avec MD5
+	 */
+	public void processIdentifier() {
 		// TODO check que ça change pas avec la density
 		// http://stackoverflow.com/questions/7929280/android-bitmap-getpixel-depends-on-density
 		Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(this.path, 512, 512);
@@ -176,10 +181,6 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 	public Float getNote() {
 		return note;
 	}
-
-	public String get_id() {
-		return _id;
-	}
 	
 	public String getIdentifier() {
 		return identifier;
@@ -232,11 +233,6 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 
 	public void setExif(ExifInterface exif) {
 		this.exif = exif;
-	}
-
-
-	public void set_id(String _id) {
-		this._id = _id;
 	}
 
 	public void setIdentifier(String identifier) {

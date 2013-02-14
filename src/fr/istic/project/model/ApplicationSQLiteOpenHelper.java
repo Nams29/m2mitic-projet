@@ -5,6 +5,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+
+/**
+ * @see http://developer.android.com/guide/topics/data/data-storage.html#db
+ */
 public class ApplicationSQLiteOpenHelper extends SQLiteOpenHelper
 {
 	public static final String 	DATABASE_NAME 		= "application.db";
@@ -17,8 +21,7 @@ public class ApplicationSQLiteOpenHelper extends SQLiteOpenHelper
 
 	/* PHOTOS */
 	public static final String PHOTOS_TABLE_NAME 	= "photos";
-	public static final String PHOTOS_ID 			= "_id";
-	public static final String PHOTOS_IDENTIFIER 	= "identifier";
+	public static final String PHOTOS_IDENTIFIER 	= "identifier"; // Pas _id car type INTEGER par convention
 	public static final String PHOTOS_DATE 			= "date";
 	public static final String PHOTOS_LOCATION 		= "location";
 	public static final String PHOTOS_NOTE 			= "note";
@@ -41,8 +44,7 @@ public class ApplicationSQLiteOpenHelper extends SQLiteOpenHelper
 								+ CONTEXTS_NAME 		+ " TEXT" + ");");
 		
 		database.execSQL("CREATE TABLE " + PHOTOS_TABLE_NAME + " (" 
-								+ PHOTOS_ID 			+ " TEXT UNIQUE PRIMARY KEY,"
-								+ PHOTOS_IDENTIFIER 	+ " TEXT," // TODO virer identifier partout
+								+ PHOTOS_IDENTIFIER		+ " TEXT UNIQUE PRIMARY KEY,"
 								+ PHOTOS_DATE 			+ " TEXT,"
 								+ PHOTOS_LOCATION 		+ " TEXT," 
 								+ PHOTOS_NOTE 			+ " INTEGER,"

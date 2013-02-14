@@ -83,10 +83,24 @@ public class MainActivity extends Activity {
     	        
     	    
     	    /* PARCOURS DE LA CARTE SD - PREPARATION */
-    	    File fSDcard = Environment.getExternalStorageDirectory();
+    	    // TODO proposer selection reps / a revoir avec
+    		// http://stackoverflow.com/questions/10282457/how-to-access-removable-storage-on-android-devices
+    		// http://renzhi.ca/2012/02/03/how-to-list-all-sd-cards-on-android/
+    		// http://stackoverflow.com/questions/7450650/how-to-list-additional-external-storage-folders-mount-points
+    		
+    		File fSDcard;
+    	    if (Environment.isExternalStorageRemovable()) {
+    	    	fSDcard = Environment.getExternalStorageDirectory();
+    	    } else {
+    	    	fSDcard = new File("/Removable/MicroSD"); // ASUS Transformer
+    	    }
+    	    
+    	    
     	    File[] directories = new File[FileUtils.allowedSDcardDirectories.length];	    
     	    for (int i=0; i<FileUtils.allowedSDcardDirectories.length; i++) {
     	    	directories[i] = new File(fSDcard.getPath() + File.separatorChar + FileUtils.allowedSDcardDirectories[i]); // Ajout des répertoires à parcourir
+    	    	
+    	    	console.append("\n a"+directories[i]);
     	    }
     	    
     	    /* PARCOURS DE LA CARTE SD - EXECUTION */
@@ -121,7 +135,7 @@ public class MainActivity extends Activity {
 		
 		for(OPhoto newPhoto : newPhotos) {
 			this.photos.add(newPhoto);
-			console.append("\n - " + newPhoto.getName() + "\n   " + newPhoto.get_id());
+			console.append("\n - " + newPhoto.getName() + "\n   " + newPhoto.getIdentifier());
 			
 //	    	ImageView iv = new ImageView(this);
 //	    	iv.setBackgroundDrawable(getResources().getDrawable((R.drawable.polaroid_photo_frame)));
@@ -137,6 +151,10 @@ public class MainActivity extends Activity {
 	
 	public ApplicationDB getApplicationDB() {
 		return applicationDB;
+	}
+	
+	public TextView getConsole() {
+		return this.console;
 	}
  
 }

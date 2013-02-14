@@ -49,32 +49,35 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 	protected Void doInBackground(File... params) {
 		
 		for(File dir : params) { // Pour chaque répertoire à parcourir
+			activity.getConsole().append("\n b"+dir.toString());
 			File[] files = dir.listFiles();
 
-	    	
-	    	for(File file : files) {
-	    		//System.out.println(""+ file.toString());
-	    		
-	    		//if (photos.size() > 50) break;
-	    		
-	    		if (file.isFile()) {
-	    			// Vérification de l'extension du fichier
-	    			if (FileUtils.allowedPhotosExtensions.contains(FileUtils.getFileExtension(file.getPath()))) {
-	    				OPhoto photo = new OPhoto(file); // Création de la photo
-	    				photo.setContext(OContext.defaultContext);
-	    				if (photo.processLocation(geocoder) == false) geocoderError = true; // Récupération de la localité avec Geocoder
-	    				applicationDB.addPhoto(photo);
-	    				//if (applicationDB.addPhoto(photo) != -1) { // TODO prendre en compte différement
-	    					photo.set_id(photo.getIdentifier());
-	    				//}
-	    				photos.add(photo);
-	    				System.out.println(photos.size());
-	    				publishProgress(photos.size());
-	    			}
-	    		} else { // C'est un répertoire
-	        		if (file.isDirectory() && !file.isHidden()) doInBackground(file); // Récursivité !
-	    		}
-	    	}
+			if (files != null) {
+				activity.getConsole().append("\n c"+dir.toString());
+		    	for(File file : files) {
+		    		//System.out.println(""+ file.toString());
+		    		
+		    		//if (photos.size() > 50) break;
+		    		
+		    		if (file.isFile()) {
+		    			// Vérification de l'extension du fichier
+		    			if (FileUtils.allowedPhotosExtensions.contains(FileUtils.getFileExtension(file.getPath()))) {
+		    				OPhoto photo = new OPhoto(file); // Création de la photo
+		    				photo.setContext(OContext.defaultContext);
+		    				if (photo.processLocation(geocoder) == false) geocoderError = true; // Récupération de la localité avec Geocoder
+		    				applicationDB.addPhoto(photo);
+		    				//if (applicationDB.addPhoto(photo) != -1) { // TODO prendre en compte différement
+		    					photo.setIdentifier(photo.getIdentifier());
+		    				//}
+		    				photos.add(photo);
+		    				System.out.println(photos.size());
+		    				publishProgress(photos.size());
+		    			}
+		    		} else { // C'est un répertoire
+		        		if (file.isDirectory() && !file.isHidden()) doInBackground(file); // Récursivité !
+		    		}
+		    	}
+			}
 		}
     	
 		return null;
