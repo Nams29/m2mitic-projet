@@ -3,6 +3,7 @@ package fr.istic.project.model;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import android.app.ProgressDialog;
 import android.location.Geocoder;
@@ -22,13 +23,17 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 	private boolean geocoderError;
 	
 	private ApplicationDB applicationDB;
+	
+	private long start;
 
 	
 	public FindPhotosTask(MainActivity activity) {
 		super();
 		
 		this.activity = activity;
-		this.progressDialog = new ProgressDialog(activity); progressDialog.setTitle("Recherche des photos");
+		this.progressDialog = new ProgressDialog(activity); 
+				progressDialog.setTitle("Recherche des photos");
+				progressDialog.setCancelable(true);
 		this.photos = new LinkedList<OPhoto>();
 		
 		this.geocoder = new Geocoder(activity, LocaleUtils.LOCALE_FR);
@@ -42,6 +47,7 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
+		start = System.currentTimeMillis();
 		progressDialog.show();
 	}
 	
@@ -58,7 +64,7 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 		    	for(File file : files) {
 		    		//System.out.println(""+ file.toString());
 		    		
-		    		//if (photos.size() >= 50) break;
+		    		if (photos.size() >= 500) break;
 		    		
 		    		if (file.isFile()) {
 		    			// Vérification de l'extension du fichier
@@ -100,6 +106,10 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 		if (geocoderError) {
 			Toast.makeText(activity, "Erreur : connexion Internet indisponible, les localisations des photos n'ont pu être calculées avec Geocoder.", Toast.LENGTH_LONG).show();
 		}
-        activity.processPhotos(photos); // Retourne dans l'activity        
+		long duration = System.currentTimeMillis() - start;
+		
+		
+		Toast.makeText(activity, "duree : "+ (duration/1000), Toast.LENGTH_LONG).show();
+		activity.processPhotos(photos); // Retourne dans l'activity        
     }
 }

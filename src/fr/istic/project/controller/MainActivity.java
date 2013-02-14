@@ -109,7 +109,7 @@ public class MainActivity extends Activity {
 		
 		// Construction du dialog
 		List<CharSequence> items = new LinkedList<CharSequence>();
-		final boolean[] itemsPreChecked = { false, true, true }; // Choix par défaut du dialog
+		final boolean[] itemsPreChecked = { false, false, true }; // Choix par défaut du dialog
 		final boolean[] resultats = itemsPreChecked;
 		
 		if (externalDirectoryDeviceAvailable) {
