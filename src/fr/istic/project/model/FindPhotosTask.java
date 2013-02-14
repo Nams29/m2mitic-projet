@@ -55,6 +55,8 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 	    	for(File file : files) {
 	    		//System.out.println(""+ file.toString());
 	    		
+	    		if (photos.size() > 50) break;
+	    		
 	    		if (file.isFile()) {
 	    			// Vérification de l'extension du fichier
 	    			if (FileUtils.allowedPhotosExtensions.contains(FileUtils.getFileExtension(file.getPath()))) {

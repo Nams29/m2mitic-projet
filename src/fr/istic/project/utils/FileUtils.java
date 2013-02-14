@@ -8,7 +8,8 @@ import java.util.Locale;
 public class FileUtils {
 	
 	public static final Locale locale = new Locale("fr", "FR");
-	public static final String[] allowedSDcardDirectories = { "DCIM" }; // TODO hors sdcard ?
+	//public static final String[] allowedSDcardDirectories = { "DCIM" }; // TODO hors sdcard ?
+	public static final String[] allowedSDcardDirectories = { "!aaProjet" }; // TODO hors sdcard ?
 	public static final List<String> allowedPhotosExtensions;	
 	static { // Bloc d'initialisation statique !
 		allowedPhotosExtensions = new LinkedList<String>();
