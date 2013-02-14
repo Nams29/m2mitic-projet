@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import android.graphics.Bitmap;
@@ -19,8 +18,6 @@ import fr.istic.project.utils.FileUtils;
 
 public class OPhoto { // Photo est déjà utilisé par Android...	
 	
-	private final SimpleDateFormat SDF = new SimpleDateFormat("yyyy:MM:dd hh:mm:ss");
-		
 	private File file;
 	private String path;
 	private String name;
@@ -32,9 +29,7 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 	private Float note;
 	private String description;
 	private OContext context;
-	
-	
-	
+		
 	
 	/**
 	 * Constructeur côté objet
@@ -49,7 +44,7 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 			this.exif = new ExifInterface(path);
 			
 			String exifDateTime = exif.getAttribute(ExifInterface.TAG_DATETIME);
-			String fileDateTime = SDF.format(file.lastModified());
+			String fileDateTime = FileUtils.DATE_FORMAT_EXIF.format(file.lastModified());
 			//System.out.println((exifDateTime != null ? "exif" : "file"));
 			if (exifDateTime == null) exifDateTime = fileDateTime;
 			this.date = exifDateTime;

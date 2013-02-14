@@ -96,9 +96,9 @@ public class MainActivity extends Activity {
     	    }
     	    
     	    
-    	    File[] directories = new File[FileUtils.allowedCardDirectories.length];	    
-    	    for (int i=0; i<FileUtils.allowedCardDirectories.length; i++) {
-    	    	directories[i] = new File(fSDcard.getPath() + File.separatorChar + FileUtils.allowedCardDirectories[i]); // Ajout des répertoires à parcourir
+    	    File[] directories = new File[FileUtils.ALLOWED_DIRECTORIES_CARD.length];	    
+    	    for (int i=0; i<FileUtils.ALLOWED_DIRECTORIES_CARD.length; i++) {
+    	    	directories[i] = new File(fSDcard.getPath() + File.separatorChar + FileUtils.ALLOWED_DIRECTORIES_CARD[i]); // Ajout des répertoires à parcourir
     	    	
     	    	console.append("\n a"+directories[i]);
     	    }
