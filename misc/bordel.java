@@ -62,3 +62,12 @@ try {
 	// TODO Auto-generated catch block
 	e.printStackTrace();
 }
+
+
+// Timeline
+ImageView iv = new ImageView(this);
+iv.setBackgroundDrawable(getResources().getDrawable((R.drawable.polaroid_photo_frame)));
+iv.setImageDrawable(Drawable.createFromPath(pic.getPath()));
+iv.setLayoutParams(new LayoutParams(87, 100));
+iv.setPadding(5, 5, 5, 10);//	    	
+timeline.addView(iv);

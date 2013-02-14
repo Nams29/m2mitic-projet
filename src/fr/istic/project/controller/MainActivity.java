@@ -13,7 +13,6 @@ import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import fr.istic.project.R;
@@ -26,7 +25,6 @@ import fr.istic.project.utils.FileUtils;
 public class MainActivity extends Activity {
 	
 	private TextView console;
-	private LinearLayout timeline;
 	
 	private List<OPhoto> photos;
 	private transient ApplicationDB applicationDB;
@@ -38,9 +36,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        this.console = (TextView) findViewById(R.id.main_console);
-    	this.timeline = (LinearLayout) findViewById(R.id.main_timeline);
-    	
+        this.console = (TextView) findViewById(R.id.main_console);    	
     	this.photos = new LinkedList<OPhoto>();
     	
     	console.append("Vidage de la BDD : voir dans le menu de l'application.\n");
@@ -216,14 +212,6 @@ public class MainActivity extends Activity {
 		for(OPhoto newPhoto : newPhotos) {
 			this.photos.add(newPhoto);
 			console.append("\n - " + newPhoto.getName() + "\n   " + newPhoto.getIdentifier());
-			
-//	    	ImageView iv = new ImageView(this);
-//	    	iv.setBackgroundDrawable(getResources().getDrawable((R.drawable.polaroid_photo_frame)));
-//	    	iv.setImageDrawable(Drawable.createFromPath(pic.getPath()));
-//	    	iv.setLayoutParams(new LayoutParams(87, 100));
-//	    	iv.setPadding(5, 5, 5, 10);
-//	    	
-//	    	timeline.addView(iv);
     	}
 		
 	}
