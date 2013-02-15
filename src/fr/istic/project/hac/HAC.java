@@ -15,6 +15,7 @@ import java.util.List;
 public class HAC {
 	private int NBCLASSES=4;
 	private ArrayList<ArrayList<PictInfo>> dat;
+	HacAlgoInterface hai;
 	/**
 	 * ajoute des PictInfo a analyser
 	 * @param name nom du fichier image
@@ -35,6 +36,9 @@ public class HAC {
 	}
 	public HAC(){
 		dat=new ArrayList<ArrayList<PictInfo>>();
+		hai=new HacWardAlgo();
+		//autre algo dispo:
+//		hai=new HacUnweightedAverageAlgo();
 	}
 
 	public void findMiddle(){
@@ -50,7 +54,8 @@ public class HAC {
 			dissim =new float[dat.size()][dat.size()];
 			for (int i=0;i<dat.size();i++){
 				for (int j=i+1;j<dat.size();j++){
-					dissim[i][j]=dissim(dat.get(i),dat.get(j));
+					dissim[i][j]=hai.computeDissimilarities(dat.get(i),dat.get(j));
+
 				}
 			}
 
@@ -71,7 +76,7 @@ public class HAC {
 				toAdd.add(element);
 			}           
 			dat.get(i).addAll(toAdd);
-			dat.remove(j);//ne suffit pas pour virer une colonne
+			dat.remove(j);
 			graph(dissim);
 
 		}
@@ -103,27 +108,6 @@ public class HAC {
 	}
 
 
-	public float dissim(ArrayList<PictInfo> ap1,ArrayList<PictInfo> ap2){
-		float sum_ap1=0;float sum_ap2=0;
-		float mean_ap1=0;float mean_ap2=0;
-		float ward=0;
-		for(PictInfo p:ap1){
-			sum_ap1=sum_ap1+p.getTime();
-		}
-		mean_ap1=sum_ap1/ap1.size();//calcul de la moyenne ap1
-
-		for(PictInfo p:ap2){
-			sum_ap2=sum_ap2+p.getTime();
-		}
-		mean_ap2=sum_ap2/ap2.size();//calcul de la moyenne ap2
-		float sap1=ap1.size();
-		float sap2=ap2.size();
-
-		ward= ((sap1*sap2)/(sap1+sap2))*(mean_ap2-mean_ap1);//calcul de la distance de ward
-		return ward;
-
-	}
-
 	/**
 	 * 
 	 * @param l une ArrayList qui contient des ArrayList
@@ -144,7 +128,7 @@ public class HAC {
 		long time;// no see
 		String name;
 		public PictInfo(String name,String strDate){
-			SimpleDateFormat formatter = new SimpleDateFormat("yyyy:MM:DD HH:mm");
+			SimpleDateFormat formatter = new SimpleDateFormat(" yyyy:MM:DD HH:mm");
 			Date dateStr=new Date();
 			try {
 				dateStr = formatter.parse(strDate);
