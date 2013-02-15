@@ -4,6 +4,8 @@
   * External :     	    http://stackoverflow.com/questions/10282457/how-to-access-removable-storage-on-android-devices
     					http://renzhi.ca/2012/02/03/how-to-list-all-sd-cards-on-android/
     					http://stackoverflow.com/questions/7450650/how-to-list-additional-external-storage-folders-mount-points
+    Multithreading :	http://developer.att.com/developer/forward.jsp?passedItemId=11900168
+    					http://www.javacodegeeks.com/2011/12/using-threadpoolexecutor-to-parallelize.html
   */
 
 
