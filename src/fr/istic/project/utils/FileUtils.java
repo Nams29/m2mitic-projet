@@ -14,7 +14,7 @@ public class FileUtils {
 	public static final String APPLICATION_DIRECTORY_DEVICE = "!aaPROJET";
 	
 	public static final String[] ALLOWED_EXTERNAL_DIRECTORIES_DEVICE = { "DCIM" };
-	public static final String[] ALLOWED_EXTERNAL_DIRECTORIES_REMOVABLE = { "/" };
+	public static final String[] ALLOWED_EXTERNAL_DIRECTORIES_REMOVABLE = { "!aaPROJET" };
 	
 	public static final List<String> ALLOWED_FILE_EXTENSIONS;	
 	static { // Bloc d'initialisation statique !

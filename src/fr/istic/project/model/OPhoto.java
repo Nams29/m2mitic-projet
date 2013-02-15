@@ -56,7 +56,7 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 			this.context = null;
 			
 			this.identifier = this.name;
-			processIdentifier();
+			//processIdentifier(); // TODO a virer
 			//System.out.println(identifier);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -103,13 +103,12 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 	 * Calcul de l'identifiant avec MD5
 	 */
 	public void processIdentifier() {
-		
+		          
 		// Récupération de tous les pixels de l'image
-		Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(this.path, 256, 256);
+		Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(OPhoto.this.path, 256, 256);
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
 		bitmap.compress(CompressFormat.JPEG, 0, stream);
 		byte[] bitmapByteArray = stream.toByteArray();
-
 
 		// Calcul du MD5 à partir des pixels
 		MessageDigest md5;
@@ -118,7 +117,7 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 			md5.update(bitmapByteArray);
 			byte messageDigest[] = md5.digest();
 
-			this.identifier = new BigInteger(1, messageDigest).toString(16);
+			OPhoto.this.identifier = new BigInteger(1, messageDigest).toString(16);
 	        
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
@@ -126,7 +125,9 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 		
 		// Pour aider le Garbage Collector...
 		bitmap.recycle();
+
 	}
+	
 	
 	/* GETTERS */
 	
@@ -203,7 +204,6 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 	public void setName(String name) {
 		this.name = name;
 	}
-
 
 	public void setExif(ExifInterface exif) {
 		this.exif = exif;

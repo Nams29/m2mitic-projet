@@ -3,6 +3,10 @@ package fr.istic.project.model;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -27,6 +31,20 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 	private long start;
 	private boolean cancelTask;
 
+	
+	/* MT */ // TODO nettoyer
+	final int cpus = Runtime.getRuntime().availableProcessors();
+	final int maxThreads = cpus * 16;
+	ExecutorService executorService =
+			  new ThreadPoolExecutor(
+			    maxThreads, // core thread pool size
+			    maxThreads, // maximum thread pool size
+			    1, // time to wait before resizing pool
+			    TimeUnit.MINUTES, 
+			    new ArrayBlockingQueue<Runnable>(maxThreads, true),
+			    new ThreadPoolExecutor.CallerRunsPolicy());
+	/* MT */
+	
 	
 	public FindPhotosTask(MainActivity activity) {
 		super();
@@ -73,18 +91,31 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 		    	for(File file : files) { // Pour chaque fichier du dossier
 		    		//System.out.println(""+ file.toString());
 		    		
-		    		if (photos.size() >= 500) break;
+		    		if (photos.size() >= 100) break;
 		    		if (cancelTask) break;
 		    		
 		    		if (file.isFile()) {
 		    			// Vérification de l'extension du fichier
 		    			if (FileUtils.ALLOWED_FILE_EXTENSIONS.contains(FileUtils.getFileExtension(file.getPath()))) {
-		    				OPhoto photo = new OPhoto(file); // Création de la photo
+		    				final OPhoto photo = new OPhoto(file); // Création de la photo
 		    				photo.setContext(OContext.defaultContext);
 		    				if (photo.processLocation(geocoder) == false) geocoderError = true; // Récupération de la localité avec Geocoder
 		    				applicationDB.addPhoto(photo);
+		    				
+		    				executorService.submit(new Runnable() {
+								@Override
+								public void run() {
+									try {
+										System.out.println("max:"+maxThreads);
+										photo.processIdentifier();
+									} catch (Exception ex) {
+									
+								    }
+							    }
+							});
+		    				
 		    				//if (applicationDB.addPhoto(photo) != -1) { // TODO prendre en compte différement
-		    					photo.setIdentifier(photo.getIdentifier());
+		    					//photo.setIdentifier(photo.getIdentifier());
 		    				//}
 		    				photos.add(photo);
 		    				System.out.println(photos.size());
@@ -111,6 +142,23 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 	@Override
     protected void onPostExecute(Void result) {
 		super.onPostExecute(result);
+		
+		/* MT */
+		executorService.shutdown();			         
+		try {
+			if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
+				// pool didn't terminate after the first try
+				executorService.shutdownNow();
+			}
+
+			if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
+				// pool didn't terminate after the second try
+			}
+		} catch (InterruptedException ex) {
+			executorService.shutdownNow();
+			Thread.currentThread().interrupt();
+		}
+		/* MT */		
 		
 		progressDialog.dismiss();
 		if (geocoderError) {
