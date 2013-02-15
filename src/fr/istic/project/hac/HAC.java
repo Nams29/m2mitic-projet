@@ -128,7 +128,7 @@ public class HAC {
 		long time;// no see
 		String name;
 		public PictInfo(String name,String strDate){
-			SimpleDateFormat formatter = new SimpleDateFormat(" yyyy:MM:DD HH:mm");
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy:MM:DD HH:mm");
 			Date dateStr=new Date();
 			try {
 				dateStr = formatter.parse(strDate);
