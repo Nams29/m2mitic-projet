@@ -21,8 +21,7 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 	private File file;
 	private String path;
 	private String name;
-	private ExifInterface exif;
-	
+		
 	private String identifier;
 	private String date;
 	private String location;
@@ -35,32 +34,20 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 	 * Constructeur côté objet
 	 * @param file
 	 */
-	public OPhoto(File file) {
-		try {
-			this.file = file;
-			this.path = file.getPath();
-			this.name = FileUtils.getFileName(this.path);	
-			System.out.println(name);
-			this.exif = new ExifInterface(path);
-			
-			String exifDateTime = exif.getAttribute(ExifInterface.TAG_DATETIME);
-			String fileDateTime = FileUtils.DATE_FORMAT_EXIF.format(file.lastModified());
-			//System.out.println((exifDateTime != null ? "exif" : "file"));
-			if (exifDateTime == null) exifDateTime = fileDateTime;
-			this.date = exifDateTime;
-			
-			this.location = ""; // Voir aussi processLocation()
-			this.note = -1f;
-			this.description = "";
-			
-			this.context = null;
-			
-			this.identifier = this.name;
-			//processIdentifier(); // TODO a virer
-			//System.out.println(identifier);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public OPhoto(File file) {		
+		this.file = file;
+		this.path = file.getPath();
+		this.name = FileUtils.getFileName(path);	
+		//System.out.println(name);
+		
+		this.identifier = name;
+		this.date = "";
+		this.location = "";
+		this.note = -1f;
+		this.description = "";
+		this.context = null;
+		
+		// Voir aussi : processProperties() appelé de manière asynchrone
 	}
 
 	
@@ -74,11 +61,85 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 	
 	
 	/**
-	 * Récupération de la localité avec Geocoder
+	 * Traite les propriétés de la photo 
+	 */
+	public boolean processProperties(Geocoder geocoder) {
+		try {			
+			ExifInterface exif = new ExifInterface(path);
+			
+			/* Date */
+			String exifDateTime = exif.getAttribute(ExifInterface.TAG_DATETIME);
+			String fileDateTime = FileUtils.DATE_FORMAT_EXIF.format(file.lastModified());
+			//System.out.println((exifDateTime != null ? "exif" : "file"));
+			if (exifDateTime == null) exifDateTime = fileDateTime;
+			this.date = exifDateTime;
+						
+			/* Note */
+			//this.note = -1f;
+			
+			/* Description */
+			//this.description = "";
+			
+			/* Context */
+			//this.context = null;
+			
+			/* Identifier */
+			processIdentifier(exifDateTime);
+			//System.out.println(identifier);
+			
+			/* Location */
+			return processLocation(exif, geocoder);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+	
+	
+	/**
+	 * Traite la propriété identifiant
+	 */
+	private void processIdentifier(String exifDateTime) {
+		
+		if (exifDateTime != null) { // Si la photo possède une date Exif
+			this.identifier = this.name+" "+exifDateTime+" "+file.length();
+			
+		} else { // Sinon on fait un hash MD5 des pixels de l'image
+			System.out.println(this.name + ": MD5");
+			
+			// Récupération de tous les pixels de l'image
+			Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(OPhoto.this.path, 256, 256);
+			ByteArrayOutputStream stream = new ByteArrayOutputStream();
+			bitmap.compress(CompressFormat.JPEG, 0, stream);
+			byte[] bitmapByteArray = stream.toByteArray();
+
+			// Calcul du MD5 à partir des pixels
+			MessageDigest md5;
+			try {
+				md5 = java.security.MessageDigest.getInstance("MD5");
+				md5.update(bitmapByteArray);
+				byte messageDigest[] = md5.digest();
+
+				this.identifier = new BigInteger(1, messageDigest).toString(16);
+		        
+			} catch (NoSuchAlgorithmException e) {
+				e.printStackTrace();
+			}
+			
+			// Pour aider le Garbage Collector...
+			bitmap.recycle();
+		}    
+
+	}
+	
+	
+	/**
+	 * Traite la propriété localité avec Geocoder
 	 * @param geocoder
 	 * @return
 	 */
-	public boolean processLocation(Geocoder geocoder) {
+	private boolean processLocation(ExifInterface exif, Geocoder geocoder) {
 		try {
 			List<Address> addresses;
 			
@@ -87,45 +148,17 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 				addresses = geocoder.getFromLocation(latlon[0], latlon[1], 1);
 				if (!addresses.isEmpty()) {
 					this.location = addresses.get(0).getLocality() + ", " + addresses.get(0).getCountryName();
-					System.out.println(this.path + " location:"+this.location);
+					
+					System.out.println(name + ": GPS - " + location);
 					return true;
 				}
-			}			
-			return false;
+			}
 		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
-	
-	
-	/**
-	 * Calcul de l'identifiant avec MD5
-	 */
-	public void processIdentifier() {
-		          
-		// Récupération de tous les pixels de l'image
-		Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(OPhoto.this.path, 256, 256);
-		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		bitmap.compress(CompressFormat.JPEG, 0, stream);
-		byte[] bitmapByteArray = stream.toByteArray();
-
-		// Calcul du MD5 à partir des pixels
-		MessageDigest md5;
-		try {
-			md5 = java.security.MessageDigest.getInstance("MD5");
-			md5.update(bitmapByteArray);
-			byte messageDigest[] = md5.digest();
-
-			OPhoto.this.identifier = new BigInteger(1, messageDigest).toString(16);
-	        
-		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
 		
-		// Pour aider le Garbage Collector...
-		bitmap.recycle();
-
+		System.out.println(name + ": GPS - KO");
+		return false;
 	}
 	
 	
@@ -168,9 +201,15 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 	public OContext getContext() {
 		return context;
 	}
-
+	
 
 	/* SETTERS */
+	public void setPath(String path) {
+		this.path = path;
+		this.name = FileUtils.getFileName(this.path);
+		this.file = new File(this.path);
+	}
+	
 	
 	public void setDate(String date) {
 		this.date = date;
@@ -188,27 +227,6 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 		this.description = description;
 	}
 	
-	
-	public void setPath(String path) {
-		try {
-			this.path = path;
-			this.path = path;
-			this.name = FileUtils.getFileName(this.path);
-			this.file = new File(this.path);
-			this.exif = new ExifInterface(path);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setExif(ExifInterface exif) {
-		this.exif = exif;
-	}
-
 	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
 	}

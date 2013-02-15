@@ -32,18 +32,18 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 	private boolean cancelTask;
 
 	
-	/* MT */ // TODO nettoyer
-	final int cpus = Runtime.getRuntime().availableProcessors();
-	final int maxThreads = cpus * 16;
+	/* Multi threading */	
+	final int cores = Runtime.getRuntime().availableProcessors();
+	final int maxThreads = cores * 4; // 4 threads par core
 	ExecutorService executorService =
-			  new ThreadPoolExecutor(
-			    maxThreads, // core thread pool size
-			    maxThreads, // maximum thread pool size
-			    1, // time to wait before resizing pool
-			    TimeUnit.MINUTES, 
-			    new ArrayBlockingQueue<Runnable>(maxThreads, true),
-			    new ThreadPoolExecutor.CallerRunsPolicy());
-	/* MT */
+		new ThreadPoolExecutor(
+			maxThreads,
+			maxThreads,
+			1, // TODO optimisation ?
+			TimeUnit.MINUTES, // TODO optimisation ?
+			new ArrayBlockingQueue<Runnable>(maxThreads, true),
+			new ThreadPoolExecutor.CallerRunsPolicy()
+	);
 	
 	
 	public FindPhotosTask(MainActivity activity) {
@@ -67,7 +67,7 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 		this.geocoderError = false;
 		
 		this.applicationDB = activity.getApplicationDB();
-		if (applicationDB.getContext(0) == null)
+		if (applicationDB.getContext(0) == null) // TODO a corriger ?
 			OContext.defaultContext = applicationDB.addContext(OContext.defaultContext); // Ajout du contexte par défaut
 	}
 	
@@ -99,27 +99,29 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 		    			if (FileUtils.ALLOWED_FILE_EXTENSIONS.contains(FileUtils.getFileExtension(file.getPath()))) {
 		    				final OPhoto photo = new OPhoto(file); // Création de la photo
 		    				photo.setContext(OContext.defaultContext);
-		    				if (photo.processLocation(geocoder) == false) geocoderError = true; // Récupération de la localité avec Geocoder
-		    				applicationDB.addPhoto(photo);
 		    				
+		    				
+		    				/* Multi threading */
 		    				executorService.submit(new Runnable() {
 								@Override
 								public void run() {
 									try {
-										System.out.println("max:"+maxThreads);
-										photo.processIdentifier();
-									} catch (Exception ex) {
-									
+
+										if (photo.processProperties(geocoder) == false) geocoderError = true; // Traitement des propriétés (identifiant et localisation)
+										applicationDB.addPhoto(photo);
+					    				//if (applicationDB.addPhoto(photo) != -1) { // TODO prendre en compte différement
+				    					//photo.setIdentifier(photo.getIdentifier());
+										//}
+										photos.add(photo); // TODO a virer
+					    				
+					    				System.out.println(photos.size());
+					    				publishProgress(photos.size());
+									} catch (Exception e) {
+										e.printStackTrace();
 								    }
 							    }
 							});
-		    				
-		    				//if (applicationDB.addPhoto(photo) != -1) { // TODO prendre en compte différement
-		    					//photo.setIdentifier(photo.getIdentifier());
-		    				//}
-		    				photos.add(photo);
-		    				System.out.println(photos.size());
-		    				publishProgress(photos.size());
+
 		    			}
 		    		} else { // C'est un répertoire
 		        		if (file.isDirectory() && !file.isHidden()) doInBackground(file); // Récursivité !
@@ -143,26 +145,24 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
     protected void onPostExecute(Void result) {
 		super.onPostExecute(result);
 		
-		/* MT */
+		/* Multi threading */
 		executorService.shutdown();			         
 		try {
-			if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
-				// pool didn't terminate after the first try
+			// pool didn't terminate after the first try
+			if (!executorService.awaitTermination(10, TimeUnit.SECONDS)) {
 				executorService.shutdownNow();
 			}
 
-			if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
-				// pool didn't terminate after the second try
-			}
-		} catch (InterruptedException ex) {
+			// pool didn't terminate after the second try
+			if (!executorService.awaitTermination(10, TimeUnit.SECONDS)) { }
+		} catch (InterruptedException e) {
 			executorService.shutdownNow();
 			Thread.currentThread().interrupt();
 		}
-		/* MT */		
 		
 		progressDialog.dismiss();
 		if (geocoderError) {
-			Toast.makeText(activity, "Erreur : connexion Internet indisponible, les localisations des photos n'ont pu être calculées avec Geocoder.", Toast.LENGTH_LONG).show();
+			Toast.makeText(activity, "Erreur : connexion Internet indisponible, les localisations des photos n'ont pu être traitées avec Geocoder.", Toast.LENGTH_LONG).show();
 		}
 		long duration = System.currentTimeMillis() - start;
 		
