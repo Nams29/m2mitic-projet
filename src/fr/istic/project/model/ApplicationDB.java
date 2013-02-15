@@ -60,6 +60,7 @@ public final class ApplicationDB
 					contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_CONTEXT, 	photo.getContext().get_id());
 				photo.setIdentifier(photo.getIdentifier());
 		final long photoId = database.insert(ApplicationSQLiteOpenHelper.PHOTOS_TABLE_NAME, null, contentValues);
+		// TODO gerer exceptions
 		
 		return photoId;
 	}
@@ -110,7 +111,7 @@ public final class ApplicationDB
 		return photos;
 	}
 	
-	public OPhoto updatePhoto(final OPhoto photo)
+	public int updatePhoto(final OPhoto photo)
 	{
 		final ContentValues contentValues = new ContentValues();
 				contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_IDENTIFIER, 	photo.getIdentifier());
@@ -120,17 +121,17 @@ public final class ApplicationDB
 				contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_DESCRIPTION, 	photo.getDescription());
 				contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_PATH, 			photo.getPath());
 				contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_CONTEXT, 		photo.getContext().get_id());		
-		database.update(ApplicationSQLiteOpenHelper.PHOTOS_TABLE_NAME, contentValues, ApplicationSQLiteOpenHelper.PHOTOS_IDENTIFIER + "=" + photo.getIdentifier(), null);
+		int resultat = database.update(ApplicationSQLiteOpenHelper.PHOTOS_TABLE_NAME, contentValues, ApplicationSQLiteOpenHelper.PHOTOS_IDENTIFIER + "=" + photo.getIdentifier(), null);
 		
-		return getPhoto(photo.getIdentifier()); // TODO changer retour
+		return resultat;
 	}
 	
-	public void deletePicture(final OPhoto photo)
+	public int deletePicture(final OPhoto photo)
 	{
 		Log.i(getClass().getName(), "delete photo with id '" + photo.getIdentifier() + "'");
-		database.delete(ApplicationSQLiteOpenHelper.PHOTOS_TABLE_NAME, ApplicationSQLiteOpenHelper.PHOTOS_IDENTIFIER + " = " + photo.getIdentifier(), null);
+		int resultat = database.delete(ApplicationSQLiteOpenHelper.PHOTOS_TABLE_NAME, ApplicationSQLiteOpenHelper.PHOTOS_IDENTIFIER + " = " + photo.getIdentifier(), null);
 		
-		 // TODO changer retour
+		return resultat;
 	}
 	
 	private OPhoto buildPhotoFromCursor(final Cursor cursor)
@@ -154,8 +155,9 @@ public final class ApplicationDB
 		final ContentValues contentValues = new ContentValues();
 				contentValues.put(ApplicationSQLiteOpenHelper.CONTEXTS_NAME, context.getName());
 		final long contextId = database.insert(ApplicationSQLiteOpenHelper.CONTEXTS_TABLE_NAME, null, contentValues);
-
-		return getContext(contextId);  // TODO changer retour
+		// TODO gerer exceptions
+		
+		return getContext(contextId);
 	}
 	
 	public OContext getContext(final long contextId)
@@ -194,20 +196,21 @@ public final class ApplicationDB
 		return contexts;
 	}
 	
-	public OContext updateContext(final OContext context)
+	public int updateContext(final OContext context)
 	{
 		final ContentValues contentValues = new ContentValues();
 				contentValues.put(ApplicationSQLiteOpenHelper.CONTEXTS_NAME, context.getName());	
-		database.update(ApplicationSQLiteOpenHelper.CONTEXTS_TABLE_NAME, contentValues, ApplicationSQLiteOpenHelper.CONTEXTS_ID + "=" + context.get_id(), null);
+		int resultat = database.update(ApplicationSQLiteOpenHelper.CONTEXTS_TABLE_NAME, contentValues, ApplicationSQLiteOpenHelper.CONTEXTS_ID + "=" + context.get_id(), null);
 		
-		return getContext(context.get_id()); // TODO changer retour
+		return resultat;
 	}
 	
-	public void deleteContext(final OContext context)
+	public int deleteContext(final OContext context)
 	{
 		Log.i(getClass().getName(), "delete context with id '" + context.get_id() + "'");
-		database.delete(ApplicationSQLiteOpenHelper.CONTEXTS_TABLE_NAME, ApplicationSQLiteOpenHelper.CONTEXTS_ID + " = " + context.get_id(), null);
-		 // TODO changer retour
+		int resultat = database.delete(ApplicationSQLiteOpenHelper.CONTEXTS_TABLE_NAME, ApplicationSQLiteOpenHelper.CONTEXTS_ID + " = " + context.get_id(), null);
+		
+		return resultat;
 	}
 	
 	private OContext buildContextFromCursor(final Cursor cursor)
