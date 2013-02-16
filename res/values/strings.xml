@@ -11,5 +11,5 @@
     <!-- Content description -->
     <string name="timeline_item">Photo</string>
     <string name="timeline_arrow">Timeline</string>
-
+	<string name="visionneuse_plein_ecran">Image pour le plein écran</string>
 </resources>
