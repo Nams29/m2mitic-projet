@@ -1,9 +1,9 @@
 package fr.istic.project.hac;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import fr.istic.project.utils.FormatUtils;
 
 public class TestHAC {
 	private final static int nbClusters=12;
@@ -31,12 +31,12 @@ public class TestHAC {
 
 	private List<PictInfo> dat;
 	private CustomArrayList dist;
-//	private List<Long> mids;//valeurs moyennes pour établir les classes
-	private List<CustomArrayList> clusters;
+	//private List<Long> mids;//valeurs moyennes pour établir les classes
+	//private List<CustomArrayList> clusters;
 	public TestHAC(){
 		dat=new ArrayList<PictInfo>();//utilisé une fois pour parcourir la liste des images et calculer les distances
 		dist=new CustomArrayList();//<-- TODO rendre ça générique
-		clusters=new ArrayList<TestHAC.CustomArrayList>();//clusters 1 -----> * CustomArrayList 1 -----> * Distances 
+		//clusters=new ArrayList<TestHAC.CustomArrayList>();//clusters 1 -----> * CustomArrayList 1 -----> * Distances 
 		//ici
 		dat.add(new PictInfo("CIMG0760.JPG"," 2010:03:05 23:50" ));
 		dat.add(new PictInfo("CIMG0761.JPG"," 2010:03:05 23:50" ));
@@ -86,7 +86,7 @@ public class TestHAC {
 		long distance=0;
 		long maxDistance=0;
 		long minDistance=0;
-		long middle=0;
+		//long middle=0;
 
 		for(PictInfo one: dat){
 			for(PictInfo two: dat){
@@ -103,7 +103,7 @@ public class TestHAC {
 
 		for(int i=0;i<nbClusters;i++){
 
-			CustomArrayList[] vals=halve(dist);
+			//CustomArrayList[] vals=halve(dist);
 		}
 
 	}
@@ -118,14 +118,7 @@ public class TestHAC {
 		String name;
 
 		public PictInfo(String name,String strDate){
-
-			SimpleDateFormat formatter = new SimpleDateFormat(" yyyy:MM:DD HH:mm");
-			Date dateStr=new Date();
-			try {
-				dateStr = formatter.parse(strDate);
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
+			Date dateStr = FormatUtils.stringHacToDate(strDate);
 			this.name=name;
 			this.time=dateStr.getTime()/1000;//convert date -> epoch (en secondes)
 		}
@@ -138,14 +131,18 @@ public class TestHAC {
 	}
 
 	class Distance{
-		private PictInfo p1;
-		private PictInfo p2;
+		//private PictInfo p1;
+		//private PictInfo p2;
 		private long distance;
+		
 		public long getDistance() {
 			return distance;
 		}
+		
 		public Distance(PictInfo p1,PictInfo p2,long distance){
-			this.p1=p1;this.p2=p2;this.distance=distance;
+			//this.p1=p1;
+			//this.p2=p2;
+			this.distance=distance;
 		}
 	}
 	/**

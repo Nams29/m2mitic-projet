@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -97,16 +98,18 @@ public class ViewerActivity extends Activity {
             fullScreen.setImageResource(ViewerActivity.this.imagesDeTests.get(v.getTag()));
             fullScreen.setVisibility(View.VISIBLE);
             fullScreen.setOnClickListener(new ClickListenerOut());
-            fullScreen.setOnTouchListener(new MyFlingGestureListener(v, fullScreen));
+            fullScreen.setOnTouchListener(new MyFlingGestureListener(ViewerActivity.this, v, fullScreen));
         }
     }
 
     class MyFlingGestureListener extends OnFlingGestureListener {
-
+    	
+    	Context c;
         View v;
         ImageView iv;
 
-        public MyFlingGestureListener(View v, ImageView iv) {
+        public MyFlingGestureListener(Context c, View v, ImageView iv) {
+        	super(c);
             this.v = v;
             this.iv = iv;
         }
@@ -127,7 +130,7 @@ public class ViewerActivity extends Activity {
 
                 Toast.makeText(getApplicationContext(), iv.getTag().toString(), Toast.LENGTH_SHORT).show();
 
-                iv.setOnTouchListener(new MyFlingGestureListener(v, iv));
+                iv.setOnTouchListener(new MyFlingGestureListener(c, v, iv));
             }
         }
 

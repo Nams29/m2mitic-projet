@@ -1,5 +1,6 @@
 package fr.istic.project.utils;
 
+import android.content.Context;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
@@ -8,8 +9,12 @@ import android.view.View.OnTouchListener;
 
 public abstract class OnFlingGestureListener implements OnTouchListener {
 
-    private final GestureDetector gdt = new GestureDetector(new GestureListener());
-
+    private final GestureDetector gdt;
+    
+    public OnFlingGestureListener(Context c) {
+    	gdt = new GestureDetector(c, new GestureListener());
+    }
+    
     @Override
     public boolean onTouch(final View v, final MotionEvent event) {
         return gdt.onTouchEvent(event);

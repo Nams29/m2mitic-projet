@@ -1,10 +1,10 @@
 package fr.istic.project.hac;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+
+import fr.istic.project.utils.FormatUtils;
 
 /**
  * mode d'emploi: instancier la classe
@@ -38,7 +38,7 @@ public class HAC {
 		dat=new ArrayList<ArrayList<PictInfo>>();
 		hai=new HacWardAlgo();
 		//autre algo dispo:
-//		hai=new HacUnweightedAverageAlgo();
+		//hai=new HacUnweightedAverageAlgo();
 	}
 
 	public void findMiddle(){
@@ -65,11 +65,15 @@ public class HAC {
 			for (int k=0;k<dat.size();k++){
 				for (int l=k+1;l<dat.size();l++){
 					if( (dissim[k][l]<min)&&(dissim[k][l]>0)){
-						min=dissim[k][l];i=k;j=l;//TODO pas sur que ca sorte vraiment le minimum
-//						System.out.println("found min="+min+"@ k:"+k+" l:"+l+" ");
+						//TODO pas sur que ca sorte vraiment le minimum
+						min = dissim[k][l];
+						i = k;
+						j = l;
+						//System.out.println("found min="+min+"@ k:"+k+" l:"+l+" ");
 					}
 				}
 			}
+			
 			List<PictInfo> toAdd = new ArrayList<PictInfo>();
 			for(Iterator<PictInfo> it = dat.get(j).iterator(); it.hasNext();) {
 				PictInfo element = it.next();
@@ -80,15 +84,15 @@ public class HAC {
 			graph(dissim);
 
 		}
-		//		displayGroups();
+		//displayGroups();
 	}
 	public void graph(float[][] dist){
 		for(int i=0;i<dist[0].length;i++){
-//			System.out.print("|");
+			//System.out.print("|");
 			for(int j=0;j<dist[i].length;j++){
-//				System.out.print(dist[i][j]+" ");
+				//System.out.print(dist[i][j]+" ");
 			}
-//			System.out.println("|");
+			//System.out.println("|");
 		}
 	}
 	/**
@@ -98,13 +102,14 @@ public class HAC {
 	public ArrayList<ArrayList<PictInfo>> getResults(){
 		return dat;
 	}
+
 	public void displayGroups(){
-		for (ArrayList<PictInfo> al:dat){
-//			System.out.println("----class----");
+		/*for (ArrayList<PictInfo> al:dat){
+			System.out.println("----class----");
 			for(PictInfo pi:al){
-//				System.out.println(pi);
+				System.out.println(pi);
 			}
-		}
+		}*/
 	}
 
 
@@ -112,12 +117,13 @@ public class HAC {
 	 * 
 	 * @param l une ArrayList qui contient des ArrayList
 	 */
+	/*
 	private void graph(List<PictInfo> l){
 		long sum=0;
 		for(PictInfo o:l){
-//			System.out.print("["+o.getName()+"]");
+			System.out.print("["+o.getName()+"]");
 		}
-	}
+	}*/
 
 	/**
 	 * structure de donnée qui contient le nom et timestamp en epoch d'une photo
@@ -128,22 +134,22 @@ public class HAC {
 		long time;// no see
 		String name;
 		public PictInfo(String name,String strDate){
-			SimpleDateFormat formatter = new SimpleDateFormat("yyyy:MM:DD HH:mm");
-			Date dateStr=new Date();
-			try {
-				dateStr = formatter.parse(strDate);
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
+			Date dateStr = FormatUtils.stringHacToDate(strDate);
 			this.name=name;
 			this.time=dateStr.getTime()/1000;//convert date -> epoch (en secondes)
 		}
 
 		public String toString(){
-			return "name "+name+" timestamp "+time;
+			return "PictInfo : name : "+name+", timestamp : "+time;
 		}
-		public String getName(){return name;}
-		public long getTime(){return time;}
+
+		public String getName() {
+			return name;
+		}
+
+		public long getTime() {
+			return time;
+		}
 	}
 }
 
