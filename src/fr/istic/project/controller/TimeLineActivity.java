@@ -125,46 +125,46 @@ public class TimeLineActivity extends Activity {
 		ImageView ivCenter = (ImageView) this.rlItem1.findViewById(R.id.timeline_photo_center);
 		ImageView ivLeft = (ImageView) this.rlItem1.findViewById(R.id.timeline_photo_left);
 		ImageView ivRight = (ImageView) this.rlItem1.findViewById(R.id.timeline_photo_right);
-
-		this.setImageBitmap(ivCenter, data.get(0));
-		this.setImageBitmap(ivLeft, data.get(1));
-		this.setImageBitmap(ivRight, data.get(2));
+		
+		if (data.size()>0) this.setImageBitmap(ivCenter, data.get(0));
+		if (data.size()>1) this.setImageBitmap(ivLeft, data.get(1));
+		if (data.size()>2) this.setImageBitmap(ivRight, data.get(2));
 		this.rlItem1.setTag(groups.get(0));
 		
 		ivCenter = (ImageView) this.rlItem2.findViewById(R.id.timeline_photo_center);
 		ivLeft = (ImageView) this.rlItem2.findViewById(R.id.timeline_photo_left);
 		ivRight = (ImageView) this.rlItem2.findViewById(R.id.timeline_photo_right);
 
-		this.setImageBitmap(ivCenter, data.get(3));
-		this.setImageBitmap(ivLeft, data.get(4));
-		this.setImageBitmap(ivRight, data.get(5));
+		if (data.size()>3) this.setImageBitmap(ivCenter, data.get(3));
+		if (data.size()>4) this.setImageBitmap(ivLeft, data.get(4));
+		if (data.size()>5) this.setImageBitmap(ivRight, data.get(5));
 		this.rlItem2.setTag(groups.get(1));
 		
 		ivCenter = (ImageView) this.rlItem3.findViewById(R.id.timeline_photo_center);
 		ivLeft = (ImageView) this.rlItem3.findViewById(R.id.timeline_photo_left);
 		ivRight = (ImageView) this.rlItem3.findViewById(R.id.timeline_photo_right);
 
-		this.setImageBitmap(ivCenter, data.get(6));
-		this.setImageBitmap(ivLeft, data.get(7));
-		this.setImageBitmap(ivRight, data.get(8));
+		if (data.size()>6) this.setImageBitmap(ivCenter, data.get(6));
+		if (data.size()>7) this.setImageBitmap(ivLeft, data.get(7));
+		if (data.size()>8) this.setImageBitmap(ivRight, data.get(8));
 		this.rlItem3.setTag(groups.get(2));
 		
 		ivCenter = (ImageView) this.rlItem4.findViewById(R.id.timeline_photo_center);
 		ivLeft = (ImageView) this.rlItem4.findViewById(R.id.timeline_photo_left);
 		ivRight = (ImageView) this.rlItem4.findViewById(R.id.timeline_photo_right);
 
-		this.setImageBitmap(ivCenter, data.get(9));
-		this.setImageBitmap(ivLeft, data.get(10));
-		this.setImageBitmap(ivRight, data.get(11));
+		if (data.size()>9) this.setImageBitmap(ivCenter, data.get(9));
+		if (data.size()>10) this.setImageBitmap(ivLeft, data.get(10));
+		if (data.size()>11) this.setImageBitmap(ivRight, data.get(11));
 		this.rlItem4.setTag(groups.get(3));
 		
 		ivCenter = (ImageView) this.rlItem5.findViewById(R.id.timeline_photo_center);
 		ivLeft = (ImageView) this.rlItem5.findViewById(R.id.timeline_photo_left);
 		ivRight = (ImageView) this.rlItem5.findViewById(R.id.timeline_photo_right);
 
-		this.setImageBitmap(ivCenter, data.get(12));
-		this.setImageBitmap(ivLeft, data.get(13));
-		this.setImageBitmap(ivRight, data.get(14));
+		if (data.size()>12) this.setImageBitmap(ivCenter, data.get(12));
+		if (data.size()>13) this.setImageBitmap(ivLeft, data.get(13));
+		if (data.size()>14) this.setImageBitmap(ivRight, data.get(14));
 		this.rlItem5.setTag(groups.get(4));
 	}
 	
