@@ -35,7 +35,7 @@
             android:layout_height="120dp"
             android:contentDescription="@string/timeline_item"
             android:background="@android:color/black"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerInside" />
     </RelativeLayout>
 
     <!-- Photo droite -->
@@ -59,7 +59,7 @@
             android:layout_height="120dp"
             android:contentDescription="@string/timeline_item"
             android:background="@android:color/black"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerInside" />
     </RelativeLayout>
 	
     <!-- Photo centre -->

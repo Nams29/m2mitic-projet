@@ -25,6 +25,7 @@ public class HacWardAlgo implements HacAlgoInterface{
 		float sap2=ap2.size();
 
 		ward= ((sap1*sap2)/(sap1+sap2))*(mean_ap2-mean_ap1);//calcul de la distance de ward
+		ward = Math.abs(ward);
 		return ward;
 	}
 
