@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import fr.istic.project.model.OPhoto;
 import fr.istic.project.utils.FormatUtils;
 
 /**
@@ -13,9 +14,18 @@ import fr.istic.project.utils.FormatUtils;
  *
  */
 public class HAC {
+	
 	private int NBCLASSES=4;
 	private ArrayList<ArrayList<PictInfo>> dat;
 	HacAlgoInterface hai;
+	
+	public HAC(){
+		dat=new ArrayList<ArrayList<PictInfo>>();
+		hai=new HacWardAlgo();
+		//autre algo dispo:
+		//hai=new HacUnweightedAverageAlgo();
+	}
+	
 	/**
 	 * ajoute des PictInfo a analyser
 	 * @param name nom du fichier image
@@ -27,18 +37,22 @@ public class HAC {
 		t.add(pi);
 		dat.add(t);
 	}
+	
+	public void addPhotos(List<OPhoto> photos) {
+		for (OPhoto photo : photos) {
+			ArrayList<PictInfo> t=new ArrayList<PictInfo>();
+			PictInfo pi=new PictInfo(photo.getPath(), FormatUtils.dateToStringHac(photo.getDate()));
+			t.add(pi);
+			dat.add(t);
+		}
+	}
+	
 	/**
 	 * indique le nombre de clusters à produire
 	 * @param n
 	 */
 	public void setNbClusters(int n){
 		this.NBCLASSES=n;
-	}
-	public HAC(){
-		dat=new ArrayList<ArrayList<PictInfo>>();
-		hai=new HacWardAlgo();
-		//autre algo dispo:
-		//hai=new HacUnweightedAverageAlgo();
 	}
 
 	public void findMiddle(){
@@ -104,12 +118,12 @@ public class HAC {
 	}
 
 	public void displayGroups(){
-		/*for (ArrayList<PictInfo> al:dat){
+		for (ArrayList<PictInfo> al:dat){
 			System.out.println("----class----");
 			for(PictInfo pi:al){
 				System.out.println(pi);
 			}
-		}*/
+		}
 	}
 
 
@@ -130,7 +144,7 @@ public class HAC {
 	 * @author antoine
 	 *
 	 */
-	class PictInfo{
+	public class PictInfo{
 		long time;// no see
 		String name;
 		public PictInfo(String name,String strDate){

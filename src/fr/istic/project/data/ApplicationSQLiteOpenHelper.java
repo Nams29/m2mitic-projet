@@ -1,4 +1,4 @@
-package fr.istic.project.model;
+package fr.istic.project.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

@@ -16,9 +16,9 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 import fr.istic.project.R;
-import fr.istic.project.model.ApplicationDB;
-import fr.istic.project.model.ApplicationSQLiteOpenHelper;
-import fr.istic.project.model.FindPhotosTask;
+import fr.istic.project.data.ApplicationDB;
+import fr.istic.project.data.ApplicationSQLiteOpenHelper;
+import fr.istic.project.data.FindPhotosTask;
 import fr.istic.project.model.OPhoto;
 import fr.istic.project.utils.FileUtils;
 

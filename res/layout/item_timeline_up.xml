@@ -30,6 +30,7 @@
         android:rotation="-20" >
 
         <ImageView
+        	android:id="@+id/timeline_photo_left"
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:contentDescription="@string/timeline_item"
@@ -53,6 +54,7 @@
         android:rotation="20" >
 
         <ImageView
+        	android:id="@+id/timeline_photo_right"
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:contentDescription="@string/timeline_item"
@@ -75,6 +77,7 @@
         android:paddingTop="10dp" >
 
         <ImageView
+        	android:id="@+id/timeline_photo_center"
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:contentDescription="@string/timeline_item"

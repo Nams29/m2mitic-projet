@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 import java.util.List;
 
 import android.graphics.Bitmap;
@@ -15,6 +16,7 @@ import android.location.Geocoder;
 import android.media.ExifInterface;
 import fr.istic.project.utils.BitmapUtils;
 import fr.istic.project.utils.FileUtils;
+import fr.istic.project.utils.FormatUtils;
 
 public class OPhoto { // Photo est déjà utilisé par Android...	
 	
@@ -23,7 +25,7 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 	private String name;
 		
 	private String identifier;
-	private String date;
+	private Date date;
 	private String location;
 	private Float note;
 	private String description;
@@ -41,7 +43,7 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 		//System.out.println(name);
 		
 		this.identifier = name;
-		this.date = "";
+		this.date = null;
 		this.location = "";
 		this.note = -1f;
 		this.description = "";
@@ -72,7 +74,7 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 			String fileDateTime = FileUtils.DATE_FORMAT_EXIF.format(file.lastModified());
 			//System.out.println((exifDateTime != null ? "exif" : "file"));
 			if (exifDateTime == null) exifDateTime = fileDateTime;
-			this.date = exifDateTime;
+			this.date = FormatUtils.stringHacToDate(exifDateTime);
 						
 			/* Note */
 			//this.note = -1f;
@@ -176,7 +178,7 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 		return name;
 	}
 	
-	public String getDate() {
+	public Date getDate() {
 		return date;
 	}
 
@@ -211,7 +213,7 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 	}
 	
 	
-	public void setDate(String date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 
