@@ -6,10 +6,15 @@
     
     <!-- Menus -->
     <string name="menu_timeline">Timeline</string>
+    <string name="menu_home">Accueil</string>
     <string name="menu_db_reset">Vider la base de données</string>
     
     <!-- Content description -->
     <string name="timeline_item">Photo</string>
     <string name="timeline_arrow">Timeline</string>
 	<string name="visionneuse_plein_ecran">Image pour le plein écran</string>
+	<string name="MenuImageTemps">Image pour le menu temps</string>
+	<string name="MenuImageCouleur">Image pour le menu couleur</string>
+	<string name="MenuImageContenu">Image pour le menu contenu</string>
+
 </resources>
