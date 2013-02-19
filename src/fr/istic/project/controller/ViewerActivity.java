@@ -95,28 +95,28 @@ public class ViewerActivity extends Activity {
         public void onClick(View v) {
 
             ImageView fullScreen = (ImageView) findViewById(R.id.fullview);
+            fullScreen.setTag(v.getTag());
             fullScreen.setImageResource(ViewerActivity.this.imagesDeTests.get(v.getTag()));
             fullScreen.setVisibility(View.VISIBLE);
             fullScreen.setOnClickListener(new ClickListenerOut());
-            fullScreen.setOnTouchListener(new MyFlingGestureListener(ViewerActivity.this, v, fullScreen));
+            fullScreen.setOnTouchListener(new MyFlingGestureListener(ViewerActivity.this, fullScreen));
+
         }
     }
 
     class MyFlingGestureListener extends OnFlingGestureListener {
-    	
-    	Context c;
-        View v;
+
+        Context c;
         ImageView iv;
 
-        public MyFlingGestureListener(Context c, View v, ImageView iv) {
-        	super(c);
-            this.v = v;
+        public MyFlingGestureListener(Context c, ImageView iv) {
+            super(c);
             this.iv = iv;
         }
 
         @Override
         public void onRightToLeft() {
-            String currentId = String.valueOf(v.getTag());
+            String currentId = String.valueOf(iv.getTag());
             String str[] = currentId.split("#");
             Integer firstId = Integer.valueOf(str[0]);
             Integer secondId = Integer.valueOf(str[1]);
@@ -127,16 +127,12 @@ public class ViewerActivity extends Activity {
                 String newTag = firstId + "#" + (secondId + 1);
                 iv.setTag(newTag);
                 iv.setImageResource(ViewerActivity.this.imagesDeTests.get(newTag));
-
-                Toast.makeText(getApplicationContext(), iv.getTag().toString(), Toast.LENGTH_SHORT).show();
-
-                iv.setOnTouchListener(new MyFlingGestureListener(c, v, iv));
             }
         }
 
         @Override
         public void onLeftToRight() {
-            String currentId = String.valueOf(v.getTag());
+            String currentId = String.valueOf(iv.getTag());
             String str[] = currentId.split("#");
             Integer firstId = Integer.valueOf(str[0]);
             Integer secondId = Integer.valueOf(str[1]);
@@ -147,13 +143,12 @@ public class ViewerActivity extends Activity {
                 String newTag = firstId + "#" + (secondId - 1);
                 iv.setTag(newTag);
                 iv.setImageResource(ViewerActivity.this.imagesDeTests.get(newTag));
-                Toast.makeText(getApplicationContext(), iv.getTag().toString(), Toast.LENGTH_SHORT).show();
             }
         }
 
         @Override
         public void onBottomToTop() {
-            String currentId = String.valueOf(v.getTag());
+            String currentId = String.valueOf(iv.getTag());
             String str[] = currentId.split("#");
             Integer firstId = Integer.valueOf(str[0]);
             Integer secondId = Integer.valueOf(str[1]);
@@ -164,13 +159,12 @@ public class ViewerActivity extends Activity {
                 String newTag = (firstId + 1) + "#" + secondId;
                 iv.setTag(newTag);
                 iv.setImageResource(ViewerActivity.this.imagesDeTests.get(newTag));
-                Toast.makeText(getApplicationContext(), iv.getTag().toString(), Toast.LENGTH_SHORT).show();
             }
         }
 
         @Override
         public void onTopToBottom() {
-            String currentId = String.valueOf(v.getTag());
+            String currentId = String.valueOf(iv.getTag());
             String str[] = currentId.split("#");
             Integer firstId = Integer.valueOf(str[0]);
             Integer secondId = Integer.valueOf(str[1]);
@@ -181,7 +175,6 @@ public class ViewerActivity extends Activity {
                 String newTag = (firstId - 1) + "#" + secondId;
                 iv.setTag(newTag);
                 iv.setImageResource(ViewerActivity.this.imagesDeTests.get(newTag));
-                Toast.makeText(getApplicationContext(), iv.getTag().toString(), Toast.LENGTH_SHORT).show();
             }
         }
 
