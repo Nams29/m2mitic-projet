@@ -2,19 +2,22 @@ package fr.istic.project.hac;
 
 import java.util.ArrayList;
 
-import fr.istic.project.hac.HAC.PictInfo;
+import fr.istic.project.model.OPhoto;
 
 public class HacUnweightedAverageAlgo implements HacAlgoInterface {
 
 	@Override
-	public float computeDissimilarities(ArrayList<PictInfo> ap1,
-			ArrayList<PictInfo> ap2) {
+	public float computeDissimilarities(ArrayList<OPhoto> ap1,
+			ArrayList<OPhoto> ap2) {
 		float d=0;
 		float res=0;
 
-		for(PictInfo p1:ap1){
-			for(PictInfo p2:ap2){
-				d=d+Math.max(p2.getTime(),p1.getTime())-Math.min(p2.getTime(),p1.getTime());
+		for(OPhoto p1:ap1){
+			for(OPhoto p2:ap2){
+				long p1time=p1.getDate().getTime()/1000;
+				long p2time=p2.getDate().getTime()/1000;
+
+				d=d+Math.max(p2time,p1time)-Math.min(p2time,p1time);
 			}
 		}
 

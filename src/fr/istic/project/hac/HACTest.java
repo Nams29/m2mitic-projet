@@ -12,7 +12,7 @@ public class HACTest {
 	}
 	public HACTest(){
 		HAC hac=new HAC();
-		hac.addPict("CIMG1793.JPG"," 2011:07:23 14:17" );
+		/*hac.addPict("CIMG1793.JPG"," 2011:07:23 14:17" );
 		hac.addPict("CIMG1794.JPG"," 2011:07:23 14:17" );
 		hac.addPict("CIMG1795.JPG"," 2011:07:23 14:17" );
 		hac.addPict("CIMG1796.JPG"," 2011:07:23 14:18" );
@@ -349,7 +349,7 @@ public class HACTest {
 		hac.addPict("IMG_0542.JPG"," 2012:08:13 08:16" );
 		hac.addPict("IMG_0543.JPG"," 2012:08:13 08:16" );
 		hac.addPict("IMG_0544.JPG"," 2012:08:13 08:16" );
-		hac.addPict("IMG_0545.JPG"," 2012:08:13 08:16" );
+		hac.addPict("IMG_0545.JPG"," 2012:08:13 08:16" );*/
 		
 		hac.setNbClusters(10);
 		hac.findMiddle();
