@@ -193,7 +193,7 @@ public class TimeLineActivity extends Activity {
 			for (ArrayList<OPhoto> group : data) {
 				for (i=0; i<3; i++) {
 					if (i < group.size()) {
-						results.add(BitmapUtils.decodeSampledBitmapFromResource(group.get(i).getName(), 100, 100));
+						results.add(BitmapUtils.decodeSampledBitmapFromResource(group.get(i).getPath(), 100, 100));
 					}
 					else {
 						results.add(null);
