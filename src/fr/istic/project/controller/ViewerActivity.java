@@ -189,7 +189,7 @@ public class ViewerActivity extends Activity {
 		// Decode image in background.
 		@Override
 		protected Bitmap doInBackground(Integer... params) {
-			return BitmapUtils.decodeSampledBitmapFromResource(view.getTag().toString(), 500, 500);
+			return BitmapUtils.decodeSampledBitmapFromResource(view.getTag().toString(), 200, 200);
 		}
 
 		// Once complete, see if ImageView is still around and set bitmap.
