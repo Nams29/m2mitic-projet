@@ -2,7 +2,7 @@ package fr.istic.project.hac;
 
 import java.util.ArrayList;
 
-import fr.istic.project.hac.HAC.PictInfo;
+import fr.istic.project.model.OPhoto;
 
 public interface HacAlgoInterface {
 	/**
@@ -11,5 +11,5 @@ public interface HacAlgoInterface {
 	 * @param ap2 classe 2
 	 * @return
 	 */
-	public float computeDissimilarities(ArrayList<PictInfo> ap1,ArrayList<PictInfo> ap2);
+	public float computeDissimilarities(ArrayList<OPhoto> ap1,ArrayList<OPhoto> ap2);
 }

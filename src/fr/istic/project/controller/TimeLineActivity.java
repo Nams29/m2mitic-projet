@@ -18,15 +18,15 @@ import android.widget.LinearLayout;
 import fr.istic.project.R;
 import fr.istic.project.data.ApplicationDB;
 import fr.istic.project.hac.HAC;
-import fr.istic.project.hac.HAC.PictInfo;
 import fr.istic.project.utils.BitmapUtils;
+import fr.istic.project.model.OPhoto;
 import fr.istic.project.utils.UIUtils;
 
 public class TimeLineActivity extends Activity {
 
 	private static final int TIMELINE_ITEM_SIZE = 230;
 	
-	ArrayList<ArrayList<PictInfo>> groups;
+	ArrayList<ArrayList<OPhoto>> groups;
 	
 	private LinearLayout rlItem1;
 	private LinearLayout rlItem2;
@@ -178,10 +178,10 @@ public class TimeLineActivity extends Activity {
 	 * Class BitmapWorkerTask
 	 */
 	class BitmapWorkerTask extends AsyncTask<Integer, Void, List<Bitmap>> {
-		private List<ArrayList<PictInfo>> data;
+		private List<ArrayList<OPhoto>> data;
 		private List<Bitmap> results;
 
-		public BitmapWorkerTask(ArrayList<ArrayList<PictInfo>> data) {
+		public BitmapWorkerTask(ArrayList<ArrayList<OPhoto>> data) {
 			this.results = new ArrayList<Bitmap>();
 			this.data = data;
 		}
@@ -190,7 +190,7 @@ public class TimeLineActivity extends Activity {
 		@Override
 		protected List<Bitmap> doInBackground(Integer... params) {
 			int i = 0;
-			for (ArrayList<PictInfo> group : data) {
+			for (ArrayList<OPhoto> group : data) {
 				for (i=0; i<3; i++) {
 					if (i < group.size()) {
 						results.add(BitmapUtils.decodeSampledBitmapFromResource(group.get(i).getName(), 100, 100));
