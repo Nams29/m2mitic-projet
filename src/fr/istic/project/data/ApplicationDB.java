@@ -108,6 +108,24 @@ public final class ApplicationDB
 		cursor.close();
 		return photos;
 	}
+	
+	public List<OPhoto> getSomePhotos(int nb)
+	{
+		final List<OPhoto> photos = new ArrayList<OPhoto>();
+
+		final Cursor cursor = database.query(ApplicationSQLiteOpenHelper.PHOTOS_TABLE_NAME, COLS,				
+				null, null, null, null, "RANDOM()", String.valueOf(nb));
+		cursor.moveToFirst();
+
+		while (!cursor.isAfterLast())
+		{
+			photos.add(buildPhotoFromCursor(cursor));
+			cursor.moveToNext();
+		}
+
+		cursor.close();
+		return photos;
+	}
 
 	public int updatePhoto(final OPhoto photo)
 	{

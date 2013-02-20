@@ -1,122 +1,118 @@
 package fr.istic.project.controller;
 
-import java.util.HashMap;
-
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.Toast;
 import fr.istic.project.R;
+import fr.istic.project.utils.BitmapUtils;
 import fr.istic.project.utils.OnFlingGestureListener;
 import fr.istic.project.utils.UIUtils;
 
 public class ViewerActivity extends Activity {
 
-    protected TableLayout imagesTable;
-    protected final HashMap<String, Integer> imagesDeTests = new HashMap<String, Integer>();
-    protected int tailleMatrice;
+	//protected TableLayout imagesTable;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+	private GridView gridView;
+	private ImageView fullScreen;
+	
+	private final int PADDING = 0;
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_viewer);
+	//protected final HashMap<String, Integer> imagesDeTests = new HashMap<String, Integer>();
+	//protected int tailleMatrice;
 
-        if (UIUtils.isHoneycomb()) {
-            ActionBar actionBar = this.getActionBar();
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
 
-        //-------------------------------------------------------------------------
-        // TODO : partie à adapter.
-        //-------------------------------------------------------------------------
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_viewer);
 
-        tailleMatrice = 3;
+		this.gridView = (GridView) this.findViewById(R.id.gridview);
+		this.fullScreen = (ImageView) findViewById(R.id.fullview);
 
-        imagesTable = (TableLayout) findViewById(R.id.visionneuse);
-        imagesDeTests.put("1#1", R.drawable.test_image1);
-        imagesDeTests.put("1#2", R.drawable.test_image2);
-        imagesDeTests.put("1#3", R.drawable.test_image3);
-        imagesDeTests.put("2#1", R.drawable.test_image4);
-        imagesDeTests.put("2#2", R.drawable.test_image5);
-        imagesDeTests.put("2#3", R.drawable.test_image6);
-        imagesDeTests.put("3#1", R.drawable.test_image7);
-        imagesDeTests.put("3#2", R.drawable.test_image8);
-        imagesDeTests.put("3#3", R.drawable.test_image9);
+		DisplayMetrics ecran = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(ecran);
 
-        fillImagesTable();
-    }
+		int gridSize = ecran.widthPixels;
+		int count = gridSize / 200; // image has 200x200 px
+		int colWidth = (gridSize / count) - PADDING;
 
-    private void fillImagesTable() {
+		this.gridView.setColumnWidth(colWidth);
+		this.gridView.setNumColumns(count);
 
-        //-------------------------------------------------------------------------        
-        // Calcul du rapport largeur / hauteur.
-        //-------------------------------------------------------------------------
+		this.gridView.setAdapter(new ViewerLoader(this));
+		this.gridView.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				onClickImage((ImageView)view);
+			}
+		});
 
-        // Déclaration des variables.
-        DisplayMetrics ecran = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(ecran);
-        int hauteurEcran = ecran.heightPixels;
-        int largeurEcran = ecran.widthPixels;
+		if (UIUtils.isHoneycomb()) {
+			ActionBar actionBar = this.getActionBar();
+			actionBar.setDisplayHomeAsUpEnabled(true);
+		}
 
-        // Affichage optimisé pour la tablette.
-        int hauteurPourUnePhoto = hauteurEcran / tailleMatrice;
-        int largeurPourUnePhoto = largeurEcran / tailleMatrice;
+	}
 
-        for (int i = 1; i <= tailleMatrice; i++) {
+	/**
+	 * Called when the user click on an image
+	 * @param v
+	 */
+	private void onClickImage(ImageView v) {
+		BitmapWorkerTask task = new BitmapWorkerTask(v);
+		task.execute(0);
 
-            TableRow row = new TableRow(this);
+		fullScreen.setVisibility(View.VISIBLE);
 
-            for (int j = 1; j <= tailleMatrice; j++) {
-                String cle = i + "#" + j;
-                ImageView iv = new ImageView(this);
-                iv.setImageResource(imagesDeTests.get(cle));
-                iv.setLayoutParams(new TableRow.LayoutParams(largeurPourUnePhoto, hauteurPourUnePhoto));
-                iv.setOnClickListener(new ClickListener());
-                iv.setTag(cle);
-                row.addView(iv);
+		fullScreen.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				v.setVisibility(View.GONE);
+				fullScreen.setImageBitmap(null);
+			}
+		});
 
-            }
+		fullScreen.setOnTouchListener(
+				new MyFlingGestureListener(this, fullScreen));
+	}
+	
+	@Override
+	public void onBackPressed() {
+		if (fullScreen.getVisibility() == View.VISIBLE) {
+			fullScreen.setVisibility(View.GONE);
+			fullScreen.setImageBitmap(null);
+		}
+		else {
+			super.onBackPressed();
+		}
+	}
+	
+	/**
+	 * Class MyFlingGestureListener
+	 */
+	class MyFlingGestureListener extends OnFlingGestureListener {
 
-            imagesTable.addView(row);
-        }
-    }
+		Context c;
+		ImageView iv;
 
-    class ClickListener implements OnClickListener {
+		public MyFlingGestureListener(Context c, ImageView iv) {
+			super(c);
+			this.iv = iv;
+		}
 
-        @Override
-        public void onClick(View v) {
-
-            ImageView fullScreen = (ImageView) findViewById(R.id.fullview);
-            fullScreen.setTag(v.getTag());
-            fullScreen.setImageResource(ViewerActivity.this.imagesDeTests.get(v.getTag()));
-            fullScreen.setVisibility(View.VISIBLE);
-            fullScreen.setOnClickListener(new ClickListenerOut());
-            fullScreen.setOnTouchListener(new MyFlingGestureListener(ViewerActivity.this, fullScreen));
-
-        }
-    }
-
-    class MyFlingGestureListener extends OnFlingGestureListener {
-
-        Context c;
-        ImageView iv;
-
-        public MyFlingGestureListener(Context c, ImageView iv) {
-            super(c);
-            this.iv = iv;
-        }
-
-        @Override
-        public void onRightToLeft() {
-            String currentId = String.valueOf(iv.getTag());
+		@Override
+		public void onRightToLeft() {
+			/*String currentId = String.valueOf(iv.getTag());
             String str[] = currentId.split("#");
             Integer firstId = Integer.valueOf(str[0]);
             Integer secondId = Integer.valueOf(str[1]);
@@ -127,12 +123,12 @@ public class ViewerActivity extends Activity {
                 String newTag = firstId + "#" + (secondId + 1);
                 iv.setTag(newTag);
                 iv.setImageResource(ViewerActivity.this.imagesDeTests.get(newTag));
-            }
-        }
+            }*/
+		}
 
-        @Override
-        public void onLeftToRight() {
-            String currentId = String.valueOf(iv.getTag());
+		@Override
+		public void onLeftToRight() {
+			/*String currentId = String.valueOf(iv.getTag());
             String str[] = currentId.split("#");
             Integer firstId = Integer.valueOf(str[0]);
             Integer secondId = Integer.valueOf(str[1]);
@@ -143,12 +139,12 @@ public class ViewerActivity extends Activity {
                 String newTag = firstId + "#" + (secondId - 1);
                 iv.setTag(newTag);
                 iv.setImageResource(ViewerActivity.this.imagesDeTests.get(newTag));
-            }
-        }
+            }*/
+		}
 
-        @Override
-        public void onBottomToTop() {
-            String currentId = String.valueOf(iv.getTag());
+		@Override
+		public void onBottomToTop() {
+			/*String currentId = String.valueOf(iv.getTag());
             String str[] = currentId.split("#");
             Integer firstId = Integer.valueOf(str[0]);
             Integer secondId = Integer.valueOf(str[1]);
@@ -159,12 +155,12 @@ public class ViewerActivity extends Activity {
                 String newTag = (firstId + 1) + "#" + secondId;
                 iv.setTag(newTag);
                 iv.setImageResource(ViewerActivity.this.imagesDeTests.get(newTag));
-            }
-        }
+            }*/
+		}
 
-        @Override
-        public void onTopToBottom() {
-            String currentId = String.valueOf(iv.getTag());
+		@Override
+		public void onTopToBottom() {
+			/*String currentId = String.valueOf(iv.getTag());
             String str[] = currentId.split("#");
             Integer firstId = Integer.valueOf(str[0]);
             Integer secondId = Integer.valueOf(str[1]);
@@ -175,16 +171,31 @@ public class ViewerActivity extends Activity {
                 String newTag = (firstId - 1) + "#" + secondId;
                 iv.setTag(newTag);
                 iv.setImageResource(ViewerActivity.this.imagesDeTests.get(newTag));
-            }
-        }
+            }*/
+		}
 
-    }
+	}
+	
+	/**
+	 * Class BitmapWorkerTask
+	 */
+	class BitmapWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
+		private ImageView view;
 
-    class ClickListenerOut implements OnClickListener {
+		public BitmapWorkerTask(ImageView view) {
+			this.view = view;
+		}
 
-        @Override
-        public void onClick(View v) {
-            v.setVisibility(View.GONE);
-        }
-    }
+		// Decode image in background.
+		@Override
+		protected Bitmap doInBackground(Integer... params) {
+			return BitmapUtils.decodeSampledBitmapFromResource(view.getTag().toString(), 500, 500);
+		}
+
+		// Once complete, see if ImageView is still around and set bitmap.
+		@Override
+		protected void onPostExecute(Bitmap bitmap) {
+			fullScreen.setImageBitmap(bitmap);
+		}
+	}
 }

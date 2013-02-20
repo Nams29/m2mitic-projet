@@ -7,7 +7,6 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,6 +19,7 @@ import fr.istic.project.R;
 import fr.istic.project.data.ApplicationDB;
 import fr.istic.project.hac.HAC;
 import fr.istic.project.hac.HAC.PictInfo;
+import fr.istic.project.utils.BitmapUtils;
 import fr.istic.project.utils.UIUtils;
 
 public class TimeLineActivity extends Activity {
@@ -173,45 +173,7 @@ public class TimeLineActivity extends Activity {
 			iv.setImageBitmap(b);
 		}
 	}
-
-	public static int calculateInSampleSize(
-			BitmapFactory.Options options, int reqWidth, int reqHeight) {
-		// Raw height and width of image
-		final int height = options.outHeight;
-		final int width = options.outWidth;
-		int inSampleSize = 1;
-
-		if (height > reqHeight || width > reqWidth) {
-
-			// Calculate ratios of height and width to requested height and width
-			final int heightRatio = Math.round((float) height / (float) reqHeight);
-			final int widthRatio = Math.round((float) width / (float) reqWidth);
-
-			// Choose the smallest ratio as inSampleSize value, this will guarantee
-			// a final image with both dimensions larger than or equal to the
-			// requested height and width.
-			inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
-		}
-
-		return inSampleSize;
-	}
-
-	public static Bitmap decodeSampledBitmapFromResource(String pathName,
-			int reqWidth, int reqHeight) {
-
-		// First decode with inJustDecodeBounds=true to check dimensions
-		final BitmapFactory.Options options = new BitmapFactory.Options();
-		options.inJustDecodeBounds = true;
-		BitmapFactory.decodeFile(pathName, options);
-
-		// Calculate inSampleSize
-		options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-
-		// Decode bitmap with inSampleSize set
-		options.inJustDecodeBounds = false;
-		return BitmapFactory.decodeFile(pathName, options);
-	}
-
+	
 	/**
 	 * Class BitmapWorkerTask
 	 */
@@ -231,7 +193,7 @@ public class TimeLineActivity extends Activity {
 			for (ArrayList<PictInfo> group : data) {
 				for (i=0; i<3; i++) {
 					if (i < group.size()) {
-						results.add(decodeSampledBitmapFromResource(group.get(i).getName(), 100, 100));
+						results.add(BitmapUtils.decodeSampledBitmapFromResource(group.get(i).getName(), 100, 100));
 					}
 					else {
 						results.add(null);

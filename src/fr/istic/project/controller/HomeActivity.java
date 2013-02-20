@@ -27,7 +27,6 @@ public class HomeActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), TimeLineActivity.class);
-                HomeActivity.this.finish();
                 startActivity(intent);
             }
         });
@@ -37,7 +36,6 @@ public class HomeActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ViewerActivity.class);
-                HomeActivity.this.finish();
                 startActivity(intent);
             }
         });
@@ -47,7 +45,6 @@ public class HomeActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ViewerActivity.class);
-                HomeActivity.this.finish();
                 startActivity(intent);
             }
         });
