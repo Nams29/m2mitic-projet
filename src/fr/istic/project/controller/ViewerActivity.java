@@ -3,10 +3,12 @@ package fr.istic.project.controller;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -29,7 +31,7 @@ public class ViewerActivity extends Activity {
 
 	//protected final HashMap<String, Integer> imagesDeTests = new HashMap<String, Integer>();
 	//protected int tailleMatrice;
-
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
@@ -63,7 +65,21 @@ public class ViewerActivity extends Activity {
 		}
 
 	}
-
+	
+	@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            Intent i = new Intent(this, HomeActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            this.startActivity(i);
+            return true;
+        } 
+        else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
+	
 	/**
 	 * Called when the user click on an image
 	 * @param v

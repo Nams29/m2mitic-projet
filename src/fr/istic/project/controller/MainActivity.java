@@ -56,12 +56,16 @@ public class MainActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.menu_home) { // TODO faire un switch !!
+        // Faut pas faire un switch parce qu'à partir d'une certaine version d'Android
+        // tu peux que faire des switchs sur des variables d'application (genre les R.machin)
+        // et avec item.getItemId() ça plante... Oui c'pas logique
+        if (id == R.id.menu_home) {
             Intent i = new Intent(this, HomeActivity.class);
             this.startActivity(i);
+            this.finish();
             return true;
-        }
-        if (id == R.id.menu_db_reset) {
+        } 
+        else if (id == R.id.menu_db_reset) {
             deleteDatabase(ApplicationSQLiteOpenHelper.DATABASE_NAME);
             return true;
         } else {

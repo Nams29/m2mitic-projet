@@ -54,7 +54,7 @@ public class TimeLineActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
 		if (id == android.R.id.home) {
-			Intent i = new Intent(this, MainActivity.class);
+			Intent i = new Intent(this, HomeActivity.class);
 			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			this.startActivity(i);
 			return true;
