@@ -11,14 +11,14 @@ public class FormatUtils {
 	
 	private static final String TAG = "FormatUtils";
 	
-	private static SimpleDateFormat formatDateJour = new SimpleDateFormat("yyyy:MM:DD HH:mm", Locale.FRANCE);
+	private static SimpleDateFormat formatDateJour = new SimpleDateFormat("yyyy:MM:DD HH:mm:ss", Locale.FRANCE);
 	private static SimpleDateFormat formatDB = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.FRANCE);
 	
-	public static String dateToStringHac(Date date) {
+	public static String dateToStringExif(Date date) {
 		return formatDateJour.format(date);
 	}
 	
-	public static Date stringHacToDate(String date) {
+	public static Date stringExifToDate(String date) {
 		Date result = null;
 		try {
 			result = formatDateJour.parse(date);

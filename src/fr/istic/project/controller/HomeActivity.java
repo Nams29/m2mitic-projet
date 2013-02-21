@@ -45,6 +45,8 @@ public class HomeActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ViewerActivity.class);
+                Bundle b = new Bundle();
+                b.putInt(ViewerActivity.VIEWTYPE, ViewerActivity.VIEWTYPE_CONTENT);
                 startActivity(intent);
             }
         });

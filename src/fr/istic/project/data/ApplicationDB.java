@@ -1,11 +1,8 @@
 package fr.istic.project.data;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
-import fr.istic.project.model.OContext;
-import fr.istic.project.model.OPhoto;
-import fr.istic.project.utils.FormatUtils;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -13,6 +10,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
+import fr.istic.project.model.OContext;
+import fr.istic.project.model.OPhoto;
+import fr.istic.project.utils.FormatUtils;
 
 
 public final class ApplicationDB
@@ -150,6 +150,25 @@ public final class ApplicationDB
 		}
 
 		cursor.close();
+		return photos;
+	}
+	
+	/**
+	 * Return the pictures taken on the given time interval
+	 * @param dateStart the interval start
+	 * @param dateEnd the interval date
+	 * @return the photos
+	 */
+	public List<OPhoto> getPhotosFromDateInterval(Date dateStart, Date dateEnd) {
+		List<OPhoto> photos = new ArrayList<OPhoto>();
+		
+		String query = "SELECT * " +
+					   "FROM "+ApplicationSQLiteOpenHelper.PHOTOS_TABLE_NAME+" "+
+					   "WHERE "+ApplicationSQLiteOpenHelper.PHOTOS_DATE+" >= \""+FormatUtils.dateToStringDb(dateStart)+"\" "+
+					   "AND "+ApplicationSQLiteOpenHelper.PHOTOS_DATE+" <= \""+FormatUtils.dateToStringDb(dateEnd)+"\" "+
+					   "ORDER BY "+ApplicationSQLiteOpenHelper.PHOTOS_DATE;
+		database.rawQuery(query, null);
+		
 		return photos;
 	}
 

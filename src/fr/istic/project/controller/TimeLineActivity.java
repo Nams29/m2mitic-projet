@@ -1,6 +1,7 @@
 package fr.istic.project.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import android.app.ActionBar;
@@ -12,19 +13,23 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import fr.istic.project.R;
 import fr.istic.project.data.ApplicationDB;
 import fr.istic.project.hac.HAC;
-import fr.istic.project.utils.BitmapUtils;
 import fr.istic.project.model.OPhoto;
+import fr.istic.project.utils.BitmapUtils;
 import fr.istic.project.utils.UIUtils;
 
 public class TimeLineActivity extends Activity {
 
 	private static final int TIMELINE_ITEM_SIZE = 230;
+
+	public static final int GROUP_FIRSTDATE = R.integer.group_firstdate;
+	public static final int GROUP_LASTDATE = R.integer.group_lastdate;
 	
 	ArrayList<ArrayList<OPhoto>> groups;
 	
@@ -126,46 +131,76 @@ public class TimeLineActivity extends Activity {
 		ImageView ivLeft = (ImageView) this.rlItem1.findViewById(R.id.timeline_photo_left);
 		ImageView ivRight = (ImageView) this.rlItem1.findViewById(R.id.timeline_photo_right);
 		
+		List<OPhoto> group = groups.get(0);
 		if (data.size()>0) this.setImageBitmap(ivCenter, data.get(0));
 		if (data.size()>1) this.setImageBitmap(ivLeft, data.get(1));
 		if (data.size()>2) this.setImageBitmap(ivRight, data.get(2));
-		this.rlItem1.setTag(groups.get(0));
+		this.rlItem1.setTag(GROUP_FIRSTDATE, group.get(0).getDate());
+		this.rlItem1.setTag(GROUP_LASTDATE, group.get(group.size()-1).getDate());
 		
 		ivCenter = (ImageView) this.rlItem2.findViewById(R.id.timeline_photo_center);
 		ivLeft = (ImageView) this.rlItem2.findViewById(R.id.timeline_photo_left);
 		ivRight = (ImageView) this.rlItem2.findViewById(R.id.timeline_photo_right);
-
+		
+		group = groups.get(1);
 		if (data.size()>3) this.setImageBitmap(ivCenter, data.get(3));
 		if (data.size()>4) this.setImageBitmap(ivLeft, data.get(4));
 		if (data.size()>5) this.setImageBitmap(ivRight, data.get(5));
-		this.rlItem2.setTag(groups.get(1));
+		this.rlItem2.setTag(GROUP_FIRSTDATE, group.get(0).getDate());
+		this.rlItem2.setTag(GROUP_LASTDATE, group.get(group.size()-1).getDate());
 		
 		ivCenter = (ImageView) this.rlItem3.findViewById(R.id.timeline_photo_center);
 		ivLeft = (ImageView) this.rlItem3.findViewById(R.id.timeline_photo_left);
 		ivRight = (ImageView) this.rlItem3.findViewById(R.id.timeline_photo_right);
 
+		group = groups.get(2);
 		if (data.size()>6) this.setImageBitmap(ivCenter, data.get(6));
 		if (data.size()>7) this.setImageBitmap(ivLeft, data.get(7));
 		if (data.size()>8) this.setImageBitmap(ivRight, data.get(8));
-		this.rlItem3.setTag(groups.get(2));
+		this.rlItem3.setTag(GROUP_FIRSTDATE, group.get(0).getDate());
+		this.rlItem3.setTag(GROUP_LASTDATE, group.get(group.size()-1).getDate());
 		
 		ivCenter = (ImageView) this.rlItem4.findViewById(R.id.timeline_photo_center);
 		ivLeft = (ImageView) this.rlItem4.findViewById(R.id.timeline_photo_left);
 		ivRight = (ImageView) this.rlItem4.findViewById(R.id.timeline_photo_right);
 
+		group = groups.get(3);
 		if (data.size()>9) this.setImageBitmap(ivCenter, data.get(9));
 		if (data.size()>10) this.setImageBitmap(ivLeft, data.get(10));
 		if (data.size()>11) this.setImageBitmap(ivRight, data.get(11));
 		this.rlItem4.setTag(groups.get(3));
+		this.rlItem4.setTag(GROUP_FIRSTDATE, group.get(0).getDate());
+		this.rlItem4.setTag(GROUP_LASTDATE, group.get(group.size()-1).getDate());
 		
 		ivCenter = (ImageView) this.rlItem5.findViewById(R.id.timeline_photo_center);
 		ivLeft = (ImageView) this.rlItem5.findViewById(R.id.timeline_photo_left);
 		ivRight = (ImageView) this.rlItem5.findViewById(R.id.timeline_photo_right);
 
+		group = groups.get(4);
 		if (data.size()>12) this.setImageBitmap(ivCenter, data.get(12));
 		if (data.size()>13) this.setImageBitmap(ivLeft, data.get(13));
 		if (data.size()>14) this.setImageBitmap(ivRight, data.get(14));
 		this.rlItem5.setTag(groups.get(4));
+		this.rlItem5.setTag(GROUP_FIRSTDATE, group.get(0).getDate());
+		this.rlItem5.setTag(GROUP_LASTDATE, group.get(group.size()-1).getDate());
+		
+		OnClickListener groupListener = new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(TimeLineActivity.this, ViewerActivity.class);
+				intent.putExtra(ViewerActivity.VIEWTYPE, ViewerActivity.VIEWTYPE_GROUP);
+				intent.putExtra(ViewerActivity.GROUP_FIRSTDATE, (Date)v.getTag(GROUP_FIRSTDATE));
+				intent.putExtra(ViewerActivity.GROUP_LASTDATE, (Date)v.getTag(GROUP_LASTDATE));
+				TimeLineActivity.this.startActivity(intent);
+			}
+		};
+		
+		this.rlItem1.setOnClickListener(groupListener);
+		this.rlItem2.setOnClickListener(groupListener);
+		this.rlItem3.setOnClickListener(groupListener);
+		this.rlItem4.setOnClickListener(groupListener);
+		this.rlItem5.setOnClickListener(groupListener);
+		
 	}
 	
 	private void setImageBitmap(ImageView iv, Bitmap b) {

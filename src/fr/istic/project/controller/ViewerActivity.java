@@ -1,5 +1,9 @@
 package fr.istic.project.controller;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
@@ -17,54 +21,36 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
 import fr.istic.project.R;
+import fr.istic.project.data.ApplicationDB;
 import fr.istic.project.model.OPhoto;
 import fr.istic.project.utils.BitmapUtils;
 import fr.istic.project.utils.OnFlingGestureListener;
 import fr.istic.project.utils.UIUtils;
 
 public class ViewerActivity extends Activity {
-
-	//protected TableLayout imagesTable;
-
+	
+	public static final String GROUP_FIRSTDATE = "firstdate";
+	public static final String GROUP_LASTDATE = "lastdate";
+	
+	public static final String VIEWTYPE = "viewtype";
+	public static final int VIEWTYPE_GROUP = 0;
+	public static final int VIEWTYPE_COLOR = 1;
+	public static final int VIEWTYPE_CONTENT = 2;
+	
 	private GridView gridView;
 	private ImageView fullScreen;
 	
 	private MyFlingGestureListener flingListener;
 	
 	private final int PADDING = 0;
-
-	//protected final HashMap<String, Integer> imagesDeTests = new HashMap<String, Integer>();
-	//protected int tailleMatrice;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_viewer);
-
-		this.gridView = (GridView) this.findViewById(R.id.gridview);
-		this.fullScreen = (ImageView) findViewById(R.id.fullview);
-
-		DisplayMetrics ecran = new DisplayMetrics();
-		getWindowManager().getDefaultDisplay().getMetrics(ecran);
-
-		int gridSize = ecran.widthPixels;
-		int count = gridSize / 200; // image has 200x200 px
-		int colWidth = (gridSize / count) - PADDING;
-
-		this.gridView.setColumnWidth(colWidth);
-		this.gridView.setNumColumns(count);
 		
-		this.gridView.setAdapter(new ViewerLoader(this, null));
-		this.gridView.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				onClickImage((ImageView)view, position);
-			}
-		});
-		
-		this.flingListener = new MyFlingGestureListener(this);
-		this.fullScreen.setOnTouchListener(flingListener);
+		this.initLayout();
+		this.loadData(this.getIntent().getIntExtra(VIEWTYPE, VIEWTYPE_CONTENT));
 		
 		if (UIUtils.isHoneycomb()) {
 			ActionBar actionBar = this.getActionBar();
@@ -117,6 +103,60 @@ public class ViewerActivity extends Activity {
 		else {
 			super.onBackPressed();
 		}
+	}
+	
+	private void initLayout() {
+		this.gridView = (GridView) this.findViewById(R.id.gridview);
+		this.fullScreen = (ImageView) findViewById(R.id.fullview);
+
+		DisplayMetrics ecran = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(ecran);
+
+		int gridSize = ecran.widthPixels;
+		int count = gridSize / 200; // image has 200x200 px
+		int colWidth = (gridSize / count) - PADDING;
+
+		this.gridView.setColumnWidth(colWidth);
+		this.gridView.setNumColumns(count);
+		
+		this.gridView.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				onClickImage((ImageView)view, position);
+			}
+		});
+		
+		this.flingListener = new MyFlingGestureListener(this);
+		this.fullScreen.setOnTouchListener(flingListener);
+	}
+	
+	private void loadData(int viewtype) {
+		List<OPhoto> data = new ArrayList<OPhoto>();
+		
+		if (viewtype == VIEWTYPE_GROUP) {
+			Bundle b = this.getIntent().getExtras();
+			Date firstDate = (Date) b.get(GROUP_FIRSTDATE);
+			Date lastDate = (Date) b.get(GROUP_LASTDATE);
+			
+			ApplicationDB database = ApplicationDB.getInstance();
+			database.openDb();
+			data = database.getPhotosFromDateInterval(firstDate, lastDate);
+			database.closeDb();
+		}
+		else if (viewtype == VIEWTYPE_COLOR) {
+			ApplicationDB database = ApplicationDB.getInstance();
+			database.openDb();
+			data = database.getSomePhotos(50);
+			database.closeDb();
+		}
+		else if (viewtype == VIEWTYPE_CONTENT) {
+			ApplicationDB database = ApplicationDB.getInstance();
+			database.openDb();
+			data = database.getSomePhotos(50);
+			database.closeDb();
+		}
+		
+		this.gridView.setAdapter(new ViewerLoader(this, data));
 	}
 	
 	/**

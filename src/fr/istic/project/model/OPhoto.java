@@ -74,7 +74,7 @@ public class OPhoto { // Photo est déjà utilisé par Android...
             //System.out.println((exifDateTime != null ? "exif" : "file"));
             if (exifDateTime == null)
                 exifDateTime = fileDateTime;
-            this.date = FormatUtils.stringHacToDate(exifDateTime);
+            this.date = FormatUtils.stringExifToDate(exifDateTime);
 
             /* Note */
             //this.note = -1f;
