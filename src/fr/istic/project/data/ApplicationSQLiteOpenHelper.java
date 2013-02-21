@@ -27,6 +27,7 @@ public class ApplicationSQLiteOpenHelper extends SQLiteOpenHelper
 	public static final String PHOTOS_NOTE 			= "note";
 	public static final String PHOTOS_DESCRIPTION 	= "description";
 	public static final String PHOTOS_PATH 			= "path";
+	public static final String PHOTOS_AVAILABLE		= "available";
 	public static final String PHOTOS_CONTEXT 		= "context";
 	
 	
@@ -50,6 +51,7 @@ public class ApplicationSQLiteOpenHelper extends SQLiteOpenHelper
 								+ PHOTOS_NOTE 			+ " INTEGER,"
 								+ PHOTOS_DESCRIPTION 	+ " TEXT,"
 								+ PHOTOS_PATH 			+ " TEXT,"
+								+ PHOTOS_AVAILABLE 		+ " TEXT,"
 								+ PHOTOS_CONTEXT 		+ " INTEGER,"
 								+ " FOREIGN KEY (" + PHOTOS_CONTEXT + ") REFERENCES " + CONTEXTS_TABLE_NAME + " (" + CONTEXTS_ID + ") ON DELETE CASCADE" + ");");
 	}

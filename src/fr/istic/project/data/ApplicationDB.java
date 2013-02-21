@@ -22,13 +22,14 @@ public final class ApplicationDB
 	private transient ApplicationSQLiteOpenHelper dbHelper;
 	private transient SQLiteDatabase database;
 	
-	private String[] COLS = new String[]{
+	private String[] COLS = new String[] {
 			ApplicationSQLiteOpenHelper.PHOTOS_IDENTIFIER,
 			ApplicationSQLiteOpenHelper.PHOTOS_DATE, 
 			ApplicationSQLiteOpenHelper.PHOTOS_LOCATION, 
 			ApplicationSQLiteOpenHelper.PHOTOS_NOTE, 
 			ApplicationSQLiteOpenHelper.PHOTOS_DESCRIPTION,
 			ApplicationSQLiteOpenHelper.PHOTOS_PATH,
+			ApplicationSQLiteOpenHelper.PHOTOS_AVAILABLE,
 			ApplicationSQLiteOpenHelper.PHOTOS_CONTEXT };
 
 	private ApplicationDB()
@@ -68,6 +69,7 @@ public final class ApplicationDB
 		contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_NOTE, 			photo.getNote());
 		contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_DESCRIPTION, 	photo.getDescription());
 		contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_PATH, 			photo.getPath());
+		contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_AVAILABLE, 	photo.getAvailable());
 		if (photo.getContext() != null)
 			contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_CONTEXT, 	photo.getContext().get_id());
 		photo.setIdentifier(photo.getIdentifier());
@@ -136,6 +138,7 @@ public final class ApplicationDB
 		contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_NOTE, 			photo.getNote());
 		contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_DESCRIPTION, 	photo.getDescription());
 		contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_PATH, 			photo.getPath());
+		contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_AVAILABLE, 	photo.getAvailable());
 		contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_CONTEXT, 		photo.getContext().get_id());		
 		int resultat = database.update(ApplicationSQLiteOpenHelper.PHOTOS_TABLE_NAME, contentValues, ApplicationSQLiteOpenHelper.PHOTOS_IDENTIFIER + "=" + photo.getIdentifier(), null);
 
@@ -162,6 +165,8 @@ public final class ApplicationDB
 				cursor.getFloat(cursor.getColumnIndex(ApplicationSQLiteOpenHelper.PHOTOS_NOTE)));
 		photo.setDescription(
 				cursor.getString(cursor.getColumnIndex(ApplicationSQLiteOpenHelper.PHOTOS_DESCRIPTION)));
+		photo.setAvailable(
+				cursor.getString(cursor.getColumnIndex(ApplicationSQLiteOpenHelper.PHOTOS_AVAILABLE)));
 		photo.setPath(
 				cursor.getString(cursor.getColumnIndex(ApplicationSQLiteOpenHelper.PHOTOS_PATH)));
 		
