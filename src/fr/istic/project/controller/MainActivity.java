@@ -183,23 +183,19 @@ public class MainActivity extends Activity {
 		console.append("\n\nNouveau contenu trouvé  :\n" + newPhotos.size() + " photo(s).\n");
 		
 		console.append("\nDétail des photos présentes dans la carte :");
-
         for (OPhoto newPhoto : newPhotos) {
-    		if (ajouter) {
-    	        //this.photos.add(newPhoto); // TODO virer    			
-    		}
-            
+    		if (ajouter) applicationDB.addPhoto(newPhoto); // Si l'utilisateur souhaite ajouter les nouvelles photos
             console.append("\n - " + newPhoto.getName() + "\n   " + newPhoto.getIdentifier());
         }
     	
+        
     	List<OPhoto> photos = applicationDB.getAllPhotos();
     	List<OContext> contexts = applicationDB.getAllContexts();
        
         console.append("\n\nContenu sauvegardé dans la base de données :\n" + photos.size() + " photo(s).\n"
                 + contexts.size() + " contexte(s).\n");
         
-        console.append("\nDétail des photos présentes dans la BDD :");
-
+        console.append("\nDétail des photos présentes dans la BDD :");        
     	for(OPhoto photo : photos) {
     		console.append("\n - " + photo.getName() + "\n   " + photo.getIdentifier());
     	}
