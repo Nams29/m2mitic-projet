@@ -118,7 +118,7 @@ public class TestHAC {
 		String name;
 
 		public PictInfo(String name,String strDate){
-			Date dateStr = FormatUtils.stringHacToDate(strDate);
+			Date dateStr = FormatUtils.stringExifToDate(strDate);
 			this.name=name;
 			this.time=dateStr.getTime()/1000;//convert date -> epoch (en secondes)
 		}

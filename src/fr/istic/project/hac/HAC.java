@@ -1,12 +1,10 @@
 package fr.istic.project.hac;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
 import android.util.Log;
 import fr.istic.project.model.OPhoto;
-import fr.istic.project.utils.FormatUtils;
 
 /**
  * mode d'emploi: instancier la classe
