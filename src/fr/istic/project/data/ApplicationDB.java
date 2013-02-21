@@ -90,7 +90,7 @@ public final class ApplicationDB
 	public OPhoto getPhotoByIdentifier(final String photoId)
 	{
 		final Cursor cursor = database.query(ApplicationSQLiteOpenHelper.PHOTOS_TABLE_NAME, COLS,				
-				ApplicationSQLiteOpenHelper.PHOTOS_IDENTIFIER + " = " + photoId, null, null, null, null);
+				ApplicationSQLiteOpenHelper.PHOTOS_IDENTIFIER + " = \"" + photoId+ "\"", null, null, null, null);
 		cursor.moveToFirst();
 
 		OPhoto photo = null;
@@ -162,11 +162,14 @@ public final class ApplicationDB
 	public List<OPhoto> getPhotosFromDateInterval(Date dateStart, Date dateEnd) {
 		List<OPhoto> photos = new ArrayList<OPhoto>();
 		
+		/*String query = "SELECT * " +
+					   "FROM "+ApplicationSQLiteOpenHelper.PHOTOS_TABLE_NAME+" "+
+					   "WHERE "+ApplicationSQLiteOpenHelper.PHOTOS_DATE+" >= datetime(\""+FormatUtils.dateToStringDb(dateStart)+"\") "+
+					   "AND "+ApplicationSQLiteOpenHelper.PHOTOS_DATE+" <= datetime(\""+FormatUtils.dateToStringDb(dateEnd)+"\") "+
+					   "ORDER BY "+ApplicationSQLiteOpenHelper.PHOTOS_DATE;*/
 		String query = "SELECT * " +
 					   "FROM "+ApplicationSQLiteOpenHelper.PHOTOS_TABLE_NAME+" "+
-					   "WHERE "+ApplicationSQLiteOpenHelper.PHOTOS_DATE+" >= \""+FormatUtils.dateToStringDb(dateStart)+"\" "+
-					   "AND "+ApplicationSQLiteOpenHelper.PHOTOS_DATE+" <= \""+FormatUtils.dateToStringDb(dateEnd)+"\" "+
-					   "ORDER BY "+ApplicationSQLiteOpenHelper.PHOTOS_DATE;
+					   "WHERE "+ApplicationSQLiteOpenHelper.PHOTOS_DATE+" >= Datetime('2009-11-13 00:00:00')";
 		database.rawQuery(query, null);
 		
 		return photos;
