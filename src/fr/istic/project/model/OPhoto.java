@@ -29,6 +29,7 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 	private String location;
 	private Float note;
 	private String description;
+	private Boolean available;
 	private OContext context;
 		
 	
@@ -47,6 +48,7 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 		this.location = "";
 		this.note = -1f;
 		this.description = "";
+		this.available = true;
 		this.context = null;
 		
 		// Voir aussi : processProperties() appelé de manière asynchrone
@@ -195,6 +197,10 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 	public String getIdentifier() {
 		return identifier;
 	}
+	
+	public String getAvailable() {
+		return available.toString();
+	}
 
 	public String getDescription() {
 		return description;
@@ -231,6 +237,10 @@ public class OPhoto { // Photo est déjà utilisé par Android...
 	
 	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
+	}
+	
+	public void setAvailable(String s) {
+		this.available = Boolean.valueOf(s);
 	}
 
 	public void setContext(OContext context) {
