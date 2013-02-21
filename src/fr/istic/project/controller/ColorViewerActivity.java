@@ -5,8 +5,10 @@ import java.util.HashMap;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -19,9 +21,11 @@ import fr.istic.project.utils.UIUtils;
 
 public class ColorViewerActivity extends Activity {
 
-	protected TableLayout imagesTable;
-	protected final HashMap<String, Integer> imagesDeTests = new HashMap<String, Integer>();
-	protected int tailleMatrice;
+	private TableLayout imagesTable;
+	private ImageView fullScreen;
+	
+	private final HashMap<String, Integer> imagesDeTests = new HashMap<String, Integer>();
+	private int tailleMatrice;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -29,18 +33,15 @@ public class ColorViewerActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_color_viewer);
 
-		if (UIUtils.isHoneycomb()) {
-			ActionBar actionBar = this.getActionBar();
-			actionBar.setDisplayHomeAsUpEnabled(true);
-		}
-
 		//-------------------------------------------------------------------------
 		// TODO : partie à adapter.
 		//-------------------------------------------------------------------------
-
+		
 		tailleMatrice = 3;
 
 		imagesTable = (TableLayout) findViewById(R.id.visionneuse);
+		fullScreen = (ImageView) findViewById(R.id.fullview);
+		
 		imagesDeTests.put("1#1", R.drawable.test_image1);
 		imagesDeTests.put("1#2", R.drawable.test_image2);
 		imagesDeTests.put("1#3", R.drawable.test_image3);
@@ -52,8 +53,28 @@ public class ColorViewerActivity extends Activity {
 		imagesDeTests.put("3#3", R.drawable.test_image9);
 
 		fillImagesTable();
-	}
+		
+		if (UIUtils.isHoneycomb()) {
+			ActionBar actionBar = this.getActionBar();
+			actionBar.setDisplayHomeAsUpEnabled(true);
+		}
 
+	}
+	
+	@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            Intent i = new Intent(this, HomeActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            this.startActivity(i);
+            return true;
+        } 
+        else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
+	
 	private void fillImagesTable() {
 
 		//-------------------------------------------------------------------------        
@@ -82,7 +103,7 @@ public class ColorViewerActivity extends Activity {
 				iv.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						onClickImage(v);
+						onClickImage((ImageView)v);
 					}
 				});
 				iv.setTag(cle);
@@ -94,18 +115,43 @@ public class ColorViewerActivity extends Activity {
 		}
 	}
 
-
-	private void onClickImage(View v) {
-
-		ImageView fullScreen = (ImageView) findViewById(R.id.fullview);
+	/**
+	 * Called when the user click on an image
+	 * @param v
+	 */
+	private void onClickImage(ImageView v) {
 		fullScreen.setTag(v.getTag());
+		
 		fullScreen.setImageResource(this.imagesDeTests.get(v.getTag()));
+		
 		fullScreen.setVisibility(View.VISIBLE);
-		fullScreen.setOnClickListener(new ClickListenerOut());
+		
+		fullScreen.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				fullScreen.setVisibility(View.GONE);
+				fullScreen.setImageDrawable(null);
+			}
+		});
+		
 		fullScreen.setOnTouchListener(new MyFlingGestureListener(this, fullScreen));
 
 	}
-
+	
+	@Override
+	public void onBackPressed() {
+		if (fullScreen.getVisibility() == View.VISIBLE) {
+			fullScreen.setVisibility(View.GONE);
+			fullScreen.setImageDrawable(null);
+		}
+		else {
+			super.onBackPressed();
+		}
+	}
+	
+	/**
+	 * Class MyFlingGestureListener
+	 */
 	class MyFlingGestureListener extends OnFlingGestureListener {
 
 		Context c;
@@ -180,13 +226,5 @@ public class ColorViewerActivity extends Activity {
 			}
 		}
 
-	}
-
-	class ClickListenerOut implements OnClickListener {
-
-		@Override
-		public void onClick(View v) {
-			v.setVisibility(View.GONE);
-		}
 	}
 }
