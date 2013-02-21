@@ -112,7 +112,8 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 									try {
 
 										if (photo.processProperties(geocoder) == false) geocoderError = true; // Traitement des propriétés (identifiant et localisation)
-										newPhotos.add(photo);		    				
+										newPhotos.add(photo);	
+										applicationDB.setPhotoAvailable(photo.getIdentifier());
 					    				publishProgress(newPhotos.size());
 					    				
 									} catch (Exception e) {

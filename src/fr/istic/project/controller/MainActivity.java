@@ -190,13 +190,15 @@ public class MainActivity extends Activity {
     		if (ajouter) applicationDB.addPhoto(newPhoto); // Si l'utilisateur souhaite ajouter les nouvelles photos
             console.append("\n - " + newPhoto.getName() + "\n   " + newPhoto.getIdentifier());
         }
-    	
+        
         
     	List<OPhoto> photos = applicationDB.getAllPhotos();
     	List<OContext> contexts = applicationDB.getAllContexts();
-       
         console.append("\n\nContenu sauvegardé dans la base de données :\n" + photos.size() + " photo(s).\n"
                 + contexts.size() + " contexte(s).\n");
+        
+        List<OPhoto> photosAvailable = applicationDB.getAllPhotosAvailable();
+        console.append("\n\ngetAllPhotosAvailable : " + photosAvailable.size() + " photo(s).\n");
         
         console.append("\nDétail des photos présentes dans la BDD :");        
     	for(OPhoto photo : photos) {
