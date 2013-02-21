@@ -67,6 +67,15 @@ public final class ApplicationDB
 
 		return resultat;
 	}
+	
+	public long setPhotoAvailable(final String photoId) {
+		final ContentValues contentValues = new ContentValues();
+		contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_AVAILABLE, "true");
+		int resultat = database.update(ApplicationSQLiteOpenHelper.PHOTOS_TABLE_NAME, contentValues, 
+				ApplicationSQLiteOpenHelper.PHOTOS_IDENTIFIER + " = \"" + photoId+ "\"", null);
+
+		return resultat;
+	}
 
 	public long addPhoto(final OPhoto photo)
 	{
@@ -137,6 +146,24 @@ public final class ApplicationDB
 		return photos;
 	}
 	
+	public List<OPhoto> getAllPhotosAvailable()
+	{
+		final List<OPhoto> photos = new ArrayList<OPhoto>();
+
+		final Cursor cursor = database.query(ApplicationSQLiteOpenHelper.PHOTOS_TABLE_NAME, COLS,				
+				ApplicationSQLiteOpenHelper.PHOTOS_AVAILABLE + " = 'true'", null, null, null, ApplicationSQLiteOpenHelper.PHOTOS_DATE);
+		cursor.moveToFirst();
+
+		while (!cursor.isAfterLast())
+		{
+			photos.add(buildPhotoFromCursor(cursor));
+			cursor.moveToNext();
+		}
+
+		cursor.close();
+		return photos;
+	}
+		
 	public List<OPhoto> getSomePhotos(int nb)
 	{
 		final List<OPhoto> photos = new ArrayList<OPhoto>();
@@ -299,7 +326,7 @@ public final class ApplicationDB
 		final OContext context = new OContext(cursor.getLong(cursor.getColumnIndex(ApplicationSQLiteOpenHelper.CONTEXTS_ID)));
 		context.setName(cursor.getString(cursor.getColumnIndex(ApplicationSQLiteOpenHelper.CONTEXTS_NAME)));
 
-		// TODO gestion du context pour chaque photo, puis ctx.addPicture(...)
+		 // TODO concept de OContext a supprimer (gestion du context pour chaque photo, puis ctx.addPicture())
 		return context;
 	}
 }

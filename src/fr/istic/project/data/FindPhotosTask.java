@@ -70,7 +70,7 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 		
 		this.applicationDB = activity.getApplicationDB();
 		applicationDB.setAllPhotosUnavailable();
-		if (applicationDB.getContext(0) == null) { // TODO a corriger ?
+		if (applicationDB.getContext(0) == null) { // TODO concept de OContext a supprimer
 			OContext.defaultContext = applicationDB.addContext(OContext.defaultContext); // Ajout du contexte par défaut
 		}
 	}
@@ -112,7 +112,8 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 									try {
 
 										if (photo.processProperties(geocoder) == false) geocoderError = true; // Traitement des propriétés (identifiant et localisation)
-										newPhotos.add(photo);		    				
+										newPhotos.add(photo);	
+										applicationDB.setPhotoAvailable(photo.getIdentifier());
 					    				publishProgress(newPhotos.size());
 					    				
 									} catch (Exception e) {
