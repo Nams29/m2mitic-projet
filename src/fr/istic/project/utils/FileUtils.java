@@ -78,12 +78,12 @@ public class FileUtils {
 		List<File> allowedDirectories = new LinkedList<File>();
 				
 		// Dossier de l'application
-		if (useApplicationDirectory) {
+		if (useApplicationDirectory && (getApplicationDirectory() != null)) {
 			allowedDirectories.add(getApplicationDirectory());
 		}
 		
 		// Dossiers de la mémoire externe, interne à la tablette (ceci n'est pas une blague)
-		if (useExternalDirectoriesDevice) {
+		if (useExternalDirectoriesDevice && (getExternalDirectoryDevice() != null)) {
 			for (String s : ALLOWED_EXTERNAL_DIRECTORIES_DEVICE) {
 				if (s == "/") {
 					allowedDirectories.add(getExternalDirectoryDevice());
@@ -94,7 +94,7 @@ public class FileUtils {
 		}
 		
 		// Dossiers de la mémoire externe, amovible
-		if (useExternalDirectoriesRemovable) {
+		if (useExternalDirectoriesRemovable && (getExternalDirectoryRemovable() != null)) {
 			for (String s : ALLOWED_EXTERNAL_DIRECTORIES_REMOVABLE) {
 				if (s == "/") {
 					allowedDirectories.add(getExternalDirectoryRemovable());

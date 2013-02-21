@@ -171,6 +171,6 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 		
 		
 		Toast.makeText(activity, "duree : "+ (duration/1000), Toast.LENGTH_LONG).show();
-		activity.processPhotos(photos); // Retourne dans l'activity        
+		activity.onPostExecuteFindPhotosTask(photos); // Retourne dans l'activity        
     }
 }
