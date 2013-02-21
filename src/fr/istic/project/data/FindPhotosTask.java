@@ -80,6 +80,7 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 		super.onPreExecute();
 		start = System.currentTimeMillis();
 		progressDialog.show();
+		publishProgress(0);
 	}
 	
 	
@@ -162,10 +163,10 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 		if (geocoderError) {
 			Toast.makeText(activity, "Erreur : connexion Internet indisponible, les localisations des photos n'ont pu être traitées avec Geocoder.", Toast.LENGTH_LONG).show();
 		}
-		long duration = System.currentTimeMillis() - start;
 		
-		
+		//long duration = System.currentTimeMillis() - start;
 		//Toast.makeText(activity, "duree : "+ (duration/1000), Toast.LENGTH_LONG).show();
+		
 		activity.onPostExecuteFindPhotosTask(newPhotos); // Retourne dans l'activity        
     }
 }
