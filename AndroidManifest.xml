@@ -29,6 +29,10 @@
             android:label="@string/app_name" >
         </activity>
         <activity
+            android:name="fr.istic.project.controller.ColorViewerActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
             android:name="fr.istic.project.controller.ViewerActivity"
             android:label="@string/app_name" >
         </activity>

@@ -35,7 +35,7 @@ public class HomeActivity extends Activity {
         menuCouleur.setOnClickListener(new ImageView.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ViewerActivity.class);
+                Intent intent = new Intent(getApplicationContext(), ColorViewerActivity.class);
                 startActivity(intent);
             }
         });
