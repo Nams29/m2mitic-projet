@@ -63,6 +63,10 @@ public class MainActivity extends Activity {
         } 
         else if (id == R.id.menu_db_reset) {
             deleteDatabase(ApplicationSQLiteOpenHelper.DATABASE_NAME);
+            Activity activiyToFinish = this;
+            Intent i = new Intent(this, MainActivity.class);
+            this.startActivity(i);
+            activiyToFinish.finish();
             return true;
         } else {
             return super.onOptionsItemSelected(item);
@@ -183,7 +187,7 @@ public class MainActivity extends Activity {
 		
 		console.append("\nDétail des photos présentes dans la carte :");
         for (OPhoto newPhoto : newPhotos) {
-    		//if (ajouter) applicationDB.addPhoto(newPhoto); // Si l'utilisateur souhaite ajouter les nouvelles photos
+    		if (ajouter) applicationDB.addPhoto(newPhoto); // Si l'utilisateur souhaite ajouter les nouvelles photos
             console.append("\n - " + newPhoto.getName() + "\n   " + newPhoto.getIdentifier());
         }
     	
