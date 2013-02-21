@@ -95,7 +95,6 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 		    	for(File file : files) { // Pour chaque fichier du dossier
 		    		//System.out.println(""+ file.toString());
 		    		
-		    		if (newPhotos.size() >= 100) break; // TODO remove
 		    		if (cancelTask) break;
 		    		
 		    		if (file.isFile()) {
