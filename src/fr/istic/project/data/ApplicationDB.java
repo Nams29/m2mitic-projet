@@ -80,11 +80,13 @@ public final class ApplicationDB
 		contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_AVAILABLE, 	photo.getAvailable());
 		if (photo.getContext() != null)
 			contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_CONTEXT, 	photo.getContext().get_id());
-		//photo.setIdentifier(photo.getIdentifier()); // TODO remove
-		final long photoId = database.insert(ApplicationSQLiteOpenHelper.PHOTOS_TABLE_NAME, null, contentValues);
-		// TODO gerer exceptions
-
-		return photoId;
+		
+		try {
+			final long photoId = database.insert(ApplicationSQLiteOpenHelper.PHOTOS_TABLE_NAME, null, contentValues);
+			return photoId;
+		} catch (SQLiteException e) {
+			return -1;
+		}
 	}
 
 	public OPhoto getPhotoByIdentifier(final String photoId)
@@ -227,10 +229,13 @@ public final class ApplicationDB
 	{
 		final ContentValues contentValues = new ContentValues();
 		contentValues.put(ApplicationSQLiteOpenHelper.CONTEXTS_NAME, context.getName());
-		final long contextId = database.insert(ApplicationSQLiteOpenHelper.CONTEXTS_TABLE_NAME, null, contentValues);
-		// TODO gerer exceptions
-
-		return getContext(contextId);
+		
+		try {
+			final long contextId = database.insert(ApplicationSQLiteOpenHelper.CONTEXTS_TABLE_NAME, null, contentValues);
+			return getContext(contextId);
+		} catch (SQLiteException e) {
+			return null;
+		}
 	}
 
 	public OContext getContext(final long contextId)
@@ -291,7 +296,7 @@ public final class ApplicationDB
 		final OContext context = new OContext(cursor.getLong(cursor.getColumnIndex(ApplicationSQLiteOpenHelper.CONTEXTS_ID)));
 		context.setName(cursor.getString(cursor.getColumnIndex(ApplicationSQLiteOpenHelper.CONTEXTS_NAME)));
 
-		// TODO get Pictures of Context, puis ctx.addPicture(...)
+		// TODO gestion du context pour chaque photo, puis ctx.addPicture(...)
 		return context;
 	}
 }
