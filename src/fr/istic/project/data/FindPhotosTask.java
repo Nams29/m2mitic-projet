@@ -23,7 +23,7 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 	
 	private MainActivity activity;
 	private ProgressDialog progressDialog;
-	private List<OPhoto> photos;
+	private List<OPhoto> newPhotos;
 
 	private Geocoder geocoder;
 	private boolean geocoderError;
@@ -53,7 +53,7 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 		
 		this.activity = activity;
 		this.progressDialog = new ProgressDialog(activity); 
-				progressDialog.setTitle("Recherche des photos");
+				progressDialog.setTitle("Chargement en cours...");
 				progressDialog.setCancelable(true);
 				progressDialog.setCanceledOnTouchOutside(true);
 			    progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -63,7 +63,7 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 				    }
 				});
 		this.cancelTask = false;
-		this.photos = new LinkedList<OPhoto>();
+		this.newPhotos = new LinkedList<OPhoto>();
 		
 		this.geocoder = new Geocoder(activity, LocaleUtils.LOCALE_FR);
 		this.geocoderError = false;
@@ -94,7 +94,7 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 		    	for(File file : files) { // Pour chaque fichier du dossier
 		    		//System.out.println(""+ file.toString());
 		    		
-		    		if (photos.size() >= 100) break;
+		    		if (newPhotos.size() >= 100) break; // TODO remove
 		    		if (cancelTask) break;
 		    		
 		    		if (file.isFile()) {
@@ -111,14 +111,14 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 									try {
 
 										if (photo.processProperties(geocoder) == false) geocoderError = true; // Traitement des propriétés (identifiant et localisation)
-										applicationDB.addPhoto(photo);
-					    				//if (applicationDB.addPhoto(photo) != -1) { // TODO prendre en compte différement
-				    					//photo.setIdentifier(photo.getIdentifier());
-										//}
-										photos.add(photo); // TODO a virer
+										
+										newPhotos.add(photo);
+										
+//										if (applicationDB.getPhoto(photo.getIdentifier()) == null) { // Si la photo n'existe pas dans la BDD
+//											applicationDB.addPhoto(photo); // On l'y ajoute											
+//										}
 					    				
-					    				System.out.println(photos.size());
-					    				publishProgress(photos.size());
+					    				publishProgress(newPhotos.size());
 									} catch (Exception e) {
 										e.printStackTrace();
 								    }
@@ -171,6 +171,6 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 		
 		
 		Toast.makeText(activity, "duree : "+ (duration/1000), Toast.LENGTH_LONG).show();
-		activity.onPostExecuteFindPhotosTask(photos); // Retourne dans l'activity        
+		activity.onPostExecuteFindPhotosTask(newPhotos); // Retourne dans l'activity        
     }
 }

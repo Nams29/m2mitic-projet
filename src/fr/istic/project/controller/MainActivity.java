@@ -163,7 +163,6 @@ public class MainActivity extends Activity {
         return false;
     }
 
-    
 
 	public void onPostExecuteFindPhotosTask(List<OPhoto> newPhotos) {
     	
