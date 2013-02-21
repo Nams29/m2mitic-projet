@@ -45,12 +45,12 @@ public class ViewerLoader extends BaseAdapter {
 
 	@Override
 	public Object getItem(int position) {
-		return position;
+		return this.photos.get(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
-		return position;
+		return this.views.get(position).getId();
 	}
 
 	@Override

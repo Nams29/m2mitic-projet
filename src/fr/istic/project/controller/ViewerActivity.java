@@ -15,7 +15,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Toast;
 import fr.istic.project.R;
+import fr.istic.project.model.OPhoto;
 import fr.istic.project.utils.BitmapUtils;
 import fr.istic.project.utils.OnFlingGestureListener;
 import fr.istic.project.utils.UIUtils;
@@ -26,6 +28,8 @@ public class ViewerActivity extends Activity {
 
 	private GridView gridView;
 	private ImageView fullScreen;
+	
+	private MyFlingGestureListener flingListener;
 	
 	private final int PADDING = 0;
 
@@ -55,10 +59,13 @@ public class ViewerActivity extends Activity {
 		this.gridView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				onClickImage((ImageView)view);
+				onClickImage((ImageView)view, position);
 			}
 		});
-
+		
+		this.flingListener = new MyFlingGestureListener(this);
+		this.fullScreen.setOnTouchListener(flingListener);
+		
 		if (UIUtils.isHoneycomb()) {
 			ActionBar actionBar = this.getActionBar();
 			actionBar.setDisplayHomeAsUpEnabled(true);
@@ -84,10 +91,12 @@ public class ViewerActivity extends Activity {
 	 * Called when the user click on an image
 	 * @param v
 	 */
-	private void onClickImage(ImageView v) {
-		BitmapWorkerTask task = new BitmapWorkerTask(v);
+	private void onClickImage(ImageView v, int position) {
+		BitmapWorkerTask task = new BitmapWorkerTask(position);
 		task.execute(0);
 
+		flingListener.setPosition(position);
+		
 		fullScreen.setVisibility(View.VISIBLE);
 
 		fullScreen.setOnClickListener(new OnClickListener() {
@@ -97,9 +106,6 @@ public class ViewerActivity extends Activity {
 				fullScreen.setImageBitmap(null);
 			}
 		});
-
-		fullScreen.setOnTouchListener(
-				new MyFlingGestureListener(this, fullScreen));
 	}
 	
 	@Override
@@ -117,77 +123,64 @@ public class ViewerActivity extends Activity {
 	 * Class MyFlingGestureListener
 	 */
 	class MyFlingGestureListener extends OnFlingGestureListener {
+		
+		private int position;
 
-		Context c;
-		ImageView iv;
-
-		public MyFlingGestureListener(Context c, ImageView iv) {
+		public MyFlingGestureListener(Context c) {
 			super(c);
-			this.iv = iv;
 		}
-
+		
 		@Override
 		public void onRightToLeft() {
-			/*String currentId = String.valueOf(iv.getTag());
-            String str[] = currentId.split("#");
-            Integer firstId = Integer.valueOf(str[0]);
-            Integer secondId = Integer.valueOf(str[1]);
+			position++;
 
-            if (secondId == ViewerActivity.this.tailleMatrice) {
-                Toast.makeText(getApplicationContext(), "On est déjà au bord l'ami !", Toast.LENGTH_SHORT).show();
-            } else {
-                String newTag = firstId + "#" + (secondId + 1);
-                iv.setTag(newTag);
-                iv.setImageResource(ViewerActivity.this.imagesDeTests.get(newTag));
-            }*/
+			this.move(position);
 		}
 
 		@Override
 		public void onLeftToRight() {
-			/*String currentId = String.valueOf(iv.getTag());
-            String str[] = currentId.split("#");
-            Integer firstId = Integer.valueOf(str[0]);
-            Integer secondId = Integer.valueOf(str[1]);
+			position--;
 
-            if (secondId == 1) {
-                Toast.makeText(getApplicationContext(), "On est déjà au bord l'ami !", Toast.LENGTH_SHORT).show();
-            } else {
-                String newTag = firstId + "#" + (secondId - 1);
-                iv.setTag(newTag);
-                iv.setImageResource(ViewerActivity.this.imagesDeTests.get(newTag));
-            }*/
+			this.move(position);
 		}
 
 		@Override
 		public void onBottomToTop() {
-			/*String currentId = String.valueOf(iv.getTag());
-            String str[] = currentId.split("#");
-            Integer firstId = Integer.valueOf(str[0]);
-            Integer secondId = Integer.valueOf(str[1]);
+			int nbCols = gridView.getNumColumns();
+			position += nbCols;
 
-            if (firstId == ViewerActivity.this.tailleMatrice) {
-                Toast.makeText(getApplicationContext(), "On est déjà au bord l'ami !", Toast.LENGTH_SHORT).show();
-            } else {
-                String newTag = (firstId + 1) + "#" + secondId;
-                iv.setTag(newTag);
-                iv.setImageResource(ViewerActivity.this.imagesDeTests.get(newTag));
-            }*/
+			this.move(position);
+			
 		}
 
 		@Override
 		public void onTopToBottom() {
-			/*String currentId = String.valueOf(iv.getTag());
-            String str[] = currentId.split("#");
-            Integer firstId = Integer.valueOf(str[0]);
-            Integer secondId = Integer.valueOf(str[1]);
+			int nbCols = gridView.getNumColumns();
+			position -= nbCols;
 
-            if (firstId == 1) {
+			this.move(position);
+		}
+		
+		/**
+		 * Display the picture found at the given position
+		 * @param position the position of the picture to display
+		 */
+		private void move(int position) {
+			if (position >= 0 && position < gridView.getAdapter().getCount()) { 
+				BitmapWorkerTask task = new BitmapWorkerTask(position);
+				task.execute(0);
+			}
+			else {
                 Toast.makeText(getApplicationContext(), "On est déjà au bord l'ami !", Toast.LENGTH_SHORT).show();
-            } else {
-                String newTag = (firstId - 1) + "#" + secondId;
-                iv.setTag(newTag);
-                iv.setImageResource(ViewerActivity.this.imagesDeTests.get(newTag));
-            }*/
+			}
+		}
+		
+		/**
+		 * Set the current picture position
+		 * @param p
+		 */
+		public void setPosition(int p) {
+			this.position = p;
 		}
 
 	}
@@ -196,16 +189,17 @@ public class ViewerActivity extends Activity {
 	 * Class BitmapWorkerTask
 	 */
 	class BitmapWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
-		private ImageView view;
+		private int position;
 
-		public BitmapWorkerTask(ImageView view) {
-			this.view = view;
+		public BitmapWorkerTask(int position) {
+			this.position = position;
 		}
 
 		// Decode image in background.
 		@Override
 		protected Bitmap doInBackground(Integer... params) {
-			return BitmapUtils.decodeSampledBitmapFromResource(view.getTag().toString(), 200, 200);
+			return BitmapUtils.decodeSampledBitmapFromResource(
+					((OPhoto)gridView.getAdapter().getItem(position)).getPath(), 200, 200);
 		}
 
 		// Once complete, see if ImageView is still around and set bitmap.
