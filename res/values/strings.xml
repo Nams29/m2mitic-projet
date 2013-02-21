@@ -6,7 +6,8 @@
     
     <!-- Menus -->
     <string name="menu_timeline">Timeline</string>
-    <string name="menu_home">Accueil</string>
+    <string name="menu_find_photos">Rechercher des photos</string>
+    <string name="menu_db_show">Voir la base de données</string>
     <string name="menu_db_reset">Vider la base de données</string>
     
     <!-- Content description -->

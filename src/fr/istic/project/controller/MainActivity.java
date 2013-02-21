@@ -3,6 +3,7 @@ package fr.istic.project.controller;
 import java.io.File;
 import java.util.List;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -12,6 +13,10 @@ import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import fr.istic.project.R;
 import fr.istic.project.data.ApplicationDB;
@@ -20,9 +25,11 @@ import fr.istic.project.data.FindPhotosTask;
 import fr.istic.project.model.OContext;
 import fr.istic.project.model.OPhoto;
 import fr.istic.project.utils.FileUtils;
+import fr.istic.project.utils.UIUtils;
 
 public class MainActivity extends Activity {
 
+	private LinearLayout linearLayout;
     private TextView console;
     private transient ApplicationDB applicationDB;
     private List<OPhoto> newPhotos = null;
@@ -31,10 +38,46 @@ public class MainActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        
+//        setContentView(R.layout.activity_main);
+//        this.console = (TextView) findViewById(R.id.main_console);
+        
+        setContentView(R.layout.activity_home);
+        this.linearLayout = (LinearLayout) findViewById(R.id.linearLayout);
+        this.console = new TextView(this);
 
-        this.console = (TextView) findViewById(R.id.main_console);
 
+        ImageView menuTemps = (ImageView) findViewById(R.id.menuTemps);
+        menuTemps.setOnClickListener(new ImageView.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), TimeLineActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        ImageView menuCouleur = (ImageView) findViewById(R.id.menuCouleur);
+        menuCouleur.setOnClickListener(new ImageView.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ColorViewerActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        ImageView menuContenu = (ImageView) findViewById(R.id.menuContenu);
+        menuContenu.setOnClickListener(new ImageView.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ViewerActivity.class);
+                Bundle b = new Bundle();
+                b.putInt(ViewerActivity.VIEWTYPE, ViewerActivity.VIEWTYPE_CONTENT);
+                startActivity(intent);
+            }
+        });
+        
+        
+        
         this.applicationDB = ApplicationDB.getInstance();
         applicationDB.initialize(this);
         applicationDB.openDb();
@@ -55,12 +98,22 @@ public class MainActivity extends Activity {
         // Faut pas faire un switch parce qu'à partir d'une certaine version d'Android
         // tu peux que faire des switchs sur des variables d'application (genre les R.machin)
         // et avec item.getItemId() ça plante... Oui c'pas logique
-        if (id == R.id.menu_home) {
-            Intent i = new Intent(this, HomeActivity.class);
+        if (id == R.id.menu_find_photos) {
+//            Intent i = new Intent(this, HomeActivity.class);
+//            this.startActivity(i);
+//            this.finish();
+            Activity activiyToFinish = this;
+            Intent i = new Intent(this, MainActivity.class);
             this.startActivity(i);
-            this.finish();
+            activiyToFinish.finish();  	
             return true;
         } 
+        else if (id == R.id.menu_db_show) {
+        	ScrollView scrollView = new ScrollView(this);
+        	scrollView.addView(console);
+        	linearLayout.addView(scrollView, 0);        	
+            return true;
+        }
         else if (id == R.id.menu_db_reset) {
             deleteDatabase(ApplicationSQLiteOpenHelper.DATABASE_NAME);
             Activity activiyToFinish = this;
