@@ -7,6 +7,7 @@ import java.util.List;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
@@ -91,9 +92,9 @@ public final class ApplicationDB
 			contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_CONTEXT, 	photo.getContext().get_id());
 		
 		try {
-			final long photoId = database.insert(ApplicationSQLiteOpenHelper.PHOTOS_TABLE_NAME, null, contentValues);
+			final long photoId = database.insertOrThrow(ApplicationSQLiteOpenHelper.PHOTOS_TABLE_NAME, null, contentValues);
 			return photoId;
-		} catch (SQLiteException e) {
+		} catch (SQLiteConstraintException e) {
 			return -1;
 		}
 	}
@@ -261,9 +262,9 @@ public final class ApplicationDB
 		contentValues.put(ApplicationSQLiteOpenHelper.CONTEXTS_NAME, context.getName());
 		
 		try {
-			final long contextId = database.insert(ApplicationSQLiteOpenHelper.CONTEXTS_TABLE_NAME, null, contentValues);
+			final long contextId = database.insertOrThrow(ApplicationSQLiteOpenHelper.CONTEXTS_TABLE_NAME, null, contentValues);
 			return getContext(contextId);
-		} catch (SQLiteException e) {
+		} catch (SQLiteConstraintException e) {
 			return null;
 		}
 	}
