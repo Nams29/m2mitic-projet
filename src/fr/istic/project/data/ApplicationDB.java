@@ -87,7 +87,7 @@ public final class ApplicationDB
 		return photoId;
 	}
 
-	public OPhoto getPhoto(final String photoId)
+	public OPhoto getPhotoByIdentifier(final String photoId)
 	{
 		final Cursor cursor = database.query(ApplicationSQLiteOpenHelper.PHOTOS_TABLE_NAME, COLS,				
 				ApplicationSQLiteOpenHelper.PHOTOS_IDENTIFIER + " = " + photoId, null, null, null, null);
@@ -100,6 +100,22 @@ public final class ApplicationDB
 		cursor.close();
 		return photo;
 	}
+	
+	
+	public OPhoto getPhotoByName(final String photoName)
+	{
+		final Cursor cursor = database.query(ApplicationSQLiteOpenHelper.PHOTOS_TABLE_NAME, COLS,				
+				ApplicationSQLiteOpenHelper.PHOTOS_PATH + " LIKE %" + photoName, null, null, null, null);
+		cursor.moveToFirst();
+
+		OPhoto photo = null;
+		if (cursor.getCount() != 0)
+			photo = buildPhotoFromCursor(cursor);
+
+		cursor.close();
+		return photo;
+	}
+	
 
 	public List<OPhoto> getAllPhotos()
 	{
