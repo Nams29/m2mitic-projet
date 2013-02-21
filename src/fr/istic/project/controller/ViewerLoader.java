@@ -26,9 +26,10 @@ public class ViewerLoader extends BaseAdapter {
 
     private final SparseArray<ImageView> views;
 
-    public ViewerLoader(List<OPhoto> photos) {
+    public ViewerLoader(Context context, List<OPhoto> photos) {
+    	this.context = context;
         this.photos = photos;
-        views = new SparseArray<ImageView>();
+        this.views = new SparseArray<ImageView>();
     }
 
     @Override

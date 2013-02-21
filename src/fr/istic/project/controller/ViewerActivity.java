@@ -54,8 +54,8 @@ public class ViewerActivity extends Activity {
 
 		this.gridView.setColumnWidth(colWidth);
 		this.gridView.setNumColumns(count);
-
-		this.gridView.setAdapter(new ViewerLoader(this));
+		
+		this.gridView.setAdapter(new ViewerLoader(this, null));
 		this.gridView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
