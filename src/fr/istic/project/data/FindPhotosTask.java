@@ -41,8 +41,8 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 		new ThreadPoolExecutor(
 			maxThreads,
 			maxThreads,
-			1, // TODO optimisation ?
-			TimeUnit.MINUTES, // TODO optimisation ?
+			1,
+			TimeUnit.MINUTES,
 			new ArrayBlockingQueue<Runnable>(maxThreads, true),
 			new ThreadPoolExecutor.CallerRunsPolicy()
 	);
@@ -69,9 +69,10 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 		this.geocoderError = false;
 		
 		this.applicationDB = activity.getApplicationDB();
-		applicationDB.setAllPhotosUnavailable(); // TODO compter avec  queryNumEntries
-		if (applicationDB.getContext(0) == null) // TODO a corriger ?
+		applicationDB.setAllPhotosUnavailable();
+		if (applicationDB.getContext(0) == null) { // TODO a corriger ?
 			OContext.defaultContext = applicationDB.addContext(OContext.defaultContext); // Ajout du contexte par défaut
+		}
 	}
 	
 	@Override
@@ -94,7 +95,6 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 		    	for(File file : files) { // Pour chaque fichier du dossier
 		    		//System.out.println(""+ file.toString());
 		    		
-		    		if (newPhotos.size() >= 100) break; // TODO remove
 		    		if (cancelTask) break;
 		    		
 		    		if (file.isFile()) {
@@ -165,7 +165,7 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 		long duration = System.currentTimeMillis() - start;
 		
 		
-		Toast.makeText(activity, "duree : "+ (duration/1000), Toast.LENGTH_LONG).show();
+		//Toast.makeText(activity, "duree : "+ (duration/1000), Toast.LENGTH_LONG).show();
 		activity.onPostExecuteFindPhotosTask(newPhotos); // Retourne dans l'activity        
     }
 }
