@@ -80,10 +80,10 @@ public class MainActivity extends Activity {
     public boolean dialogRecherche() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Rechercher de nouvelles photos ?");
-        builder.setMessage("Souhaitez-vous rechercher la présence de nouvelles photos ?\nCeci peut-être... vâchement long...")
+        builder.setMessage("Souhaitez-vous rechercher la présence de nouvelles photos ?\nCeci peut-être long...")
 
         /* Clic sur Oui */
-        .setPositiveButton("Oh oui !", new DialogInterface.OnClickListener() {
+        .setPositiveButton("Oui !", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
                 dialogSelection();
