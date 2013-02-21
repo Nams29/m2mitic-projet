@@ -13,125 +13,117 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import fr.istic.project.data.ApplicationDB;
 import fr.istic.project.model.OPhoto;
 import fr.istic.project.utils.BitmapUtils;
 
 public class ViewerLoader extends BaseAdapter {
 
-	private final String TAG = "ViewerLoader"; 
+    private final String TAG = "ViewerLoader";
 
-	private Context context;
+    private Context context;
 
-	private List<OPhoto> photos;
-	
-	private SparseArray<ImageView> views;
+    private final List<OPhoto> photos;
 
-	public ViewerLoader(Context c) {
-		context = c;
-		
-		ApplicationDB database = ApplicationDB.getInstance();
-		database.openDb();
-		photos = database.getSomePhotos(50);
-		database.closeDb();
-		
-		views = new SparseArray<ImageView>();
-	}
+    private final SparseArray<ImageView> views;
 
-	@Override
-	public int getCount() {
-		return photos.size();
-	}
+    public ViewerLoader(List<OPhoto> photos) {
+        this.photos = photos;
+        views = new SparseArray<ImageView>();
+    }
 
-	@Override
-	public Object getItem(int position) {
-		return this.photos.get(position);
-	}
+    @Override
+    public int getCount() {
+        return photos.size();
+    }
 
-	@Override
-	public long getItemId(int position) {
-		return this.views.get(position).getId();
-	}
+    @Override
+    public Object getItem(int position) {
+        return this.photos.get(position);
+    }
 
-	@Override
-	public View getView(int position, View view, ViewGroup parent) {
+    @Override
+    public long getItemId(int position) {
+        return this.views.get(position).getId();
+    }
 
-		ImageView v;
+    @Override
+    public View getView(int position, View view, ViewGroup parent) {
 
-		v = views.get(position);
+        ImageView v;
 
-		if (v == null) {
-			Log.d(TAG, "This view is not created. create it.");
+        v = views.get(position);
 
-			v = new ImageView(context);
+        if (v == null) {
+            Log.d(TAG, "This view is not created. create it.");
 
-			v.setLayoutParams(new GridView.LayoutParams(200, 200));
+            v = new ImageView(context);
+
+            v.setLayoutParams(new GridView.LayoutParams(200, 200));
             v.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
-			v.setImageResource(android.R.drawable.ic_menu_gallery);
+            v.setImageResource(android.R.drawable.ic_menu_gallery);
 
-			String file = photos.get(position).getPath().toString();
-			v.setTag(file);
+            String file = photos.get(position).getPath().toString();
+            v.setTag(file);
 
-			Bundle b = new Bundle ();
-			b.putString("file", file);
-			b.putInt("pos", position);
+            Bundle b = new Bundle();
+            b.putString("file", file);
+            b.putInt("pos", position);
 
-			Log.d(TAG, "*before: " + b.getInt("pos") + " | " + b.getString("file"));
+            Log.d(TAG, "*before: " + b.getInt("pos") + " | " + b.getString("file"));
 
-			new LoadImage().execute(b);
+            new LoadImage().execute(b);
 
-			views.put(position, v);
-		}
+            views.put(position, v);
+        }
 
-		return v;
+        return v;
 
-	}
+    }
 
-	private class LoadImage extends AsyncTask<Bundle, Void, Bundle> {
+    private class LoadImage extends AsyncTask<Bundle, Void, Bundle> {
 
-		@Override
-		protected Bundle doInBackground(Bundle... b) {
+        @Override
+        protected Bundle doInBackground(Bundle... b) {
 
-			String file = b[0].getString("file");
+            String file = b[0].getString("file");
 
-			Bitmap bm = fetchPhoto(file);
+            Bitmap bm = fetchPhoto(file);
 
-			Bundle bundle = new Bundle();
-			bundle.putParcelable("bm", bm);
-			bundle.putInt("pos", b[0].getInt("pos"));
-			bundle.putString("file", file);
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("bm", bm);
+            bundle.putInt("pos", b[0].getInt("pos"));
+            bundle.putString("file", file);
 
-			return bundle;
-		}
+            return bundle;
+        }
 
-		@Override
-		protected void onPostExecute(Bundle result) {
-			super.onPostExecute(result);
+        @Override
+        protected void onPostExecute(Bundle result) {
+            super.onPostExecute(result);
 
-			Log.d(TAG, "*after: " + result.getInt("pos") + " | " + result.getString("file"));
+            Log.d(TAG, "*after: " + result.getInt("pos") + " | " + result.getString("file"));
 
-			ImageView view = views.get(result.getInt("pos"));
-			view.setPadding(0, 0, 0, 0);
-			view.setImageBitmap((Bitmap) result.getParcelable("bm"));
-		}
+            ImageView view = views.get(result.getInt("pos"));
+            view.setPadding(0, 0, 0, 0);
+            view.setImageBitmap((Bitmap) result.getParcelable("bm"));
+        }
 
-	}
+    }
 
-	private Bitmap fetchPhoto(String path) {
-		Bitmap bm = null;
-		
-		Log.d(TAG, "path: " + path);
+    private Bitmap fetchPhoto(String path) {
+        Bitmap bm = null;
 
-		try {
-			bm = BitmapUtils.decodeSampledBitmapFromResource(path, 100, 100);
+        Log.d(TAG, "path: " + path);
 
-		}
-		catch (Exception e) {
-			Log.e(TAG, e.getMessage(), e);
-		}
+        try {
+            bm = BitmapUtils.decodeSampledBitmapFromResource(path, 100, 100);
 
-		return bm;
-	}
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
+
+        return bm;
+    }
 
 }
