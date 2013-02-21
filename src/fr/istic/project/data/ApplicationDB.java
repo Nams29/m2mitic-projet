@@ -80,7 +80,7 @@ public final class ApplicationDB
 		contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_AVAILABLE, 	photo.getAvailable());
 		if (photo.getContext() != null)
 			contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_CONTEXT, 	photo.getContext().get_id());
-		photo.setIdentifier(photo.getIdentifier());
+		//photo.setIdentifier(photo.getIdentifier()); // TODO remove
 		final long photoId = database.insert(ApplicationSQLiteOpenHelper.PHOTOS_TABLE_NAME, null, contentValues);
 		// TODO gerer exceptions
 
