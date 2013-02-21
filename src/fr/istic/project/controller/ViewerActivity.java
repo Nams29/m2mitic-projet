@@ -1,7 +1,6 @@
 package fr.istic.project.controller;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import android.app.ActionBar;
@@ -29,8 +28,7 @@ import fr.istic.project.utils.UIUtils;
 
 public class ViewerActivity extends Activity {
 	
-	public static final String GROUP_FIRSTDATE = "firstdate";
-	public static final String GROUP_LASTDATE = "lastdate";
+	public static final String GROUP_IDS = "groupids";
 	
 	public static final String VIEWTYPE = "viewtype";
 	public static final int VIEWTYPE_GROUP = 0;
@@ -135,12 +133,13 @@ public class ViewerActivity extends Activity {
 		
 		if (viewtype == VIEWTYPE_GROUP) {
 			Bundle b = this.getIntent().getExtras();
-			Date firstDate = (Date) b.get(GROUP_FIRSTDATE);
-			Date lastDate = (Date) b.get(GROUP_LASTDATE);
+			String[] ids = (String[]) b.get(GROUP_IDS);
 			
 			ApplicationDB database = ApplicationDB.getInstance();
 			database.openDb();
-			data = database.getPhotosFromDateInterval(firstDate, lastDate);
+			for (int i=0; i < ids.length; i++) {
+				data.add(database.getPhotoByIdentifier(ids[i]));
+			}
 			database.closeDb();
 		}
 		else if (viewtype == VIEWTYPE_COLOR) {
