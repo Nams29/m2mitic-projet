@@ -69,6 +69,7 @@ public class FindPhotosTask extends AsyncTask<File, Integer, Void> {
 		this.geocoderError = false;
 		
 		this.applicationDB = activity.getApplicationDB();
+		applicationDB.setAllPhotosUnavailable(); // TODO compter avec  queryNumEntries
 		if (applicationDB.getContext(0) == null) // TODO a corriger ?
 			OContext.defaultContext = applicationDB.addContext(OContext.defaultContext); // Ajout du contexte par défaut
 	}

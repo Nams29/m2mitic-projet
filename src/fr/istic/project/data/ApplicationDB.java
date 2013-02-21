@@ -59,6 +59,14 @@ public final class ApplicationDB
 
 
 	/* PHOTOS */
+	
+	public long setAllPhotosUnavailable() {
+		final ContentValues contentValues = new ContentValues();
+		contentValues.put(ApplicationSQLiteOpenHelper.PHOTOS_AVAILABLE, "false");
+		int resultat = database.update(ApplicationSQLiteOpenHelper.PHOTOS_TABLE_NAME, contentValues, null, null);
+
+		return resultat;
+	}
 
 	public long addPhoto(final OPhoto photo)
 	{

@@ -19,6 +19,7 @@ import fr.istic.project.R;
 import fr.istic.project.data.ApplicationDB;
 import fr.istic.project.data.ApplicationSQLiteOpenHelper;
 import fr.istic.project.data.FindPhotosTask;
+import fr.istic.project.model.OContext;
 import fr.istic.project.model.OPhoto;
 import fr.istic.project.utils.FileUtils;
 
@@ -198,11 +199,11 @@ public class MainActivity extends Activity {
     }
 
     public void processPhotos(List<OPhoto> newPhotos) {
+    	List<OPhoto> photos = applicationDB.getAllPhotos();
+    	List<OContext> contexts = applicationDB.getAllContexts();
+    	
 
-        console.append("\nContenu présent dans la carte :\n" + newPhotos.size() + " photo(s).\n");
-
-        console.append("\nContenu sauvegardé dans la base de données :\n" + applicationDB.getAllPhotos().size() + " photo(s).\n"
-                + applicationDB.getAllContexts().size() + " contexte(s).\n");
+        console.append("\n\nContenu présent dans la carte :\n" + newPhotos.size() + " photo(s).\n");
 
         console.append("\nDétail des photos présentes dans la carte :");
 
@@ -210,6 +211,18 @@ public class MainActivity extends Activity {
             this.photos.add(newPhoto);
             console.append("\n - " + newPhoto.getName() + "\n   " + newPhoto.getIdentifier());
         }
+        
+        
+        console.append("\n\nContenu sauvegardé dans la base de données :\n" + photos.size() + " photo(s).\n"
+                + contexts.size() + " contexte(s).\n");
+        
+        console.append("\nDétail des photos présentes dans la BDD :");
+
+    	for(OPhoto photo : photos) {
+    		console.append("\n - " + photo.getName() + "\n   " + photo.getIdentifier());
+    	}
+    	
+
 
     }
 
