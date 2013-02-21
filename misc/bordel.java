@@ -9,6 +9,86 @@
   */
 
 
+    /**
+     * Dialog qui propose de sélectionner les dossiers concernés par la
+     * recherche
+     */
+    public boolean dialogSelection() {
+        // Détection des médias disponibles
+        final boolean externalDirectoryDeviceAvailable = ((FileUtils.getExternalDirectoryDevice() != null) ? true : false);
+        final boolean externalDirectoryRemovableAvailable = ((FileUtils.getExternalDirectoryRemovable() != null) ? true : false);
+
+        // Construction du dialog
+        List<CharSequence> items = new LinkedList<CharSequence>();
+        final boolean[] itemsPreChecked = { false, false, true }; // Choix par défaut du dialog
+        final boolean[] resultats = itemsPreChecked;
+
+        if (externalDirectoryDeviceAvailable) {
+            items.add("Répertoire de l'application  \n" + "(dossier \"" + FileUtils.APPLICATION_DIRECTORY_DEVICE + "\" dans la mémoire de la tablette)");
+            items.add("Mémoire de la tablette");
+        }
+        if (externalDirectoryRemovableAvailable) {
+            items.add("Mémoire microSD");
+
+            // Répercute le choix par défaut dans la première case si elle est vide
+            if (!externalDirectoryDeviceAvailable)
+                itemsPreChecked[0] = itemsPreChecked[2];
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Rechercher dans...");
+        builder.setMultiChoiceItems(items.toArray(new CharSequence[items.size()]), itemsPreChecked, new DialogInterface.OnMultiChoiceClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                resultats[which] = isChecked;
+            }
+        })
+
+        /* Clic sur OK */
+        .setPositiveButton("OK !", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                boolean useApplicationDirectory = false;
+                boolean useExternalDirectoriesDevice = false;
+                boolean useExternalDirectoriesRemovable = false;
+
+                if (externalDirectoryDeviceAvailable) {
+                    useApplicationDirectory = resultats[0];
+                    useExternalDirectoriesDevice = resultats[1];
+                }
+                if (externalDirectoryRemovableAvailable) {
+                    if (externalDirectoryDeviceAvailable)
+                        useExternalDirectoriesRemovable = resultats[2];
+                    else
+                        useExternalDirectoriesRemovable = resultats[0];
+                }
+
+                /* PARCOURS DES MEDIAS - PREPARATION */
+                File[] directories = FileUtils.getAllowedDirectories(useApplicationDirectory, useExternalDirectoriesDevice, useExternalDirectoriesRemovable); // Ajout des dossiers à parcourir
+                for (File dir : directories) {
+                    console.append("\n " + dir.toString());
+                }
+
+                /* PARCOURS DES MEDIAS - EXECUTION */
+                FindPhotosTask findPhotosTask = new FindPhotosTask(MainActivity.this);
+                findPhotosTask.execute(directories);
+
+                /* AFFICHAGE */
+                // voir méthode processPhotos() déclenchée par FindPhotosTask.onPostExecute() 
+
+            }
+        });
+
+        AlertDialog alert = builder.create();
+        alert.show();
+
+        return false;
+    }
+    
+    
+    
+
 // UTILISATION D'UNE LIGNE HORIZONTALE ET D'UNE LIGNE VERTICALE EN PLEIN MILIEU (FORME UN +)  
 int height = bitmap.getHeight();
 int width = bitmap.getWidth();
