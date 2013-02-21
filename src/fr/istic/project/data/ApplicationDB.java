@@ -122,7 +122,7 @@ public final class ApplicationDB
 		final List<OPhoto> photos = new ArrayList<OPhoto>();
 
 		final Cursor cursor = database.query(ApplicationSQLiteOpenHelper.PHOTOS_TABLE_NAME, COLS,				
-				null, null, null, null, null);
+				null, null, null, null, ApplicationSQLiteOpenHelper.PHOTOS_DATE);
 		cursor.moveToFirst();
 
 		while (!cursor.isAfterLast())
