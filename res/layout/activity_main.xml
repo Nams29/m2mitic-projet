@@ -1,17 +1,31 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity" >
+    android:gravity="center"
+    android:background="@drawable/bg_accueil" >
+ 
+    <ImageView
+        android:id="@+id/menuTemps"
+        android:contentDescription="@string/MenuImageTemps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/menu_temps" />
 
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:id="@+id/main_console"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
-    </ScrollView>
-
-</RelativeLayout>
+    <ImageView
+        android:id="@+id/menuCouleur"
+        android:contentDescription="@string/MenuImageCouleur"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/menu_couleur"
+        android:padding="100dp" />
+ 
+    <ImageView
+        android:id="@+id/menuContenu"
+        android:contentDescription="@string/MenuImageContenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/menu_contenu" />    
+    
+</LinearLayout>
