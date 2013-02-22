@@ -20,14 +20,14 @@ public class ViewerLoader extends BaseAdapter {
 
     private final String TAG = "ViewerLoader";
 
-    private Context context;
+    private final Context context;
 
     private final List<OPhoto> photos;
 
     private final SparseArray<ImageView> views;
 
     public ViewerLoader(Context context, List<OPhoto> photos) {
-    	this.context = context;
+        this.context = context;
         this.photos = photos;
         this.views = new SparseArray<ImageView>();
     }

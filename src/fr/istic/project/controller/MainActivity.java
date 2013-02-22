@@ -3,7 +3,6 @@ package fr.istic.project.controller;
 import java.io.File;
 import java.util.List;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -25,11 +24,10 @@ import fr.istic.project.data.FindPhotosTask;
 import fr.istic.project.model.OContext;
 import fr.istic.project.model.OPhoto;
 import fr.istic.project.utils.FileUtils;
-import fr.istic.project.utils.UIUtils;
 
 public class MainActivity extends Activity {
 
-	private LinearLayout linearLayout;
+    private LinearLayout linearLayout;
     private TextView console;
     private transient ApplicationDB applicationDB;
     private List<OPhoto> newPhotos = null;
@@ -38,14 +36,13 @@ public class MainActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-//        setContentView(R.layout.activity_main);
-//        this.console = (TextView) findViewById(R.id.main_console);
-        
+
+        //        setContentView(R.layout.activity_main);
+        //        this.console = (TextView) findViewById(R.id.main_console);
+
         setContentView(R.layout.activity_home);
         this.linearLayout = (LinearLayout) findViewById(R.id.linearLayout);
         this.console = new TextView(this);
-
 
         ImageView menuTemps = (ImageView) findViewById(R.id.menuTemps);
         menuTemps.setOnClickListener(new ImageView.OnClickListener() {
@@ -60,7 +57,8 @@ public class MainActivity extends Activity {
         menuCouleur.setOnClickListener(new ImageView.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ColorViewerActivity.class);
+                Intent intent = new Intent(getApplicationContext(), ViewerActivity.class);
+                intent.putExtra(ViewerActivity.VIEWTYPE, ViewerActivity.VIEWTYPE_COLOR);
                 startActivity(intent);
             }
         });
@@ -75,9 +73,7 @@ public class MainActivity extends Activity {
                 startActivity(intent);
             }
         });
-        
-        
-        
+
         this.applicationDB = ApplicationDB.getInstance();
         applicationDB.initialize(this);
         applicationDB.openDb();
@@ -99,22 +95,20 @@ public class MainActivity extends Activity {
         // tu peux que faire des switchs sur des variables d'application (genre les R.machin)
         // et avec item.getItemId() ça plante... Oui c'pas logique
         if (id == R.id.menu_find_photos) {
-//            Intent i = new Intent(this, HomeActivity.class);
-//            this.startActivity(i);
-//            this.finish();
+            //            Intent i = new Intent(this, HomeActivity.class);
+            //            this.startActivity(i);
+            //            this.finish();
             Activity activiyToFinish = this;
             Intent i = new Intent(this, MainActivity.class);
             this.startActivity(i);
-            activiyToFinish.finish();  	
+            activiyToFinish.finish();
             return true;
-        } 
-        else if (id == R.id.menu_db_show) {
-        	ScrollView scrollView = new ScrollView(this);
-        	scrollView.addView(console);
-        	linearLayout.addView(scrollView, 0);        	
+        } else if (id == R.id.menu_db_show) {
+            ScrollView scrollView = new ScrollView(this);
+            scrollView.addView(console);
+            linearLayout.addView(scrollView, 0);
             return true;
-        }
-        else if (id == R.id.menu_db_reset) {
+        } else if (id == R.id.menu_db_reset) {
             deleteDatabase(ApplicationSQLiteOpenHelper.DATABASE_NAME);
             Activity activiyToFinish = this;
             Intent i = new Intent(this, MainActivity.class);
@@ -125,8 +119,7 @@ public class MainActivity extends Activity {
             return super.onOptionsItemSelected(item);
         }
     }
-    
-    
+
     public void findPhotos() {
 
         /* VERIFICATION DE LA DISPONIBILTE DES MEDIAS */
@@ -134,10 +127,10 @@ public class MainActivity extends Activity {
         if (Environment.MEDIA_MOUNTED.equals(state)) {
             // We can read and write the media 
 
-			boolean useApplicationDirectory = false;
-			boolean useExternalDirectoriesDevice = true;
-	      	boolean useExternalDirectoriesRemovable = true;
-	
+            boolean useApplicationDirectory = false;
+            boolean useExternalDirectoriesDevice = true;
+            boolean useExternalDirectoriesRemovable = true;
+
             /* PARCOURS DES MEDIAS - PREPARATION */
             File[] directories = FileUtils.getAllowedDirectories(useApplicationDirectory, useExternalDirectoriesDevice, useExternalDirectoriesRemovable); // Ajout des dossiers à parcourir
             for (File dir : directories) {
@@ -150,27 +143,25 @@ public class MainActivity extends Activity {
 
             /* AFFICHAGE */
             // voir méthode processPhotos() déclenchée par FindPhotosTask.onPostExecute() 
-            
 
         } else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
             // We can only read the media
             //Toast.makeText(getApplicationContext(), "Erreur : Mémoire interne et/ou carte microSD en lecture seule.", Toast.LENGTH_LONG).show();
-        	dialogContinuer();
-        	
+            dialogContinuer();
+
         } else {
             // Something else is wrong. We can neither read nor write
             //Toast.makeText(getApplicationContext(), "Erreur : Mémoire interne et/ou carte microSD manquante.", Toast.LENGTH_LONG).show();
-        	dialogContinuer();
+            dialogContinuer();
         }
 
     }
-    
-    
+
     /**
      * Dialog qui réclame un média pour commencer
      */
     public boolean dialogContinuer() {
-    	
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Média(s) inaccessible(s) !");
         builder.setMessage("Veuillez insérer une carte microSD (ou déconnecter l'appareil de votre ordinateur) puis cliquer sur Commencer.")
@@ -179,7 +170,7 @@ public class MainActivity extends Activity {
         .setNeutralButton("Commencer.", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
-            	findPhotos();
+                findPhotos();
             }
         });
         AlertDialog alertDialog = builder.create();
@@ -187,15 +178,15 @@ public class MainActivity extends Activity {
         alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
         return false;
-        
+
     }
-    
-    
+
     /**
-     * Dialog qui demande si l'application doit ajouter les nouvelles photos trouvées
+     * Dialog qui demande si l'application doit ajouter les nouvelles photos
+     * trouvées
      */
     public boolean dialogAjouter() {
-    	
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Ajouter les nouvelles photos ?");
         builder.setMessage("De nouvelles photos ont été trouvées. Souhaitez-vous les ajouter à l'application ?")
@@ -220,45 +211,41 @@ public class MainActivity extends Activity {
         return false;
     }
 
+    public void onPostExecuteFindPhotosTask(List<OPhoto> newPhotos) {
 
-	public void onPostExecuteFindPhotosTask(List<OPhoto> newPhotos) {
-    	
-		this.newPhotos = newPhotos;
-		
-		if (!newPhotos.isEmpty()) { // Si il y a de nouvelles photos
-			dialogAjouter(); // Affichage du dialog pour l'ajout de photos	
-		} else {
-			processPhotos(false);
-		}
+        this.newPhotos = newPhotos;
+
+        if (!newPhotos.isEmpty()) { // Si il y a de nouvelles photos
+            dialogAjouter(); // Affichage du dialog pour l'ajout de photos	
+        } else {
+            processPhotos(false);
+        }
 
     }
-	
-	
-	public void processPhotos(boolean ajouter) {
-		
-		console.append("\n\nNouveau contenu trouvé  :\n" + newPhotos.size() + " photo(s).\n");
-		
-		console.append("\nDétail des photos présentes dans la carte :");
+
+    public void processPhotos(boolean ajouter) {
+
+        console.append("\n\nNouveau contenu trouvé  :\n" + newPhotos.size() + " photo(s).\n");
+
+        console.append("\nDétail des photos présentes dans la carte :");
         for (OPhoto newPhoto : newPhotos) {
-    		if (ajouter) applicationDB.addPhoto(newPhoto); // Si l'utilisateur souhaite ajouter les nouvelles photos
+            if (ajouter)
+                applicationDB.addPhoto(newPhoto); // Si l'utilisateur souhaite ajouter les nouvelles photos
             console.append("\n - " + newPhoto.getName() + "\n   " + newPhoto.getIdentifier());
         }
-        
-        
-    	List<OPhoto> photos = applicationDB.getAllPhotos();
-    	List<OContext> contexts = applicationDB.getAllContexts();
-        console.append("\n\nContenu sauvegardé dans la base de données :\n" + photos.size() + " photo(s).\n"
-                + contexts.size() + " contexte(s).\n");
-        
+
+        List<OPhoto> photos = applicationDB.getAllPhotos();
+        List<OContext> contexts = applicationDB.getAllContexts();
+        console.append("\n\nContenu sauvegardé dans la base de données :\n" + photos.size() + " photo(s).\n" + contexts.size() + " contexte(s).\n");
+
         List<OPhoto> photosAvailable = applicationDB.getAllPhotosAvailable();
         console.append("\n\ngetAllPhotosAvailable : " + photosAvailable.size() + " photo(s).\n");
-        
-        console.append("\nDétail des photos présentes dans la BDD :");        
-    	for(OPhoto photo : photos) {
-    		console.append("\n - " + photo.getName() + "\n   " + photo.getIdentifier());
-    	}
-	}
-	
+
+        console.append("\nDétail des photos présentes dans la BDD :");
+        for (OPhoto photo : photos) {
+            console.append("\n - " + photo.getName() + "\n   " + photo.getIdentifier());
+        }
+    }
 
     public ApplicationDB getApplicationDB() {
         return applicationDB;
